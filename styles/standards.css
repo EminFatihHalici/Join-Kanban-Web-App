@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+}
+/* NavBar */
+nav{
+    height: 100vh;
+    width: 232px;
+    background-color:#2A3647;
+}
+
+.nav_icon{
+    display: flex;
+    justify-content: center;
+}
