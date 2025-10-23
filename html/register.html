@@ -1,29 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" href="./assets/icons/Join_dark.png" type="image/png">
-    <title>Login</title>
-
-    <link rel="stylesheet" href="./styles/fonts.css">
-
+    <title>Register</title>
 </head>
-
 <body>
+    
+<img src="../assets/icons/Join_dark.png" alt="Join Logo">
 
-    <img src="../assets/icons/Join_dark.png" alt="Join Logo">
 
-
-    <form onsubmit="login(); return false;">
-        <input type="text" name="" id="name">
+    <form onsubmit="addUser(); return false;">
+        <input type="text" name="" id="name" placeholder="">
+        <input type="email" name="" id="email">
         <input type="password" name="" id="password">
         <button type="submit">Log in</button>
         <button onclick="guestLogin()">Guest Log in</button>
     </form>
 
 </body>
-
 </html>
