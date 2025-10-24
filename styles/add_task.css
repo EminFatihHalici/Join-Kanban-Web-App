@@ -1,6 +1,7 @@
 body {
     display: flex;
     font-family: 'Inter', sans-serif;
+    height: 100vh;
 }
 
 main {
@@ -15,7 +16,7 @@ header {
     justify-content: space-between;
     position: sticky;
     top: 0;
-    padding: 0 24px 0 86px;
+    padding: 0 40px 0 64px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
@@ -51,4 +52,55 @@ header {
 
 .user-avatar-icon:hover {
     filter: brightness(0.90);
+}
+
+main {
+    flex: 1;
+    background: #F5F6F7;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.add-task-section {
+    background: #F5F6F7;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+nav {
+    height: 100vh;
+}
+
+input,
+textarea {
+    border: 1px solid #D1D1D1;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.task-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px
+}
+
+.divider {
+    width: 1px;
+    background-color: #D1D1D1;
+    margin: 0 24px;
+}
+
+.form-left,
+.form-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
 }
