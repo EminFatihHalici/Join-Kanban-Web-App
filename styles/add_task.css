@@ -81,10 +81,10 @@ nav {
 
 input,
 textarea {
-border: 1px solid #D1D1D1;
-border-radius: 8px;
-padding: 12px;
-font-size: 16px;
+    border: 1px solid #D1D1D1;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
 }
 
 .task-form {
@@ -156,6 +156,15 @@ button.create {
 
 button.create:hover {
     opacity: 0.9;
+    background: #44b6e6;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+button.clear:hover {
+    background-color: #fff;
+    border-color: #44b6e6;
+    color: #44b6e6;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 
