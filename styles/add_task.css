@@ -115,6 +115,13 @@ select {
     flex: 1;
 }
 
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 32px;
+}
+
 label {
     font-size: 16px;
     font-weight: 500;
@@ -215,6 +222,7 @@ button.clear:hover {
     font-size: 14px;
     margin-left: 16px;
     align-items: center;
+    display: flex;
 }
 
 .required-marker {
