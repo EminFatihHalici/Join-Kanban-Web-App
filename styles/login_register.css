@@ -130,6 +130,7 @@ input[type="checkbox"] {
 
 .login-register h2 {
     margin: 40px auto 24px;
+    font-size: 61px;
 }
 
 .login-register hr {
@@ -137,7 +138,7 @@ input[type="checkbox"] {
     border: none;
     width: 150px;
     height: 3px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .input-field img {
