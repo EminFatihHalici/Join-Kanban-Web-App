@@ -190,22 +190,32 @@ button.clear:hover {
 }
 
 .priority-buttons {
-  display: flex;
-  gap: 12px;
+    display: flex;
+    gap: 12px;
 }
 
 .priority-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background-color: #fff;
-  font-weight: 500;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.priority-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.priority-btn:hover {
+    opacity: 0.9;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
 }
