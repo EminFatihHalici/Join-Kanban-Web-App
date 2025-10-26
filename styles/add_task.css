@@ -188,3 +188,24 @@ button.clear:hover {
     color: #FF3B30;
     margin-right: 4px;
 }
+
+.priority-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.priority-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background-color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
