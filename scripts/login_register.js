@@ -102,7 +102,7 @@ async function addUser() {
     showPopup();
     setTimeout(() => {
         window.location.href = '../index.html?msg=You signed up successfully';
-    }, 2000);
+    }, 1500);
 }
 
 function setDataForBackendUpload() {
