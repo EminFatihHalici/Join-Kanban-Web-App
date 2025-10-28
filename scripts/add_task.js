@@ -1,5 +1,7 @@
-function init () {
+function init() {
     setActivateBtn();
+    setupFormButtons();
+    setupPriorityButtons();
 }
 
 
@@ -28,4 +30,33 @@ function setupPriorityButtons() {
             button.classList.add("active");
         });
     });
+}
+
+async function handleCreateTask() {
+    let title = document.getElementById("title").value.trim();
+    let description = document.getElementById("description").value.trim();
+    let dueDate = document.getElementById("due-date").value;
+    let category = document.getElementById("category").value;
+    let assigned = document.getElementById("assigned").value;
+    let subtask = document.getElementById("subtask").value.trim();
+    let activePriority = document.querySelector(".priority-btn.active");
+    let priority = activePriority ? activePriority.classList[1] : "medium";
+
+    if (!title || !dueDate || !category) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    let newTask = {
+        title,
+        description,
+        dueDate,
+        category,
+        assigned,
+        priority,
+        subtasks: subtask ? [subtask] : [],
+        createdAt: new Date().toISOString()
+    }
+
+    console.log("New Task Created:", newTask);
 }
