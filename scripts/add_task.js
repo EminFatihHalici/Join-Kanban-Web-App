@@ -11,3 +11,11 @@ function setActivateBtn() {
         });
     });
 }
+
+function setupFormButtons() {
+    let createBtn = document.getElementById("create-btn");
+    let clearBtn = document.getElementById("clear-btn");
+
+    createBtn.addEventListener("click", handleCreateTask);
+    clearBtn.addEventListener("click", clearForm);
+}
