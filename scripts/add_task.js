@@ -59,6 +59,16 @@ async function handleCreateTask() {
     }
 
     console.log("New Task Created:", newTask);
+
+    try {
+        let reuslt = await postData("tasks", newTask);
+        console.log("Task successfully posted:", reuslt);
+
+        clearForm();
+    } catch (error) {
+        console.error("Error creating task:", error);
+    }
+
 }
 
 
