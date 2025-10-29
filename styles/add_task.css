@@ -11,7 +11,7 @@ main {
     margin-left: 232px;
     margin-top: 96px;
     min-height: calc(100vh - 96px);
-    padding: 64px 96px;
+    padding: 48px 64px;
     overflow: hidden;
     box-sizing: border-box;
   
@@ -64,8 +64,6 @@ h1 {
     gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 64px 96px;
-
 }
 
 
@@ -108,7 +106,6 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin-top: 32px;
 }
 
 label {
