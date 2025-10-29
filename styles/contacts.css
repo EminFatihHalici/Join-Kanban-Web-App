@@ -95,11 +95,17 @@ main {
 
 
 
-.contact-list-separator {
+
+    .contact-list-separator {
     border: none;
-    border-top: 1px solid #D1D1D1;
-    margin: 0;
+    border-top: 1px solid #D1D1D1; /* Definiert die Linie selbst */
+    
+    /* NEUE REGELN FÜR ZENTRIERUNG UND BREITE */
+    width: 88%; /* **1. Breite reduzieren** (Wähle den Wert, z.B. 80%) */
+    margin: 0 auto; /* **2. Horizontale Zentrierung** (Oben/Unten 0, Links/Rechts automatisch) */
 }
+
+
 
 /* Die scrollbare Liste */
 .contact-list {
@@ -171,6 +177,8 @@ main {
     text-decoration: none;
     /* Falls es ein <a>-Tag ist */
     transition: background-color 0.1s ease-in-out;
+    border-radius: 16px;
+    margin: 16px;
 }
 
 /* Hover-Effekt für Kontakte */
