@@ -4,7 +4,7 @@ function init() {
     setupPriorityButtons();
 }
 
-/* Set active priority button */
+/* Set active priority button*/
 function setActivateBtn() {
     document.querySelectorAll(".priority-btn").forEach(btn => {
         btn.addEventListener("click", () => {
