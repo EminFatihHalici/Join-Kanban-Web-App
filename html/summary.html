@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary</title>
+    <title>Join - Summary</title>
+    <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/summary.css">
@@ -38,8 +39,8 @@
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="#">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_policy.html">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
+                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
                 </div>
             </section>
         </div>
@@ -76,7 +77,7 @@
 
             <div class="to_do_summary">
                 <div class="to_to_container">
-                    <div class="to_do">
+                    <a class="to_do" href="/html/board.html?status=todo">
                         <div class="div_icon">
                             <img src="/assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
                             <img src="/assets/icons/pen_light_icon.svg" class="icon_light" alt="">
@@ -87,9 +88,9 @@
                                 <p>To-do</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="done">
+                    <a class="done" href="/html/board.html?status=done">
                         <div class="div_icon">
                             <img src="/assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
                             <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
@@ -97,13 +98,13 @@
                         <div class="container_information">
                             <div class="numbers">1</div>
                             <div class="numbers_txt">
-                                <p>To-do</p>
+                                <p>Done</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
-                <div class="urgent_container">
+                <a class="urgent_container" href="/html/board.html?status=urgent">
                     <div class="urgent">
                         <div class="urgent_icon"><img src="/assets/icons/urgent_icon.svg" alt=""></div>
                         <div class="container_information">
@@ -125,35 +126,35 @@
                         <div class="urgend_calender">Shows a date</div>
                         <div class="urgend_calender_txt">Upcoming Deadline</div>
                     </div>
-                </div>
+                </a>
 
                 <div class="board_informations">
-                    <div class="tasks_in_board">
+                    <a class="tasks_in_board" href="/html/board.html">
                         <div class="container_information">
                             <div class="numbers">5</div>
                             <div class="numbers_txt">
-                                <p>Tasks in Board</p>
+                                <p>Tasks in <br> Board</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="tasks_in_progress">
+                    <a class="tasks_in_progress" href="/html/board.html?status=in_progress">
                         <div class="container_information">
                             <div class="numbers">2</div>
                             <div class="numbers_txt">
-                                <p>Tasks in Progress</p>
+                                <p>Tasks in <br> Progress</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="awaiting_feedback">
+                    <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback">
                         <div class="container_information">
                             <div class="numbers">2</div>
                             <div class="numbers_txt">
-                                <p>Awaiting Feedback</p>
+                                <p>Awaiting <br> Feedback</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -161,7 +162,7 @@
                 <p id="greeting_text">Good morning,</p>
                 <p id="greeting_name">Sofia Müller</p>
             </div>
-            
+
         </section>
     </main>
 
