@@ -7,6 +7,7 @@
     <title>Join - Board</title>
     <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
 </head>
@@ -56,6 +57,44 @@
             <div class="user-circle">SM</div>
         </div>
     </header>
+
+    <main>
+        <section class="board-header">
+            <div class="board-header__top">
+                <h1 class="board-title">Board</h1>
+
+                <div class="board-actions">
+                    <div class="searchbar">
+                        <input class="searchbar__input" type="text" placeholder="Find Task">
+                        <div class="searchbar__divider"></div>
+                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon"></button>
+                    </div>
+
+                    <button class="btn btn-primary" type="button">Add Task +</button>
+                </div>
+            </div>
+
+            <section class="board_categories">
+                <div class="category">
+                    <h2>To do</h2>
+                    <button class="add_btn">+</button>
+                </div>
+
+                <div class="category">
+                    <h2>In progress</h2>
+                    <button class="add_btn">+</button>
+                </div>
+
+                <div class="category">
+                    <h2>Await feedback</h2>
+                    <button class="add_btn">+</button>
+                </div>
+
+                <div class="category">
+                    <h2>Done</h2>
+                </div>
+            </section>
+    </main>
 
 </body>
 
