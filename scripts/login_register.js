@@ -151,8 +151,10 @@ async function login(path = "") {
 }
 
 function guestLogin() {
+    let email = document.getElementById('emailLogin');
+    let password = document.getElementById('passwordLogin');
     email.value = password.value = '';
-    window.location.href = `../html/summary.html?activeUserId=${userIdIndex}`;
+    window.location.href = `../html/summary.html?activeUserId=0`;
 }
 
 function animateLogoFirstVisit() {

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+
+    <script src="/scripts/board.js" defer></script>
 </head>
 
 <body>
@@ -67,7 +69,8 @@
                     <div class="searchbar">
                         <input class="searchbar__input" type="text" placeholder="Find Task">
                         <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon"></button>
+                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg"
+                                alt="search icon"></button>
                     </div>
 
                     <button class="btn btn-primary" type="button">Add Task +</button>
@@ -75,24 +78,45 @@
             </div>
 
             <section class="board_categories">
-                <div class="category">
-                    <h2>To do</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>To do</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <div id="categoryToDo" class="draggable">
+
+                    </div>
                 </div>
 
-                <div class="category">
-                    <h2>In progress</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>In Progress</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <div id="categoryInProgress" class="draggable">
+
+                    </div>
                 </div>
 
-                <div class="category">
-                    <h2>Await feedback</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Await Feedback</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <div id="categoryAwaitFeedback" class="draggable">
+
+                    </div>
                 </div>
 
-                <div class="category">
-                    <h2>Done</h2>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Done</h2>
+                    </div>
+                    <div id="categoryAwaitFeedback" class="draggable">
+
+                    </div>
                 </div>
+
             </section>
     </main>
 
