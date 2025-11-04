@@ -83,8 +83,12 @@
                         <h2>To do</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryToDo" class="draggable">
-
+                    <div id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
+                        <img id="img1" src="/assets/img/test_task_1.png" draggable="true" ondragstart="dragstartHandler(event)">
+                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true" ondragstart="dragstartHandler(event)">
+                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true" ondragstart="dragstartHandler(event)">
+                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true" ondragstart="dragstartHandler(event)">
                     </div>
                 </div>
 
@@ -93,7 +97,8 @@
                         <h2>In Progress</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryInProgress" class="draggable">
+                    <div id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
 
                     </div>
                 </div>
@@ -103,7 +108,8 @@
                         <h2>Await Feedback</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryAwaitFeedback" class="draggable">
+                    <div id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
 
                     </div>
                 </div>
@@ -112,7 +118,8 @@
                     <div class="category">
                         <h2>Done</h2>
                     </div>
-                    <div id="categoryAwaitFeedback" class="draggable">
+                    <div id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
 
                     </div>
                 </div>

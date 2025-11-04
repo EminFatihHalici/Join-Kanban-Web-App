@@ -129,6 +129,7 @@ main {
 /* Column heads row */
 .board_categories {
     display: flex;
+    flex-direction: flex-start;
     justify-content: space-between;
     align-items: center;
     margin-top: 64px;
@@ -175,14 +176,21 @@ main {
 }
 
 .draggable {
-    width: 244px;
+    /* width: 244px; */
     min-height: 244px;
-    background-color: aliceblue;
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     border: 1px solid gray;
     margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.draggable img {
+    object-fit: contain;
+    border-radius: 10px;
 }
 
 .highlight {
-    background-color: antiquewhite;
+    background-color: rgba(0, 0, 0, 0.2);
 }
