@@ -1,3 +1,4 @@
+let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 const urlParams = new URLSearchParams(window.location.search);
 const activeUserId = urlParams.get('activeUserId') || 0;
 
@@ -6,6 +7,7 @@ function init() {
     setActivateBtn();
     setupFormButtons();
     setupPriorityButtons();
+    loadContacts();
 }
 
 /* Set active priority button*/
@@ -56,9 +58,6 @@ async function handleCreateTask() {
         return;
     }
 
-    /**have to change, just testing */
-    let activeUserId = 3;
-
     let newTask = {
         title,
         description,
@@ -92,7 +91,6 @@ function clearForm() {
 }
 
 
-let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /** Post data to backend */
 async function putData(path = "", data = {}) {
@@ -151,8 +149,33 @@ async function loadData(path = "") {
         return await response.json();
     } catch (error) {
         console.error("Error loading data:", error);
-        throw error;
     }
 }
 
+async function loadContacts() {
+    let dropdown = document.getElementById("assigned");
+    dropdown.innerHTML = '<option value="" disabled selected>Select contacts to assign</option>';
 
+    try {
+
+        let contacts = await loadData(`user/${activeUserId}/contacts`);
+
+        if (contacts) {
+
+            Object.values(contacts).forEach(contact => {
+
+
+                if (contact && contact.name) {
+                    let newOption = document.createElement('option');
+                    newOption.value = contact.name;
+                    newOption.textContent = contact.name;
+                    dropdown.appendChild(newOption);
+                }
+
+            });
+        }
+    } catch (error) {
+        console.error("Could not load contacts:", error);
+        dropdown.innerHTML += '<option value="">(Error loading contacts)</option>';
+    }
+}
