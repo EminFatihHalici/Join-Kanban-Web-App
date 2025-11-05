@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/styles/fonts.css">
 
     <script src="/scripts/board.js" defer></script>
+    <script src="/scripts/templates.js" defer></script>
+
 </head>
 
 <body>
@@ -83,34 +85,9 @@
                         <h2>To do</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
-                        <div class="drag-item" draggable="true" ondragstart="dragstartHandler(event)">
-                            <div class="card-inner">
-                                <p class="blue">User Story</p>
-                                <h3>Kochwelt Page & Recipe Recommender</h3>
-                                <p class="gray-text">Build start page with recipe recommendation</p>
-                                <div class="flex">
-                                    <progress value="1" max="2" style="width:96px"></progress>
-                                    <span>1/2 Subtasks</span>
-                                </div>
-                                <div class="flex spacebetween">
-                                    <div class="spacing">
-                                        <div class="color-one">
-                                            AM
-                                        </div>
-                                        <div class="color-two">
-                                            EM
-                                        </div>
-                                        <div class="color-three">
-                                            MB
-                                        </div>
-                                    </div>
-                                    <img src="/assets/icons/prio_medium_orange_icon.svg" alt="urgent icon">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
+                    </section>
                 </div>
 
                 <div class="category-block">
@@ -118,17 +95,9 @@
                         <h2>In Progress</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
-                        <img id="img1" src="/assets/img/test_task_1.png" draggable="true"
-                            ondragstart="dragstartHandler(event)">
-                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true"
-                            ondragstart="dragstartHandler(event)">
-                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true"
-                            ondragstart="dragstartHandler(event)">
-                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true"
-                            ondragstart="dragstartHandler(event)">
-                    </div>
+                    <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
+                    </section>
                 </div>
 
                 <div class="category-block">
@@ -136,20 +105,27 @@
                         <h2>Await Feedback</h2>
                         <button class="add_btn">+</button>
                     </div>
-                    <div id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
-
-                    </div>
+                    <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
+                        <!-- <img id="img1" src="/assets/img/test_task_1.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true"
+                            ondragstart="dragstartHandler(event)"> -->
+                    </section>
                 </div>
 
                 <div class="category-block">
                     <div class="category">
                         <h2>Done</h2>
                     </div>
-                    <div id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
+                    <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
 
-                    </div>
+                    </section>
                 </div>
 
             </section>
