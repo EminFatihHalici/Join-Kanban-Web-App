@@ -39,8 +39,14 @@ async function handleCreateTask() {
     let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
     let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
     let subtaskText = document.getElementById("subtask").value.trim();
-    let subtasksArray = subtaskText ? [subtaskText] : [];
-    let hasSubtasksBoolean = subtasksArray.length > 0;
+    let subtasksArray = [];
+    if (subtaskText) {
+        const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
+        subtasksArray = rawSubtasks.map((title, index) => ({
+            done: "false",
+            title: title.trim()
+        }));
+    }
     let activePriority = document.querySelector(".priority-btn.active");
     let priority = activePriority ? activePriority.classList[1] : "medium";
 
@@ -57,7 +63,6 @@ async function handleCreateTask() {
         assigned,
         priority,
         subtasks: subtasksArray,
-        hasSubtasks: hasSubtasksBoolean,
         createdAt: new Date().toISOString()
     }
 
