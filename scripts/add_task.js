@@ -1,7 +1,7 @@
 let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 const urlParams = new URLSearchParams(window.location.search);
 const activeUserId = urlParams.get('activeUserId') || 0;
-let isUserMenuListenerAdded = false;
+
 
 
 function init() {
