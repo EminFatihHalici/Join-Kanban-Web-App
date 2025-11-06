@@ -1,13 +1,12 @@
-const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
+// const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let urlParams = new URLSearchParams(window.location.search);
-let activeUserId = urlParams.get('activeUserId');
-// const categoryToDo = document.getElementById('categoryToDo');
-// const categoryInProgress = document.getElementById('categoryInProgress');
-// const categoryAwaitFeedback = document.getElementById('categoryAwaitFeedback');
-// const categoryDone = document.getElementById('categoryDone');
-// let tasks = [];
+let activeUserId = urlParams.get('activeUserId') || 0;
 let currentDraggedId;
 
+async function init() {
+    await fetchTasks(activeUserId = 0);
+    await renderTasks()
+}
 
 async function fetchTasks(activeUserId = 0) {
     try {
@@ -17,8 +16,6 @@ async function fetchTasks(activeUserId = 0) {
             id: id,
             ...taskData
         }));
-        console.log(tasksWithId);
-        
         return tasksWithId
     } catch (error) {
         console.log("Error fetchTasks(): ", error);
@@ -43,12 +40,13 @@ async function renderTasks() {
 
 function dragstartHandler(id) {
     currentDraggedId = id;
-
 }
+
 function dragoverHandler(ev) {
     ev.preventDefault();
     toggleStyle(ev);
 }
+
 function toggleStyle(ev) {
     ev.preventDefault();
     const targetDiv = event.target.closest('.draggable');
@@ -60,21 +58,11 @@ function toggleStyle(ev) {
     }
 }
 
-function moveTo(category) {
-    // tasksWithId[currentDraggedId].board = category;
-    renderTasks()
-}
-
-
-
-function renderTaskCard(task) {
-    return `
-        <div class="task-card" draggable="true">
-            <h3>${task.title}</h3>
-            <p>${task.description}</p>
-            <div class="task-assignees">
-                ${task.assignees ? task.assignees.map(a => `<span>${a}</span>`).join('') : ''}
-            </div>
-        </div>
-    `;
+async function moveTo(category) {
+    try {
+        let result = await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
+        renderTasks();
+    } catch (error) {
+        console.error('Error moveTask():', error);
+    }
 }
