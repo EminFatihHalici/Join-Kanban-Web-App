@@ -19,3 +19,20 @@ let contactCircleColor = [
     '#FF4646',
     '#FFBB2B',
 ]
+
+async function fetchUserData(path) {
+    try {
+        const response = await fetch(`${BASE_URL}${path}`);
+        if (!response.ok) {
+            throw new Error(`Error fetching data from ${path}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading user data:", error);
+        return null;
+    }
+}
+
+function getInitials(name) {
+    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
+}
