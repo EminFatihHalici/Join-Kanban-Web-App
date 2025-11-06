@@ -60,7 +60,7 @@ function checkAllValidations() {
 
 async function addUser() {
     let nextUserId = await calcNextId();
-    await putRegisterData('/' + nextUserId, setDataForBackendUpload());
+    await putData('/' + nextUserId, setDataForBackendUpload());
     clearAllSignUpInputFields();
     showPopup();
     setTimeout(() => {
@@ -73,7 +73,7 @@ async function calcNextId(path = "") {
         let res = await fetch(BASE_URL + path + ".json");
         let resJson = await res.json();
         let userId = Object.keys(resJson);
-        userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+        userId.length === 0 ? nextUser = 0 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
     } catch (error) {
         console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
     }
@@ -94,7 +94,7 @@ function setDataForBackendUpload() {
     return data;
 }
 
-async function putRegisterData(path = "", data = {}) {
+async function putData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
         method: "put",
         header: {
@@ -127,12 +127,6 @@ function showPopup() {
         }, 500);
     }, 1000);
 }
-
-// async function test() {
-//     let userId = 3;
-//     let contactsId = await calcNextId(`/${userId}/contacts`)
-//     await putRegisterData(`/${userId}/contacts/${contactsId}`, data = { email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999" });
-// }
 
 // #endregion
 
