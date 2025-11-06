@@ -184,6 +184,7 @@ main {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .tasks_in_board,
