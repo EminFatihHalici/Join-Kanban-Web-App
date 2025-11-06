@@ -1,7 +1,7 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let firebase = [];
 
-const isNameValid = val => val.trim() !== '';
+const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/?\-\+#@]/.test(val) && val.length >= 12;
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
