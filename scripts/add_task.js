@@ -50,6 +50,9 @@ async function handleCreateTask() {
         return;
     }
 
+    /**have to change, just testing */
+    let activeUserId = 3;
+
     let newTask = {
         title,
         description,
@@ -64,9 +67,9 @@ async function handleCreateTask() {
     console.log("New Task Created:", newTask);
 
     try {
-        let reuslt = await postData("tasks", newTask);
-        console.log("Task successfully posted:", reuslt);
-
+        let taskPath = `user/${activeUserId}/tasks`;
+        let nextTaskId = await calcNextId(taskPath);
+        await putData(`${taskPath}/${nextTaskId}`, newTask);
         clearForm();
     } catch (error) {
         console.error("Error creating task:", error);
@@ -82,13 +85,13 @@ function clearForm() {
 }
 
 
-let BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
+let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /** Post data to backend */
-async function postData(path = "", data = {}) {
+async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -107,12 +110,25 @@ async function postData(path = "", data = {}) {
 function toggleDropDownMenu() {
     let userMenu = document.getElementById('user-menu');
     userMenu.classList.toggle('show');
+    document.addEventListener('click', function (event) {
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.remove('show');
+        }
+    });
 }
 
-document.addEventListener('click', function (event) {
-    let userMenu = document.getElementById('user-menu');
-    let userCircle = document.querySelector('.user-circle');
-    if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
-        userMenu.classList.remove('show');
-    }
-});
+
+
+/** function to calculate the next taskId */
+async function calcNextId(path) {
+    let res = await fetch(`${BASE_URL}${path}.json`);
+    let resJson = await res.json();
+
+    if (!resJson) return 1;
+
+    let keys = Object.keys(resJson).map(Number);
+    let nextId = Math.max(...keys) + 1;
+    return nextId;
+}
