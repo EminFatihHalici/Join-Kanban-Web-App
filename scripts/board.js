@@ -1,4 +1,3 @@
-// const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let urlParams = new URLSearchParams(window.location.search);
 let activeUserId = urlParams.get('activeUserId') || 0;
 let currentDraggedId;
@@ -38,13 +37,18 @@ async function renderTasks() {
     });
 }
 
-function dragstartHandler(id) {
+function dragstartHandler(event, id) {
     currentDraggedId = id;
+    event.target.style.transform = 'rotate(2deg)';
 }
 
 function dragoverHandler(ev) {
     ev.preventDefault();
     toggleStyle(ev);
+}
+
+function dragendHandler(event) {
+    event.target.style.transform = '';
 }
 
 function toggleStyle(ev) {
@@ -65,4 +69,6 @@ async function moveTo(category) {
     } catch (error) {
         console.error('Error moveTask():', error);
     }
+    const elements = document.querySelectorAll('.draggable');
+    elements.forEach(el => el.classList.remove('highlight'));
 }
