@@ -211,80 +211,75 @@ function renderTaskCard(task) {
 
 function getAddTaskTemplate() {
     return `
-       <section class="add-task-section">
-            <h1>Add Task</h1>
+       <div id="add-task-overlay" class="add-task-overlay">
+            <section class="add-task-section">
+                <h1>Add Task</h1>
 
-            <form id="task-form" class="task-form">
-                <div class="form-left">
-                    <label for="title">Title*</label>
-                    <input id="title" type="text" placeholder="Enter a title">
+                <form id="task-form" class="task-form">
+                    <div class="form-left">
+                        <label for="title">Title*</label>
+                        <input id="title" type="text" placeholder="Enter a title">
 
-                    <label for="description">Description</label>
-                    <textarea id="description" placeholder="Enter a Description"></textarea>
+                        <label for="description">Description</label>
+                        <textarea id="description" placeholder="Enter a Description"></textarea>
 
-                    <label for="due-date">Due date*</label>
-                    <input id="due-date" type="date" required>
-
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="form-right">
-                    <label>Priority</label>
-                    <div class="priority-buttons">
-                        <button type="button" class="priority-btn urgent">
-                            Urgent
-                            <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
-                        </button>
-                        <button type="button" class="priority-btn medium active">
-                            Medium
-                            <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
-                        </button>
-                        <button type="button" class="priority-btn low">
-                            Low
-                            <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
-                        </button>
+                        <label for="due-date">Due date*</label>
+                        <input id="due-date" type="date" required>
                     </div>
 
-                    <label for="assigned">Assigned to</label>
-                    <div class="custom-select-container">
-                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
-                            Select contacts to assign
+                    <div class="divider"></div>
+
+                    <div class="form-right">
+                        <label>Priority</label>
+                        <div class="priority-buttons">
+                            <button type="button" class="priority-btn urgent">
+                                Urgent
+                                <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
+                            </button>
+                            <button type="button" class="priority-btn medium active">
+                                Medium
+                                <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
+                            </button>
+                            <button type="button" class="priority-btn low">
+                                Low
+                                <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
+                            </button>
                         </div>
 
-                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                        <label for="assigned">Assigned to</label>
+                        <div class="custom-select-container">
+                            <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                                Select contacts to assign
+                            </div>
+
+                            <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                            </div>
                         </div>
+
+                        <label for="category">Category*</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Select task category</option>
+                            <option value="technical">Technical Task</option>
+                            <option value="user-story">User Story</option>
+                        </select>
+
+                        <label for="subtask">Subtasks</label>
+                        <input type="text" id="subtask" placeholder="Add new subtask">
                     </div>
+                </form>
 
-                    <label for="category">Category*</label>
-                    <select id="category" required>
-                        <option value="" disabled selected>Select task category</option>
-                        <option value="technical">Technical Task</option>
-                        <option value="user-story">User Story</option>
-                    </select>
+                <div class="form-footer">
+                    <p class="form-hint">
+                        <span class="required-marker">*</span>This field is required
+                    </p>
 
-                    <label for="subtask">Subtasks</label>
-                    <input type="text" id="subtask" placeholder="Add new subtask">
+                    <div class="form-actions">
+                        <button id="clear-btn" type="button" class="clear">Clear ✖</button>
+                        <button id="create-btn" type="button" class="create">Create Task ✔</button>
+                    </div>
                 </div>
-            </form>
-
-            <div class="form-footer">
-
-                <p class="form-hint">
-                    <span class="required-marker">*</span>This field is required
-                </p>
-
-
-                <div class="form-actions">
-                    <button id="clear-btn" type="button" class="clear">Clear ✖</button>
-                    <button id="create-btn" type="button" class="create">Create Task ✔</button>
-                </div>
-
-
-            </div>
-
-
-        </section>
+            </section>
+        </div>
     `;
 }
 
