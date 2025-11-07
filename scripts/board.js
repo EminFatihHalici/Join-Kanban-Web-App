@@ -4,7 +4,8 @@ let currentDraggedId;
 
 async function init() {
     await fetchTasks(activeUserId = 0);
-    await renderTasks()
+    await renderTasks();
+    renderAddTAskOverlay()
 }
 
 async function fetchTasks(activeUserId = 0) {
@@ -77,4 +78,9 @@ async function moveTo(category) {
     }
     const elements = document.querySelectorAll('.draggable');
     elements.forEach(el => el.classList.remove('highlight'));
+}
+
+function renderAddTAskOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getAddTaskOverlayTemplate();
 }
