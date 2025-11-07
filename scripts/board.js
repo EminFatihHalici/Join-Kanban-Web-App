@@ -2,7 +2,6 @@ const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.fireba
 let urlParams = new URLSearchParams(window.location.search);
 let activeUserId = urlParams.get('activeUserId') || 0;
 
-
 async function renderTasks(activeUserId = 0) {
     try {
         let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
