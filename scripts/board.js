@@ -66,3 +66,44 @@ async function moveTo(category) {
         console.error('Error moveTask():', error);
     }
 }
+
+
+// Array von Arrays mit entspr. Container-IDs:
+function renderAllCategoriesOne(tasksData) {
+    // Array von Arrays für die 4 Kategorien
+    const categoryData = [
+        { tasks: tasksData.toDo || [], containerId: 'categoryToDo' },
+        { tasks: tasksData.inProgress || [], containerId: 'categoryInProgress' },
+        { tasks: tasksData.awaitFeedback || [], containerId: 'categoryAwaitFeedback' },
+        { tasks: tasksData.done || [], containerId: 'categoryDone' }
+    ];
+
+    // Iteriere durch alle Kategorien
+    categoryData.forEach(category => {
+        const container = document.getElementById(category.containerId);
+        container.innerHTML = ''; // Container leeren
+
+        // Iteriere durch alle Tasks in der aktuellen Kategorie
+        category.tasks.forEach(task => {
+            container.innerHTML += renderTaskCard(task);
+        });
+    });
+}
+
+/// Objekt-basierter Ansatz:
+function renderAllCategoriesTwo(tasksData) {
+    const categories = {
+        'categoryToDo': tasksData.toDo || [],
+        'categoryInProgress': tasksData.inProgress || [],
+        'categoryAwaitFeedback': tasksData.awaitFeedback || [],
+        'categoryDone': tasksData.done || []
+    };
+
+    // Iteriere durch alle Kategorien
+    Object.entries(categories).forEach(([containerId, tasks]) => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = tasks.map(task => renderTaskCard(task)).join('');
+        }
+    });
+}
