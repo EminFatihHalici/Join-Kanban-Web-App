@@ -1,6 +1,6 @@
 function renderTasksHTML(task) {
     return `
-    <article class="drag-item" draggable="true" ondragstart="dragstartHandler(${task.id})">
+    <article class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">
             <p class="blue">${task.category}</p>
             <h3>${task.title}</h3>
