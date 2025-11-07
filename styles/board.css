@@ -186,7 +186,7 @@ main {
 
 .draggable {
     width: 240px;
-    min-height: 360px;
+    min-height: 240px;
     border-radius: 24px;
     border: 1px solid transparent;
     gap: 16px;
@@ -218,12 +218,20 @@ main {
     gap: 12px;
 }
 
+.turquoise,
 .blue {
     color: #fff;
-    background-color: #0038FF;
     border-radius: 8px;
     padding: 4px 16px;
     width: fit-content;
+}
+
+.blue {
+    background-color: #0038FF;
+}
+
+.turquoise {
+    background-color: #1FD7C1;
 }
 
 .gray-text {
@@ -247,6 +255,13 @@ main {
 .spacing {
     position: relative;
     flex: 1;
+}
+
+.empty-task-box {
+    border-radius: 24px;
+    border: 1px dotted #A8A8A8;
+    background-color: #E7E7E7;
+    line-height: 32px;
 }
 
 .color-one,

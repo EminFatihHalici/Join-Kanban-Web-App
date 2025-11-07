@@ -2,7 +2,7 @@ function renderTasksHTML(task) {
     return `
     <article class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">
-            <p class="blue">${task.category}</p>
+            <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
             <p class="gray-text">${task.description}</p>
             <div class="flex">
@@ -25,4 +25,20 @@ function renderTasksHTML(task) {
             </div>
         </div>
     </article>`
+}
+
+function renderTasksHtmlEmptyArray(categoryId) {
+    const categoryNames = {
+        'categoryToDo': 'To Do',
+        'categoryInProgress': 'In Progress',
+        'categoryAwaitFeedback': 'Await Feedback',
+        'categoryDone': 'Done'
+    };
+    return `
+    <article class="empty-task-box">
+        <span class="card-inner">
+            No Task ${categoryNames[categoryId]}
+        </span>
+    </article>
+    `
 }

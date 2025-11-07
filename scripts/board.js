@@ -31,10 +31,16 @@ async function renderTasks() {
     }
     Object.entries(categories).forEach(([htmlContainerId, tasksWithId]) => {
         const container = document.getElementById(htmlContainerId);
-        if (container) {
-            container.innerHTML = tasksWithId.map(task => renderTasksHTML(task)).join('');
-        }
+        tasksWithId.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksWithId.map(task => renderTasksHTML(task)).join('');
     });
+}
+
+function categoryColor(task) {
+    if (task.category === 'User Story') {
+        return "blue"
+    } else { 
+        return  "turquoise"
+    }
 }
 
 function dragstartHandler(event, id) {
