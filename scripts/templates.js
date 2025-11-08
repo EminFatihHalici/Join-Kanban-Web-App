@@ -46,7 +46,7 @@ function renderTasksHtmlEmptyArray(categoryId) {
 function getAddTaskOverlayTemplate() {
     return `
        <div id="add-task-overlay" class="add-task-overlay">
-            <section class="add-task-section">
+            <section class="add-task-section overlay-add-task">
                 <h1>Add Task</h1>
 
                 <form id="task-form" class="task-form">
