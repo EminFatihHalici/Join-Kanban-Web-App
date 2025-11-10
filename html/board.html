@@ -11,12 +11,11 @@
     <link rel="stylesheet" href="/styles/add_task.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
-
+    <script src="/scripts/board.js" defer></script>
     <script src="/scripts/login_register.js" defer></script>
     <script src="/scripts/global.js" defer></script>
-    <script src="/scripts/board.js" defer></script>
     <script src="/scripts/templates.js" defer></script>
-    <script src="/scripts/add_task.js"></script>
+    <script src="/scripts/add_task.js" defer></script>
 
 </head>
 
@@ -80,7 +79,7 @@
                                 alt="search icon"></button>
                     </div>
 
-                    <button class="btn btn-primary" type="button">Add Task +</button>
+                    <button onclick="renderAddTaskOverlay()" class="btn btn-primary" type="button">Add Task +</button>
                 </div>
             </div>
 
@@ -128,7 +127,7 @@
             </section>
     </main>
 
-    <div id="add-task-overlay" class="add-task-overlay">
+    <div id="add-task-overlay" class="add-task-overlay d-none">
     </div>
 
 </body>

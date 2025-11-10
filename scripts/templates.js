@@ -45,25 +45,27 @@ function renderTasksHtmlEmptyArray(categoryId) {
 
 function getAddTaskOverlayTemplate() {
     return `
-       <div id="add-task-overlay" class="add-task-overlay">
             <section class="add-task-section overlay-add-task">
-                <h1>Add Task</h1>
-
+        <div class= overlay-header>
+            <h1>Add Task</h1>
+        </div>
+        <img class="close-add-task-overlay" src="/assets/icons/close.svg" alt="close">
                 <form id="task-form" class="task-form">
-                    <div class="form-left">
-                        <label for="title">Title*</label>
-                        <input id="title" type="text" placeholder="Enter a title">
-
+                    <div class="form-left form-left-overlay">
+                        <div class="overlay-add-task-div">
+                            <label for="title">Title*</label>
+                            <input id="title" class="title-input-overlay" type="text" placeholder="Enter a title">
+                        </div>
                         <label for="description">Description</label>
-                        <textarea id="description" placeholder="Enter a Description"></textarea>
+                        <textarea id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
 
                         <label for="due-date">Due date*</label>
-                        <input id="due-date" type="date" required>
+                        <input id="due-date" class="due-date-overlay" type="date" required>
                     </div>
 
                     <div class="divider"></div>
 
-                    <div class="form-right">
+                    <div class="form-right form-right-overlay">
                         <label>Priority</label>
                         <div class="priority-buttons">
                             <button type="button" class="priority-btn urgent">
@@ -103,16 +105,15 @@ function getAddTaskOverlayTemplate() {
                 </form>
 
                 <div class="form-footer">
-                    <p class="form-hint">
+                    <p class="form-hint form-hint-overlay">
                         <span class="required-marker">*</span>This field is required
                     </p>
 
-                    <div class="form-actions">
-                        <button id="clear-btn" type="button" class="clear">Clear ✖</button>
-                        <button id="create-btn" type="button" class="create">Create Task ✔</button>
+                    <div class="form-actions form-actions-overlay">
+                        <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                        <button onclick="handleCreateTask()" id="create-btn" type="button" class="create">Create Task ✔</button>
                     </div>
                 </div>
             </section>
-        </div>
     `;
 }

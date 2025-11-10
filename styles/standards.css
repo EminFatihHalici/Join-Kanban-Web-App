@@ -3,6 +3,10 @@
     max-width: 1920px;
 }
 
+.d-none {
+    display: none;
+}
+
 html,
 body {
     background-color: #f6f7f8;
@@ -55,12 +59,12 @@ nav {
 .nav_add_task,
 .nav_board,
 .nav_contacts {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 10px 10px 60px;
-  text-decoration: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 60px;
+    text-decoration: none;
 }
 
 .nav_policy {
@@ -72,15 +76,15 @@ nav {
 }
 
 .nav_policy a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  text-decoration: none;
-  color: #a0a1a2;
-  font-family: inherit;
-  font-size: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #a0a1a2;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .privacy_policy {
@@ -102,10 +106,10 @@ nav {
 .nav_add_task:hover,
 .nav_board:hover,
 .nav_contacts:hover {
-  cursor: pointer;
-  background-color: #2A3D59;
-  transform: translateY(-2px);
-  transition: all 125ms ease-in-out;
+    cursor: pointer;
+    background-color: #2A3D59;
+    transform: translateY(-2px);
+    transition: all 125ms ease-in-out;
 }
 
 .privacy_policy:hover,
@@ -122,23 +126,23 @@ nav {
     background-color: #091931;
 }
 
-.nav_navigation .active:hover{
+.nav_navigation .active:hover {
     transform: none;
     box-shadow: none;
     cursor: default;
 }
 
 .nav_policy a.active {
-  background-color: #091931;
-  color: #a0a1a2;
-  cursor: default;
-  transform: none;
+    background-color: #091931;
+    color: #a0a1a2;
+    cursor: default;
+    transform: none;
 }
 
 .nav_policy a.active:hover {
-  background-color: #091931;
-  color: #a0a1a2;
-  transform: none;
+    background-color: #091931;
+    color: #a0a1a2;
+    transform: none;
 }
 
 /* Headerbar */
@@ -171,7 +175,7 @@ header {
     color: #000;
 }
 
-.header-left-img{
+.header-left-img {
     display: none;
     height: 39.02px;
     width: 32px;

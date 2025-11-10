@@ -5,7 +5,6 @@ let currentDraggedId;
 async function init() {
     await fetchTasks(activeUserId = 0);
     await renderTasks();
-    renderAddTAskOverlay()
 }
 
 async function fetchTasks(activeUserId = 0) {
@@ -80,7 +79,9 @@ async function moveTo(category) {
     elements.forEach(el => el.classList.remove('highlight'));
 }
 
-function renderAddTAskOverlay() {
+async function renderAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate();
+    overlay.classList.toggle('d-none');
+    await loadContacts();
 }

@@ -1,23 +1,8 @@
-let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
-const urlParams = new URLSearchParams(window.location.search);
-const activeUserId = urlParams.get('activeUserId') || 0;
-
-
-
-function init() {
-    setupFormButtons();
-    setupPriorityButtons();
+function initAddTask() {
     loadContacts();
+    setupPriorityButtons();   
 }
 
-/** Setup form buttons */
-function setupFormButtons() {
-    let createBtn = document.getElementById("create-btn");
-    let clearBtn = document.getElementById("clear-btn");
-
-    createBtn.addEventListener("click", handleCreateTask);
-    clearBtn.addEventListener("click", clearForm);
-}
 
 /** Setup priority buttons */
 function setupPriorityButtons() {
@@ -69,7 +54,7 @@ async function handleCreateTask() {
     console.log("New Task Created:", newTask);
 
     try {
-        let taskPath = `user/${activeUserId}/tasks`;
+        let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
         clearForm();
@@ -129,7 +114,7 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-/** function to calculate the next taskId */
+/** function to calculate the next taskId 
 async function calcNextId(path) {
     let res = await fetch(`${BASE_URL}${path}.json`);
     let resJson = await res.json();
@@ -139,7 +124,7 @@ async function calcNextId(path) {
     let keys = Object.keys(resJson).map(Number);
     let nextId = Math.max(...keys) + 1;
     return nextId;
-}
+}*/
 
 
 /** Load data from backend */
@@ -160,7 +145,7 @@ async function loadContacts() {
     dropdownContainer.innerHTML = ''; // Leere den Container
 
     try {
-        let contacts = await loadData(`user/${activeUserId}/contacts`);
+        let contacts = await loadData(`/${activeUserId}/contacts`);
 
         if (contacts) {
             Object.keys(contacts).forEach(key => {
@@ -192,6 +177,15 @@ async function loadContacts() {
     }
 }
 
+/** Setup form buttons 
+function setupFormButtons() {
+    let createBtn = document.getElementById("create-btn");
+    let clearBtn = document.getElementById("clear-btn");
+
+    createBtn.addEventListener("click", handleCreateTask);
+    clearBtn.addEventListener("click", clearForm);
+} */
+
 
 //overlay add_task
 
@@ -206,4 +200,10 @@ function renderTaskCard(task) {
             </div>
         </div>
     `;
+}
+
+
+function renderAddTAskOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getAddTaskOverlayTemplate();
 }
