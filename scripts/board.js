@@ -84,4 +84,6 @@ async function renderAddTaskOverlay() {
     overlay.innerHTML = getAddTaskOverlayTemplate();
     overlay.classList.toggle('d-none');
     await loadContacts();
+    setupPriorityButtons();
+
 }
