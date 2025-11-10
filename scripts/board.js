@@ -38,14 +38,15 @@ async function renderTasks() {
 function categoryColor(task) {
     if (task.category === 'User Story') {
         return "blue"
-    } else { 
-        return  "turquoise"
+    } else {
+        return "turquoise"
     }
 }
 
 function dragstartHandler(event, id) {
     currentDraggedId = id;
     event.target.style.transform = 'rotate(2deg)';
+    // event.target.classList.add('dragging');
 }
 
 function dragoverHandler(ev) {
@@ -55,11 +56,12 @@ function dragoverHandler(ev) {
 
 function dragendHandler(event) {
     event.target.style.transform = '';
+    // event.target.classList.remove('dragging');
 }
 
 function toggleStyle(ev) {
     ev.preventDefault();
-    const targetDiv = event.target.closest('.draggable');
+    const targetDiv = ev.target.closest('.draggable');
     if (!targetDiv) return;
     const elements = document.querySelectorAll('.draggable');
     elements.forEach(el => el.classList.remove('highlight'));
