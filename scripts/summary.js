@@ -1,4 +1,3 @@
-/** reads activeUserId (?activeUserId=0), Fallback 0 */
 function getActiveUserId() {
   let urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("activeUserId") || 0;
@@ -31,15 +30,15 @@ function extractTasks(userData) {
   return tasks;
 }
 
-/** norms Board-String (small, without space./_) */
+/** norms Board-String */
 function normalizeBoardValue(boardValue) {
   return String(boardValue || "").toLowerCase().replace(/\s|_/g, "");
 }
 
-/** norm Date DD.MM.YYYY (or "-") */
+/** norm Date DD.MM.YYYY */
 function formatDate(deadlineDate) {
   if (!deadlineDate) return "-";
-  return deadlineDate.toLocaleDateString("en-US", { month: "long", day: "2-digit",  year: "numeric" });
+  return deadlineDate.toLocaleDateString("en-US", { month: "long", day: "2-digit", year: "numeric" });
 }
 
 /** checks the nearest Deadline */
@@ -98,12 +97,23 @@ function getGreetingText(currentDate) {
   return "Good evening,";
 }
 
-/** writes greeting text (#greeting_text, #greeting_name) */
+/** writes greeting text */
 function renderGreeting(userName, currentDate) {
-  let greetingText = document.getElementById("greeting_text");
-  let greetingName = document.getElementById("greeting_name");
-  if (greetingText) greetingText.innerText = getGreetingText(currentDate);
-  if (greetingName) greetingName.innerText = userName || "Guest User";
+  const greetingText = document.getElementById("greeting_text");
+  const greetingName = document.getElementById("greeting_name");
+
+  if (!greetingText || !greetingName) return;
+
+  const baseGreeting = getGreetingText(currentDate);
+
+  if (!userName || userName.toLowerCase() === "guest user") {
+    greetingText.innerText = baseGreeting.replace(",", "!");
+    greetingName.style.display = "none";
+  } else {
+    greetingText.innerText = baseGreeting;
+    greetingName.style.display = "block";
+    greetingName.innerText = userName;
+  }
 }
 
 /** Start: loading, counts, rendert */
@@ -116,8 +126,49 @@ async function initSummary() {
     let taskCounts = countTasks(tasks);
     renderSummaryCounts(taskCounts);
     renderGreeting(userData.name || "Guest User", new Date());
+    if (window.innerWidth <= 780) {
+      showGreetingOverlay(userData.name || "Guest User");
+    }
   } catch (error) {
-    console.error("Summary could not be opend:", error);
+    console.error("Summary could not be opened:", error);
+  }
+}
+
+/** shows and fades greeting overlay (mobile only) */
+function showGreetingOverlay(userName) {
+  if (window.innerWidth > 780) return;
+  const overlay = document.getElementById("greeting_overlay");
+  const text = document.getElementById("overlay_greeting_text");
+  const name = document.getElementById("overlay_greeting_name");
+
+  if (!overlay || !text || !name) {
+    console.error("Overlay elements not found");
+    return;
+  }
+  overlay.style.display = "flex";
+  overlay.classList.remove("fade-out");
+  const greeting = getGreetingText(new Date());
+  if (!userName || userName.toLowerCase() === "guest user") {
+    text.innerText = greeting.replace(",", "!");
+    name.style.display = "none";
+  } else {
+    text.innerText = greeting;
+    name.innerText = userName;
+    name.style.display = "block";
+  }
+  setTimeout(() => overlay.classList.add("fade-out"), 1200);
+  setTimeout(() => {
+    overlay.style.display = "none";
+    overlay.classList.remove("fade-out");
+  }, 2000);
+}
+
+/** hides overlay if resizes to desktop version*/
+function handleResizeOverlay() {
+  const overlay = document.getElementById("greeting_overlay");
+  if (window.innerWidth > 780 && overlay) {
+    overlay.style.display = "none";
+    overlay.classList.remove("fade-out");
   }
 }
 

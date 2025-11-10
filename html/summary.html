@@ -14,7 +14,7 @@
 
 </head>
 
-<body onload="initSummary()">
+<body onload="initSummary()" onresize="handleResizeOverlay()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -62,6 +62,13 @@
     </header>
 
     <main>
+        <div id="greeting_overlay">
+            <div class="greeting_content">
+                <p id="overlay_greeting_text"></p>
+                <p id="overlay_greeting_name"></p>
+            </div>
+        </div>
+
         <section class="main_title">
             <div class="tile_summary">
                 <h1 class="h1_title_summary">Join 360</h1>
@@ -109,7 +116,7 @@
 
                 <a class="urgent_container" href="/html/board.html?status=urgent">
                     <div class="urgent">
-                        <div class="urgent_icon"><img src="/assets/icons/urgent_icon.svg" alt=""></div>
+                        <div class="urgent_icon"><img src="/assets/icons/Summary_urgent_icon.svg" alt=""></div>
                         <div class="container_information">
                             <div class="numbers"></div>
                             <div class="numbers_txt">
@@ -121,8 +128,7 @@
                     </div>
 
                     <div class="urgent_seperator">
-                        <img class="urgent_seperator_icon" src="/assets/icons/Summary_urgent_seperator.svg"
-                            height="102.02px" width="2px" alt="">
+                        <img class="urgent_seperator_icon" src="" height="" width="2px" alt="">
                     </div>
 
                     <div class="urgent_daytime_group">
