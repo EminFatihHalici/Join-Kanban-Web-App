@@ -42,3 +42,20 @@ function renderTasksHtmlEmptyArray(categoryId) {
     </article>
     `
 }
+
+renderContactsHtml(groupedContacts) {
+    return `
+    <article>
+        <h2 class="contact-letter-header">A</h2>
+
+        <div class="contact-entry">
+            <div id="user-initial-circle"></div>    
+            <div class="contact-initials-circle contact-initials-orange">AM</div>
+            <div class="contact-info">
+                <p class="contact-name">Anton Mayer</p>
+                <a href="mailto:antonina@gmail.com" class="contact-email">antonina@gmail.com</a>
+            </div>
+        </div>
+    </article>
+    `
+}
