@@ -49,7 +49,7 @@ function getAddTaskOverlayTemplate() {
         <div class= overlay-header>
             <h1>Add Task</h1>
         </div>
-        <img class="close-add-task-overlay" src="/assets/icons/close.svg" alt="close">
+        <img onclick="closeAddTaskOverlay()" class="close-add-task-overlay" src="/assets/icons/close.svg" alt="close">
                 <form id="task-form" class="task-form">
                     <div class="form-left form-left-overlay">
                         <div class="overlay-add-task-div">

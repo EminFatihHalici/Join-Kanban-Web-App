@@ -85,5 +85,9 @@ async function renderAddTaskOverlay() {
     overlay.classList.toggle('d-none');
     await loadContacts();
     setupPriorityButtons();
+}
 
+function closeAddTaskOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.classList.add('d-none');
 }
