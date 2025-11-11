@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/contacts.css">
+
+    <script src="/scripts/global.js"></script>
+    <script src="/scripts/contacts.js"></script>
+    <script src="/scripts/templates.js" defer></script>
 </head>
 
-<body>
+<body onload="init()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -67,7 +71,7 @@
 
                 <hr class="contact-list-separator">
 
-                <div class="contact-list" id="contact-list">
+                <div class="contact-list" id="contactList">
 
                     <h2 class="contact-letter-header">A</h2>
 

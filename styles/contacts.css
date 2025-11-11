@@ -1,3 +1,7 @@
+* {
+    font-family: 'Inter', sans-serif;
+}
+
 main {
     /* Wichtig: Schafft Platz links für die fixierte Navigationsleiste (232px + 1px für den Rand, wenn nötig) */
     margin-left: 232px;

@@ -212,6 +212,10 @@ main {
     cursor: grabbing;
 } */
 
+.drag-item:active {
+    cursor: grabbing;
+}
+
 .drag-item.turn {
     transform: rotate(2deg);
 }
