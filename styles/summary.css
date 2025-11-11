@@ -2,7 +2,7 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-main {
+.main_summary {
   position: fixed;
   top: 0px;
   left: 328px;
