@@ -2,7 +2,7 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-main {
+.main_summary {
   position: fixed;
   top: 0px;
   left: 328px;
@@ -134,6 +134,7 @@ main {
 
 .urgent_seperator_icon {
   background-color: #D1D1D1;
+  height: 102.02px;
 }
 
 .urgent_daytime_group {
@@ -177,6 +178,45 @@ main {
   margin: 0;
 }
 
+#greeting_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 80px;
+  background-color: rgba(255, 255, 255, 1);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+#greeting_overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.greeting_content {
+  text-align: center;
+}
+
+.greeting_content p {
+  margin: 0;
+  font-size: 32px;
+}
+
+#overlay_greeting_text {
+  color: #2A3647;
+}
+
+#overlay_greeting_name {
+  color: #29ABE2;
+  font-weight: 700;
+}
+
 /* Board information container*/
 
 .board_informations {
@@ -202,8 +242,6 @@ main {
   transition: all 120ms ease-in-out;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
-
-
 
 /* Hover effect Section */
 
