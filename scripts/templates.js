@@ -1,4 +1,4 @@
-function renderTasksHTML(task) {
+function renderTasksCardSmallHtml(task) {
     return `
     <article class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">

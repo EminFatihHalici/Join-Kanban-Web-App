@@ -16,11 +16,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-top: calc(206px - 96px);
+    margin-top: 60px;
     margin-left: 30px;
     margin-bottom: 60px;
     height: 73px;
     width: 569px;
+    border: 1px solid green;
 }
 
 .h1_title_summary {
@@ -106,20 +107,8 @@
     background-image: linear-gradient(180deg, #F9F9F9, #F0F0F0);
 }
 
-.contact-list-card:focus {
+.contact-list-card:active {
     background-color: var(--primary);
-}
-
-.contact-list-circle {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 16px;
 }
 
 
@@ -132,6 +121,7 @@
     .main_title {
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 30px;
     }
 
     .title_seperator img {

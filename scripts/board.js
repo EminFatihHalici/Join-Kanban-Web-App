@@ -31,7 +31,7 @@ async function renderTasks() {
     }
     Object.entries(categories).forEach(([htmlContainerId, tasksWithId]) => {
         const container = document.getElementById(htmlContainerId);
-        tasksWithId.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksWithId.map(task => renderTasksHTML(task)).join('');
+        tasksWithId.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksWithId.map(task => renderTasksCardSmallHtml(task)).join('');
     });
 }
 
