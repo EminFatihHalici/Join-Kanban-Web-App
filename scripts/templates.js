@@ -47,27 +47,34 @@ function getAddTaskOverlayTemplate(board) {
     return `
             <section class="add-task-section overlay-add-task">
         <div class= overlay-header>
-            <h1>Add Task</h1>
+            <h1 class="overlay-headline">Add Task</h1>
         </div>
         <img onclick="closeAddTaskOverlay()" class="close-add-task-overlay" src="/assets/icons/close.svg" alt="close">
                 <form id="task-form" class="task-form">
                     <div class="form-left form-left-overlay">
                         <div class="overlay-add-task-div">
-                            <label for="title">Title*</label>
-                            <input id="title" class="title-input-overlay" type="text" placeholder="Enter a title">
+                            <label for="title" class="form-headline-text">Title*</label>
+                               <div class="title-input-container-overlay">
+                                    <input id="title" class="title-input-overlay" type="text" placeholder="Enter a title">
+                                 </div>
                         </div>
-                        <label for="description">Description</label>
-                        <textarea id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
 
-                        <label for="due-date">Due date*</label>
-                        <input id="due-date" class="due-date-overlay" type="date" required>
+                        <div class="description-overlay">
+                            <label for="description">Description</label>
+                            <textarea style="width: 440px" id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
+                        </div>
+
+                        <div class="date-overlay">
+                            <label for="due-date">Due date*</label>
+                            <input id="due-date" class="due-date-overlay" type="date" required>
+                        </div>
                     </div>
 
                     <div class="divider divider-overlay"></div>
 
                     <div class="form-right form-right-overlay">
-                        <label>Priority</label>
-                        <div class="priority-buttons">
+                            <label class="at-overlay-text">Priority</label>
+                        <div class="priority-buttons priority-buttons-overlay">
                             <button type="button" class="priority-btn urgent">
                                 Urgent
                                 <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
@@ -82,8 +89,9 @@ function getAddTaskOverlayTemplate(board) {
                             </button>
                         </div>
 
-                        <label for="assigned">Assigned to</label>
+                        
                         <div class="custom-select-container">
+                        <label for="assigned">Assigned to</label>
                             <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
                                 Select contacts to assign
                             </div>
@@ -92,15 +100,18 @@ function getAddTaskOverlayTemplate(board) {
                             </div>
                         </div>
 
-                        <label for="category">Category*</label>
+                        
                         <select id="category" required>
+                        <label for="category">Category*</label>
                             <option value="" disabled selected>Select task category</option>
                             <option value="technical">Technical Task</option>
                             <option value="user-story">User Story</option>
                         </select>
+                        <div class="subtask-overlay">
+                            <label for="subtask">Subtasks</label>
+                            <input type="text" id="subtask" placeholder="Add new subtask">
+                        </div>
 
-                        <label for="subtask">Subtasks</label>
-                        <input type="text" id="subtask" placeholder="Add new subtask">
                     </div>
                 </form>
 
@@ -110,7 +121,7 @@ function getAddTaskOverlayTemplate(board) {
                     </p>
 
                     <div class="form-actions form-actions-overlay">
-                        <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                        <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">Clear ✖</button>
                         <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">Create Task ✔</button>
                     </div>
                 </div>

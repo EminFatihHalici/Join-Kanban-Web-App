@@ -302,9 +302,6 @@ main {
 
 /* add_task overlay */
 .add-task-overlay {
-    position: relative;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -323,18 +320,32 @@ main {
     border-radius: 30px;
 }
 
+
 .overlay-header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
     gap: 1px;
-
     position: absolute;
     width: 466px;
     height: 78px;
     left: 74px;
     top: 64px;
+}
+
+.overlay-headline {
+    width: 466px;
+    height: 78px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 61px;
+    line-height: 120%;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
 }
 
 .close-add-task-overlay {
@@ -363,6 +374,7 @@ main {
     height: 392px;
     left: 74px;
     top: 174px;
+
 }
 
 .form-right-overlay {
@@ -405,6 +417,20 @@ main {
     line-height: 120%;
 }
 
+.title-input-overlay::placeholder {
+    width: 398px;
+    height: 24px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 120%;
+    color: #D1D1D1;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
 .title-input-overlay {
     box-sizing: border-box;
     display: flex;
@@ -438,6 +464,20 @@ main {
 
 }
 
+.description-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+    width: 440px;
+    height: 168px;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
 .overlay-add-task-div {
     display: flex;
     flex-direction: column;
@@ -448,6 +488,34 @@ main {
     height: 96px;
     flex: none;
     order: 0;
+    align-self: stretch;
+    flex-grow: 0
+}
+
+.form-headline-text {
+    width: 440px;
+    height: 24px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 120%;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.title-input-container-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 4px;
+    width: 440px;
+    height: 64px;
+    flex: none;
+    order: 1;
     align-self: stretch;
     flex-grow: 0;
 }
@@ -472,15 +540,50 @@ main {
 }
 
 .divider-overlay {
-    /* Vector 4 */
-
     position: absolute;
     width: 0px;
     height: 424px;
     left: 562.25px;
     top: 174px;
-
-    /* Style */
     border: 1px solid #D1D1D1;
+}
 
+.form-right-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 24px;
+    position: absolute;
+    width: 440px;
+    height: 400px;
+    left: 610.25px;
+    top: 174px;
+}
+
+.priority-buttons-overlay {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 440px;
+    height: 56px;
+    flex: none;
+    flex-grow: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+.add-task-section {
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(140%);
+    z-index: 2000;
+}
+
+.slide-in {
+    transform: translateX(0%);
 }

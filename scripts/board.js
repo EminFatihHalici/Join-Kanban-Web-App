@@ -38,8 +38,8 @@ async function renderTasks() {
 function categoryColor(task) {
     if (task.category === 'User Story') {
         return "blue"
-    } else { 
-        return  "turquoise"
+    } else {
+        return "turquoise"
     }
 }
 
@@ -82,12 +82,30 @@ async function moveTo(category) {
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
-    overlay.classList.toggle('d-none');
+    overlay.classList.remove('d-none');
     await loadContacts();
     setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
 }
 
 function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.classList.add('d-none');
+    let section = overlay.querySelector('.add-task-section');
+    if (section) {
+        section.classList.remove('slide-in');
+    }
+    setTimeout(() => {
+        overlay.classList.add('d-none');
+        overlay.innerHTML = '';
+    }, 400);
+}
+
+function slideInOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.classList.add("slide-in");
 }
