@@ -109,3 +109,18 @@ function slideInOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.classList.add("slide-in");
 }
+
+
+async function renderTaskDetail() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getTaskDetailOverlayTemplate();
+    overlay.classList.remove('d-none');
+    await loadContacts();
+    setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
+}

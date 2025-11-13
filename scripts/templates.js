@@ -128,3 +128,25 @@ function getAddTaskOverlayTemplate(board) {
             </section>
     `;
 }
+
+
+function getTaskDetailOverlayTemplate() {
+    return `
+    <div class="task-detail-overlay">
+    
+        <div class="task-detail-header">
+
+            <div class="overlay-task-category">
+            
+            </div>
+
+            <img onclick="closeTaskDetailOverlay()" class="" src="/assets/icons/close.svg" alt="close">
+        
+        
+        </div>
+
+    
+    
+    </div>
+    `
+}
