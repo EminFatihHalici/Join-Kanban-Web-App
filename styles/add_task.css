@@ -7,7 +7,7 @@ body {
 
 
 
-main {
+.main-add-task {
     margin-left: 232px;
     margin-top: 96px;
     min-height: calc(100vh - 96px);
