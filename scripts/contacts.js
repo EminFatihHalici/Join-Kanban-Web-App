@@ -1,10 +1,10 @@
-let contacts;
+let contacts = [];
 
 async function fetchContacts(activeUserId = 0) {
     try {
         let res = await fetch(FIREBASE_URL + "/" + activeUserId + "/contacts" + ".json");
-        let tasks = await res.json();
-        let contacts = Object.entries(tasks).map(([id, contactsData]) => ({
+        let fetchJson = await res.json();
+        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
             id: id,
             ...contactsData
         }));
@@ -41,8 +41,10 @@ function renderGroupedContacts(groupedContacts) {
     return html;
 }
 
-function initialsFromName(name) {
-    return name.split(' ').map(part => part[0]).join('').toUpperCase();
+function renderContactLarge(contact,color){
+    let contactLargeRef = document.getElementById('contactDisplayLarge');
+    contactLargeRef.innerHTML = '';
+    contactLargeRef.innerHTML = renderContactLargeHtml(contact,color);
 }
 
 function groupContactsByLetter(contacts) {
@@ -55,9 +57,17 @@ function groupContactsByLetter(contacts) {
     return grouped;
 }
 
-function test() {
+function contactsLargeSlideIn(ev, contactJson, color) {
     let contactLargeRef = document.getElementById('contactDisplayLarge');
-    contactLargeRef.classList.toggle('contact-large-transition');
-
-    
+    contactLargeRef.style.display = 'none';
+    contactLargeRef.innerHTML = '';
+    let contact = JSON.parse(contactJson);
+    let contactCardsActive = document.querySelectorAll('.contact-list-card-active');
+    for (let i = 0; i < contactCardsActive.length; i++) {
+        contactCardsActive[i].classList.remove('contact-list-card-active'); 
+        contactCardsActive[i].classList.add('contact-list-card')};
+    ev.currentTarget.classList.remove('contact-list-card');
+    ev.currentTarget.classList.add('contact-list-card-active');    
+    contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
+    setTimeout(() => {contactLargeRef.style.display = 'block';},10);  
 }
