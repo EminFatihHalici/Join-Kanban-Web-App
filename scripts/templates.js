@@ -117,7 +117,7 @@ function renderContactLargeHtml(contact,color) {
         <p class="font-16"><b>Email</b></p>
         <p style="color: #007CEE;"><a href="mailto:${contact.email}">${contact.email}</a></p>
         <p class="font-16"><b>Phone</b></p>
-        <p style="color: #007CEE;"><a href="tel:">0170-123123123</a></p>
+        <p style="color: #007CEE;"><a>phone number to be edit</a></p>
     </div>
     `;
 
