@@ -4,7 +4,7 @@ let currentDraggedId;
 
 async function init() {
     await fetchTasks(activeUserId = 0);
-    await renderTasks()
+    await renderTasks();
 }
 
 async function fetchTasks(activeUserId = 0) {
@@ -77,4 +77,50 @@ async function moveTo(category) {
     }
     const elements = document.querySelectorAll('.draggable');
     elements.forEach(el => el.classList.remove('highlight'));
+}
+
+async function renderAddTaskOverlay(board = "toDo") {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getAddTaskOverlayTemplate(board);
+    overlay.classList.remove('d-none');
+    await loadContacts();
+    setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
+}
+
+function closeAddTaskOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    let section = overlay.querySelector('.add-task-section');
+    if (section) {
+        section.classList.remove('slide-in');
+    }
+    setTimeout(() => {
+        overlay.classList.add('d-none');
+        overlay.innerHTML = '';
+    }, 400);
+}
+
+function slideInOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.classList.add("slide-in");
+}
+
+
+async function renderTaskDetail() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getTaskDetailOverlayTemplate();
+    overlay.classList.remove('d-none');
+    await loadContacts();
+    setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
 }

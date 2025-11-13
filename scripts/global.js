@@ -1,4 +1,4 @@
-const FIREBASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
+const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
 
 let contactCircleColor = [
     '#FF7A00',
@@ -25,7 +25,7 @@ function initGlobal() {
 // function to fetch user data from firebase
 async function fetchUserData(path) {
     try {
-        let url = `${FIREBASE_URL}${path}`;
+        let url = `${BASE_URL}${path}`;
         const response = await fetch(url);
 
         if (!response.ok) {

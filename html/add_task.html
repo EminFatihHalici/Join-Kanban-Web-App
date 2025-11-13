@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/styles/add_task.css">
 </head>
 
-<body onload="init() ;  renderUserCircles()">
+<body onload="initAddTask() ;  renderUserCircles()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -65,8 +65,8 @@
         </div>
     </header>
 
-    <main>
-        <div id="user-initial-circle"></div>
+    <main class="main-add-task">
+        
         <section class="add-task-section">
             <h1>Add Task</h1>
 
@@ -132,8 +132,8 @@
 
 
                 <div class="form-actions">
-                    <button id="clear-btn" type="button" class="clear">Clear ✖</button>
-                    <button id="create-btn" type="button" class="create">Create Task ✔</button>
+                    <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                    <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task ✔</button>
                 </div>
 
 
@@ -145,9 +145,8 @@
 
 </body>
 
-<div id="add-task-overlay"></div>
-
 <script src="/scripts/add_task.js"></script>
 <script src="/scripts/global.js"></script>
+<script src="/scripts/board.js"></script>
 
 </html>
