@@ -1,11 +1,10 @@
 let currentDraggedId;
 
 async function init() {
-    await fetchTasks(activeUserId = 0);
     await renderTasks();
 }
 
-async function fetchTasks(activeUserId = 0) {
+async function fetchTasks(activeUserId) {
     try {
         let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
         let tasks = await res.json();
@@ -20,7 +19,7 @@ async function fetchTasks(activeUserId = 0) {
 }
 
 async function renderTasks() {
-    let tasksWithId = await fetchTasks();
+    let tasksWithId = await fetchTasks(activeUserId);
     let categories = {
         'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],

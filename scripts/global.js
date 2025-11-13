@@ -1,12 +1,28 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
-let activeUserId = getFromLocalStorage();
+let activeUserId;
+activeUserId = loadFromLocalStorage();
 
-function getFromLocalStorage() {
+function loadFromLocalStorage() {
     let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
     if (activeUserIdLoad !== null) {
         activeUserId = activeUserIdLoad;
-        return activeUserId
+        return activeUserId;
+    } else {
+        console.log("Etwas beim Laden vom LocalStorage ist schief gelaufen: activeUserId = 0");
+        return activeUserId = 0;
     }
+}
+
+async function calcNextId(path = "") {
+    try {
+        let res = await fetch(BASE_URL + path + ".json");
+        let resJson = await res.json();
+        let userId = Object.keys(resJson);
+        userId.length === 0 ? nextUser = 0 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+    } catch (error) {
+        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
+    }
+    return nextUser;
 }
 
 let contactCircleColor = [
@@ -27,13 +43,10 @@ let contactCircleColor = [
     '#FFBB2B',
 ]
 
-function saveActiveUserIdToLocalStorage(activeUserId) {
+// function saveActiveUserIdToLocalStorage(activeUserId) {
     
-}
+// }
 
-function initGlobal() {
-    renderUserCircles();
-}
 
 // function to fetch user data from firebase
 async function fetchUserData(path) {

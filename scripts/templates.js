@@ -68,6 +68,13 @@ function renderContactsCardPartTwo(contact, color) {
     `;
 }
 
+function emptyContactsHtml() {
+    return `
+    <br><br><br><br><br>
+        No Contacts 🙍‍♂️ yet, please add new contacts+
+    `
+}
+
 function renderContactLargeHtml(contact,color) {
     return `
     <div class="flex gap-56 align">

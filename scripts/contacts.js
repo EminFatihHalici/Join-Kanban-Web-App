@@ -1,6 +1,6 @@
 let contacts = [];
 
-async function fetchContacts(activeUserId = 0) {
+async function fetchContacts(activeUserId) {
     try {
         let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
         let fetchJson = await res.json();
@@ -20,9 +20,13 @@ async function init() {
 
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
-    let contacts = await fetchContacts();
+    let contacts = await fetchContacts(activeUserId);
+    if (contacts.length == 0) {
+        contactListRef.innerHTML = emptyContactsHtml();
+    } else {
     let groupedContacts = groupContactsByLetter(contacts)
     contactListRef.innerHTML = renderGroupedContacts(groupedContacts)
+    };
 }
 
 function renderGroupedContacts(groupedContacts) {
