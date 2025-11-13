@@ -1,4 +1,7 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
+let urlParams = new URLSearchParams(window.location.search);
+let activeUserId = parseInt(urlParams.get("activeUserId"));
+localStorage.setItem('activeUserId', activeUserId);
 
 let contactCircleColor = [
     '#FF7A00',
@@ -17,6 +20,10 @@ let contactCircleColor = [
     '#FF4646',
     '#FFBB2B',
 ]
+
+function saveActiveUserIdToLocalStorage(activeUserId) {
+    
+}
 
 function initGlobal() {
     renderUserCircles();

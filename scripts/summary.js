@@ -118,7 +118,7 @@ function renderGreeting(userName, currentDate) {
 
 /** Start: loading, counts, rendert */
 async function initSummary() {
-  let userId = getActiveUserId();
+  let userId = activeUserId;
   try {
     let userData = await fetchUserData(userId);
     if (!userData) return;

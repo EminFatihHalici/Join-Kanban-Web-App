@@ -10,9 +10,13 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/add_task.css">
+
+    <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/add_task.js" defer></script>
+    <script src="/scripts/board.js" defer></script>
 </head>
 
-<body onload="initAddTask() ;  renderUserCircles()">
+<body onload="initAddTask()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -66,7 +70,7 @@
     </header>
 
     <main class="main-add-task">
-        
+
         <section class="add-task-section">
             <h1>Add Task</h1>
 
@@ -133,7 +137,8 @@
 
                 <div class="form-actions">
                     <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                    <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task ✔</button>
+                    <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
+                        ✔</button>
                 </div>
 
 
@@ -144,9 +149,5 @@
     </main>
 
 </body>
-
-<script src="/scripts/add_task.js"></script>
-<script src="/scripts/global.js"></script>
-<script src="/scripts/board.js"></script>
 
 </html>

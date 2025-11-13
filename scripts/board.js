@@ -1,5 +1,3 @@
-let urlParams = new URLSearchParams(window.location.search);
-let activeUserId = urlParams.get('activeUserId') || 0;
 let currentDraggedId;
 
 async function init() {
