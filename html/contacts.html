@@ -66,7 +66,8 @@
     <main class="contacts-wrapper">
         <aside class="contact-list-sidebar-outer">
 
-            <button id="add-contact-btn" class="add-contact-btn" onclick="showDialogCreateContact('contactAddModal', event)">
+            <button id="add-contact-btn" class="add-contact-btn"
+                onclick="showDialogCreateContact('contactAddModal', event)">
                 Add new contact
                 <span class="add-contact-icon">
                     <svg width="30" height="21" viewBox="0 0 30 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -102,9 +103,10 @@
 
             <dialog id="contactAddModal" class="contact-dialog-desktop">
                 <article class="flex h-100" style="color: var(--white)">
-                    <div class="flex align" style="background-color: var(--primary); width: 467px;">
+                    <div class="flex align contact-dialog-add">
                         <div class="flex column gap-13">
-                            <img src="/assets/icons/Join_light.png" alt="Join Logo Small" style="height: 66px; width: 55px;">
+                            <img src="/assets/icons/Join_light.png" alt="Join Logo Small"
+                                style="height: 66px; width: 55px;">
                             <h2 class="contact-dialog-h2">Add contact</h2>
                             <h3 class="contact-dialog-h3">Tasks are better with a team!</h3>
                             <div class="contact-dialog-line"></div>
@@ -128,8 +130,8 @@
                         </div>
                     </div>
 
-                    <div class="flex column justify">
-                        <form class="login-form" onclick="createContact(); return false;">
+                    <div class="flex column justify" style="border: 1px solid red">
+                        <form class="contact-form" onsubmit="createContact(); return false;">
                             <div class="input-field">
                                 <input class="input_login" type="text" id="nameContact"
                                     oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, `Please enter forename + 'space' + surname`)"
@@ -151,7 +153,8 @@
                             <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
 
                             <div class="input-field">
-                                <input class="input_login" type="tel" id="phoneContact" tabindex="1" placeholder="Full name">
+                                <input class="input_login" type="tel" id="phoneContact" tabindex="1"
+                                    placeholder="Phone number">
                                 <!-- oninput="validateField('nameRegister', 'errMsgPhone', isNameValid, 0, `Please enter forename + 'space' + surname`)" -->
                                 <div class="icon-div">
                                     <img src="../assets/icons/call.png" alt="email icon">
@@ -160,7 +163,7 @@
                             <div id="errMsgPhone" class="error-msg" style="display: none;"></div>
 
                             <div class="two-buttons">
-                                <button class="btn_guest_log_in flex gap-13" type="submit" class="btn_std" tabindex="1">
+                                <button class="btn_contact_cancel flex align gap-13" onclick="contactCancel(); return false;" tabindex="1">
                                     Cancel
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -170,9 +173,9 @@
                                             stroke-linejoin="round" />
                                     </svg>
                                 </button>
-                                <button class="btn_log_in" type="submit" tabindex="1">
+                                <button class="btn_contact_create btn flex align gap-13" type="submit" tabindex="1">
                                     Create contact
-                                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+                                    <svg width="20" height="15" viewBox="0 0 16 12" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M5.288 8.775L13.763 0.3C13.963 0.1 14.2005 0 14.4755 0C14.7505 0 14.988 0.1 15.188 0.3C15.388 0.5 15.488 0.7375 15.488 1.0125C15.488 1.2875 15.388 1.525 15.188 1.725L5.988 10.925C5.788 11.125 5.55467 11.225 5.288 11.225C5.02133 11.225 4.788 11.125 4.588 10.925L0.288 6.625C0.088 6.425 -0.00783333 6.1875 0.0005 5.9125C0.00883333 5.6375 0.113 5.4 0.313 5.2C0.513 5 0.7505 4.9 1.0255 4.9C1.3005 4.9 1.538 5 1.738 5.2L5.288 8.775Z"
@@ -182,8 +185,11 @@
                             </div>
                         </form>
                     </div>
-
                 </article>
+
+                <div id="popupContactCreated" class="popup btn">
+                    <p class="btn_std">Contact succesfully created</p>
+                </div>
             </dialog>
 
             <dialog id="contactEditModal" class="contact-dialog-desktop">

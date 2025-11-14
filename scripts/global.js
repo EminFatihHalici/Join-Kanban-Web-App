@@ -5,24 +5,24 @@ activeUserId = loadFromLocalStorage();
 function loadFromLocalStorage() {
     let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
     if (activeUserIdLoad !== null) {
-        activeUserId = activeUserIdLoad;
-        return activeUserId;
+        return activeUserIdLoad;
     } else {
         console.log("Etwas beim Laden vom LocalStorage ist schief gelaufen: activeUserId = 0");
-        return activeUserId = 0;
+        return 0;
     }
 }
 
 async function calcNextId(path = "") {
+    let nextId;
     try {
         let res = await fetch(BASE_URL + path + ".json");
         let resJson = await res.json();
         let userId = Object.keys(resJson);
-        userId.length === 0 ? nextUser = 0 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+        userId.length === 0 ? nextId = 0 : nextId = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
     } catch (error) {
         console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
     }
-    return nextUser;
+    return nextId;
 }
 
 let contactCircleColor = [
@@ -43,9 +43,22 @@ let contactCircleColor = [
     '#FFBB2B',
 ]
 
-// function saveActiveUserIdToLocalStorage(activeUserId) {
-    
-// }
+async function putData(path = "", data = {}) {
+    try {
+        let response = await fetch(BASE_URL + path + ".json", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        return response;
+
+    } catch (fetchError) {
+        console.error('Fetch error:', fetchError);
+        throw fetchError;
+    }
+}
 
 
 // function to fetch user data from firebase

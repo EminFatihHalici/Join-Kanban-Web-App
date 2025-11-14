@@ -7,10 +7,6 @@ a {
     color: unset;
 }
 
-.marker {
-    border: 1px solid blue;
-}
-
 .flex {
     display: flex;
 }
@@ -194,10 +190,9 @@ a {
 }
 
 .two-buttons {
-    width: 322px;
     height: 48px;
     margin-top: 35px;
-    text-align: center;
+    text-align: left;
     display: flex;
     gap: 35px;
 }
@@ -272,6 +267,12 @@ a {
     border-radius: 24px;
 }
 
+.contact-dialog-add {
+    background-color: var(--primary);
+    width: 467px;
+    padding: 0 45px;
+}
+
 .contact-dialog-h2 {
     font-size: 61px;
     font-weight: 700;
@@ -289,11 +290,10 @@ a {
     background-color: var(--primary-hover);
 }
 
-.login-form {
+.contact-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
 }
 
 .input-field {
@@ -313,6 +313,52 @@ a {
     margin-left: 8px;
     margin-right: 8px;
 }
+
+.btn_contact_cancel {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    background-color: var(--white);
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+}
+
+.btn_contact_cancel:hover {
+    color: var(--primary-hover);
+    border: 1px solid var(--primary-hover);
+    stroke: var(--primary-hover);
+    box-shadow: var(--shadow-hover);
+}
+
+/* .btn_contact_create {} */
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%, 0%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--primary);
+    color: var(--white);
+    width: min(512px, 100%);
+    text-align: center;
+    font-size: 21px;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 9;
+}
+
+.popup.show {
+    display: block;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+
 
 
 
