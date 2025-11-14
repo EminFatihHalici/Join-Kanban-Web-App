@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/styles/fonts.css">
 </head>
 
-<body>
+<body onload="eachPageSetcurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -51,7 +51,7 @@
             <h2>Kanban Project Management Tool</h2>
         </div>
         <div class="header-right">
-            <div class="user-circle">SM</div>
+            <div class="user-circle" id="currentUserInitials"></div>
         </div>
     </header>
 

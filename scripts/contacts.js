@@ -1,39 +1,28 @@
 let contacts = [];
+bool = [0, 0]
 
 const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 
 async function init() {
-    await renderContacts()
+    await eachPageSetcurrentUserInitials();
+    await renderContacts();
 }
 
-async function fetchContacts(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
-        let fetchJson = await res.json();
-        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
-            id: id,
-            ...contactsData
-        }));
-        return contacts
-    } catch (error) {
-        console.log("Error fetchContacts(): ", error);
-    }
-}
-
-function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
-    let input = document.getElementById(inputId);
-    let errMsgElem = document.getElementById(errMsgId);
-    if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
-        // bool[boolIndex] = 1;
+function checkAllCreateContactValidations(id) {
+    let contactCreateBtn = document.getElementById(id);
+    let errMsgPhone = document.getElementById('errMsgPhone');
+    let allBoolEqualOne = bool.every(el => el === 1);
+    if (allBoolEqualOne) {
+        errMsgPhone.style.display = 'none';
+        contactCreateBtn.disabled = false;
+        contactCreateBtn.ariaDisabled = false;
     } else {
-        errMsgElem.style.display = 'block';
-        errMsgElem.innerText = errMsg;
-        // bool[boolIndex] = 0;
+        errMsgPhone.style.display = 'block';
+        errMsgPhone.innerHTML = "Please enter at least full name and email"
+        contactCreateBtn.disabled = true;
+        contactCreateBtn.ariaDisabled = true;
     }
-    // if (shouldCheckAll) { checkAllValidations() };
-    // return bool[boolIndex];
 }
 
 async function renderContacts() {
@@ -69,6 +58,14 @@ function renderContactLarge(contact, color) {
     contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
 }
 
+function checkContactForPhone(contact) {
+    if (contact?.phone) {
+        return `<a href="tel:${contact.phone}">${contact.phone}</a>`
+    } else {
+        return `<a href="tel:">phone number to be edit</a>`
+    }
+}
+
 function groupContactsByLetter(contacts) {
     const grouped = {};
     contacts.forEach((c) => {
@@ -95,17 +92,26 @@ function contactsLargeSlideIn(ev, contactJson, color) {
     setTimeout(() => { contactLargeRef.style.display = 'block'; }, 10);
 }
 
-async function showDialogCreateContact(id, event/*, toggleStyling = null */) {
+async function showDialogCreateContact(id, event) {
     let contactAddModal = document.getElementById(id);
     event.stopPropagation();
+    bool = [0, 0];
+    contactAddModal.innerHTML = renderAddNewContactHtml();
     contactAddModal.showModal();
-    // contactAddModal.innerHTML = getDialogCardHtml(index);
-    // if (toggleStyling === 'yes') {
-    //     toggleDialogStyling('hidden');
-    // }
+    checkAllCreateContactValidations('contactCreateBtn');
 }
 
 async function createContact() {
+    await createNextIdPutDataAndRender();
+    clearAllContactsInputFields();
+    showPopup('popupContactCreated');
+    setTimeout(() => {
+        let contactAddModal = document.getElementById('contactAddModal');
+        contactAddModal.close()
+    }, 1500);
+}
+
+async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
@@ -114,12 +120,21 @@ async function createContact() {
     } catch (error) {
         console.error('Error creating contact:', error);
     }
-    clearAllContactsInputFields();
-    showPopup('popupContactCreated');
-    setTimeout(() => {
-        let contactAddModal = document.getElementById('contactAddModal');
-        contactAddModal.close()
-    }, 1500);
+}
+
+function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
+    let input = document.getElementById(inputId);
+    let errMsgElem = document.getElementById(errMsgId);
+    if (validateFn(input.value)) {
+        errMsgElem.style.display = 'none';
+        bool[boolIndex] = 1;
+    } else {
+        errMsgElem.style.display = 'block';
+        errMsgElem.innerText = errMsg;
+        bool[boolIndex] = 0;
+    }
+    if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
+    return bool[boolIndex];
 }
 
 async function setContactDataForBackendUpload() {
@@ -155,9 +170,9 @@ function showPopup(id) {
     }, 1000);
 }
 
-function contactCancel() {
-    console.log('clicked CANCEL');
-    
+function contactCancel(ev) {
+    ev.stopPropagation();
     let contactAddModal = document.getElementById('contactAddModal');
+    clearAllContactsInputFields()
     contactAddModal.close();
 }

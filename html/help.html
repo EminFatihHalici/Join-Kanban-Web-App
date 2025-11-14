@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/styles/help.css">
 </head>
 
-<body>
+<body onload="eachPageSetcurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -54,7 +54,7 @@
             <a href="#">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" id="currentUserInitials"></div>
         </div>
     </header>
 

@@ -35,6 +35,10 @@ a {
     gap: 56px;
 }
 
+.pg-r30 {
+    padding-right: 30px;
+}
+
 .contacts-wrapper {
     margin-left: 232px;
     margin-top: 96px;
@@ -267,9 +271,37 @@ a {
     border-radius: 24px;
 }
 
+.contact-dialog-desktop::backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(1px);
+}
+
+.close-button-position {
+    position: absolute;
+    right: 30px;
+    top: 50px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: var(--white);
+}
+
+.close-button-position:hover {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-color);
+
+}
+
 .contact-dialog-add {
     background-color: var(--primary);
-    width: 467px;
+    width: max(467px);
     padding: 0 45px;
 }
 
@@ -325,11 +357,23 @@ a {
 .btn_contact_cancel:hover {
     color: var(--primary-hover);
     border: 1px solid var(--primary-hover);
-    stroke: var(--primary-hover);
     box-shadow: var(--shadow-hover);
 }
 
-/* .btn_contact_create {} */
+.btn_contact_cancel:hover svg path {
+    stroke: var(--primary-hover); /* ← HIER gehört stroke hin! */
+}
+
+.btn_contact_create:disabled {
+    cursor: inherit;
+    color: var(--primary);
+    background-color: var(--bg-color);
+}
+    .btn_contact_create:disabled:hover {
+    background-color: var(--bg-color);
+    box-shadow: none;
+}
+
 
 .popup {
     display: none;

@@ -12,18 +12,6 @@ function loadFromLocalStorage() {
     }
 }
 
-async function calcNextId(path = "") {
-    let nextId;
-    try {
-        let res = await fetch(BASE_URL + path + ".json");
-        let resJson = await res.json();
-        let userId = Object.keys(resJson);
-        userId.length === 0 ? nextId = 0 : nextId = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
-    } catch (error) {
-        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
-    }
-    return nextId;
-}
 
 let contactCircleColor = [
     '#FF7A00',
@@ -43,6 +31,19 @@ let contactCircleColor = [
     '#FFBB2B',
 ]
 
+async function calcNextId(path = "") {
+    let nextId;
+    try {
+        let res = await fetch(BASE_URL + path + ".json");
+        let resJson = await res.json();
+        let userId = Object.keys(resJson);
+        userId.length === 0 ? nextId = 0 : nextId = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+    } catch (error) {
+        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
+    }
+    return nextId;
+}
+
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -60,6 +61,54 @@ async function putData(path = "", data = {}) {
     }
 }
 
+async function fetchContacts(activeUserId) {
+    try {
+        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
+        let fetchJson = await res.json();
+        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
+            id: id,
+            ...contactsData
+        }));
+        return contacts
+    } catch (error) {
+        console.log("Error fetchContacts(): ", error);
+    }
+}
+
+async function fetchTasks(activeUserId) {
+    try {
+        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
+        let tasks = await res.json();
+        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
+            id: id,
+            ...taskData
+        }));
+        return tasksWithId
+    } catch (error) {
+        console.log("Error fetchTasks(): ", error);
+    }
+}
+async function fetchUserName(activeUserId) {
+    try {
+        let res = await fetch(BASE_URL + "/" + activeUserId + "/name" + ".json");
+        let response = await res.json();
+        return response
+    } catch (error) {
+        console.log("Error fetchTasks(): ", error);
+    }
+}
+
+async function eachPageSetcurrentUserInitials(){
+    let currentUserInitials = document.getElementById('currentUserInitials');
+    let currentUser = await fetchUserName(activeUserId);
+    let initials = await getInitials(currentUser);
+    currentUserInitials.innerHTML = initials;
+}
+
+// function to extract initials from a full name
+function getInitials(name) {
+    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
+}
 
 // function to fetch user data from firebase
 async function fetchUserData(path) {
@@ -70,16 +119,12 @@ async function fetchUserData(path) {
         if (!response.ok) {
             throw new Error(`Error fetching data from ${path}`);
         }
-        return await response.json();
+        let result = await response.json();
+        return result
     } catch (error) {
         console.error("Error loading user data:", error);
         return null;
     }
-}
-
-// function to extract initials from a full name
-function getInitials(name) {
-    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
 }
 
 // function to create a user circle and put it to the container
