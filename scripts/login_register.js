@@ -62,7 +62,7 @@ async function addUser() {
     let nextUserId = await calcNextId();
     await putData('/' + nextUserId, setDataForBackendUpload());
     clearAllSignUpInputFields();
-    showPopup();
+    showPopup('popup');
     setTimeout(() => {
         window.location.href = '../index.html?msg=You signed up successfully';
     }, 1500);
@@ -84,13 +84,13 @@ function setDataForBackendUpload() {
 
 async function putData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
-        method: "put",
-        header: {
+        method: "PUT",
+        headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
     });
-    return responseToJson = await response.json();
+    return await response.json();
 }
 
 function clearAllSignUpInputFields() {
@@ -104,8 +104,8 @@ function clearAllSignUpInputFields() {
     signUpBtn.checked = false;
 }
 
-function showPopup() {
-    const popup = document.getElementById('popup');
+function showPopup(id) {
+    const popup = document.getElementById(id);
     popup.style.display = 'block';
     popup.classList.add('show');
     setTimeout(function () {
