@@ -133,3 +133,10 @@ async function deleteTaskfromBoard(taskId)  {
         console.error("Error deleting task:", error);
     }
 }
+
+async function renderEditTaskDetail() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = editTaskDetailOverlayTemplate();
+    overlay.classList.remove('d-none');
+    setupPriorityButtons();
+}

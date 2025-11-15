@@ -263,7 +263,7 @@ function getTaskDetailOverlayTemplate(task) {
 
             <div class="task-detail-delete-edit-button-container">
                 <button onclick="deleteTaskfromBoard('${task.id}')" class="task-detail-delete-button">Delete</button>
-                <button onclick="" class="task-detail-edit-button">Edit Task</button>
+                <button onclick="renderEditTaskDetail()" class="task-detail-edit-button">Edit Task</button>
             </div>
 
             
@@ -271,4 +271,11 @@ function getTaskDetailOverlayTemplate(task) {
     
     </div>
     `
+}
+
+function editTaskDetailOverlayTemplate() {
+    return `
+    <div class="task-detail-overlay">   
+    </div>
+    `;
 }
