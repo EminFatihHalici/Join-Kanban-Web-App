@@ -81,3 +81,25 @@ async function renderUserCircles() {
         }
     });
 }
+
+
+
+
+/**
+ * Delete a task from the backend.
+ * @param {string} taskId - The ID of the task to delete.
+ */
+
+async function deleteTask(taskId) {
+    try {
+        const taskPath = `/${activeUserId}/tasks/${taskId}`;
+        const response = await fetch(BASE_URL + taskPath + ".json", {
+            method: "DELETE"
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}
