@@ -123,3 +123,13 @@ async function renderTaskDetail(taskJson) {
         }
     }, 50);
 }
+
+async function deleteTaskfromBoard(taskId)  { 
+    try {
+        await deleteTask(taskId);
+        closeAddTaskOverlay();
+        await renderTasks();
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}

@@ -262,7 +262,7 @@ function getTaskDetailOverlayTemplate(task) {
 
 
             <div class="task-detail-delete-edit-button-container">
-                <button onclick="closeTaskDetailOverlay()" class="task-detail-delete-button">Delete</button>
+                <button onclick="deleteTaskfromBoard('${task.id}')" class="task-detail-delete-button">Delete</button>
                 <button onclick="" class="task-detail-edit-button">Edit Task</button>
             </div>
 

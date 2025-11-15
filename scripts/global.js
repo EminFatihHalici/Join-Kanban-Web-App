@@ -87,7 +87,6 @@ async function renderUserCircles() {
 
 /**
  * Delete a task from the backend.
- * @param {string} taskId - The ID of the task to delete.
  */
 
 async function deleteTask(taskId) {
