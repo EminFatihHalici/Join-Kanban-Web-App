@@ -276,6 +276,13 @@ function getTaskDetailOverlayTemplate(task) {
 function editTaskDetailOverlayTemplate() {
     return `
     <div class="task-detail-overlay">   
+    
+    <div class="task-detail-header">
+
+            <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
+        
+        </div>
+
     </div>
     `;
 }
