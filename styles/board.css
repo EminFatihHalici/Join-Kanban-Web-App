@@ -596,7 +596,7 @@ textarea {
 .task-detail-overlay {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+
     width: 525px;
     height: 90vh;
     background: #FFFFFF;
@@ -604,23 +604,21 @@ textarea {
     border-radius: 30px;
     flex: none;
     order: 0;
-    /* flex-grow: 0;
-    transition: transform 0.4s ease-in-out;
-    transform: translateX(140%);
-    z-index: 2000;
- */
+
 }
 
 .task-detail-header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    width: 445px;
     height: 36px;
-    flex: none;
-    align-self: stretch;
+    padding-top: 48px;
+    padding-left: 48px;
+    padding-right: 48px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-detail-edit-header {
+    justify-content: flex-end;
 }
 
 .overlay-task-category {
@@ -637,30 +635,26 @@ textarea {
 }
 
 .task-detail-headline {
-    width: 445px;
-    height: 219px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
     font-size: 61px;
     line-height: 120%;
-    color: #000000;
     flex: none;
     order: 1;
     align-self: stretch;
     flex-grow: 0;
+    padding-left: 48px;
+    padding-right: 48px;
 }
 
 .task-detail-description {
     width: 445px;
-
-    color: #000000;
     flex: none;
     order: 2;
     font-size: 20px;
     font-weight: 400;
     align-self: stretch;
     flex-grow: 0;
+    padding-left: 48px;
+    padding-right: 48px;
 }
 
 .task-detail-due-date {
@@ -673,6 +667,8 @@ textarea {
     height: 24px;
     flex: none;
     order: 3;
+    padding-left: 48px;
+    padding-right: 48px;
     align-self: stretch;
     flex-grow: 0;
 }
@@ -689,6 +685,8 @@ textarea {
     order: 4;
     align-self: stretch;
     flex-grow: 0;
+    padding-left: 48px;
+    padding-right: 48px;
 }
 
 .task-detail-assigned {
@@ -701,6 +699,8 @@ textarea {
     order: 5;
     align-self: stretch;
     flex-grow: 0;
+    padding-left: 48px;
+    padding-right: 48px;
 }
 
 .task-detail-subtasks {
@@ -714,16 +714,17 @@ textarea {
     order: 6;
     align-self: stretch;
     flex-grow: 0;
+    padding-left: 48px;
+    padding-right: 48px;
 }
 
 .task-detail-delete-edit-button-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-end;
+    padding-right: 48px;
     align-items: center;
-    padding: 0px;
     gap: 8px;
-    width: 159px;
     height: 24px;
     flex: none;
     order: 7;
@@ -743,4 +744,13 @@ textarea {
     align-items: flex-start;
     align-self: stretch;
     gap: 24px;
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+.task-detail-edit-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 48px;
+    align-items: center;
 }

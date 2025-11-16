@@ -216,7 +216,7 @@ function getTaskDetailOverlayTemplate(task) {
     return `
     <div class="task-detail-overlay">
     
-        <div class="task-detail-header">
+        <div class="task-detail-header ">
 
             <p class="${categoryColor(task)}">${task.category}</p>
 
@@ -230,7 +230,7 @@ function getTaskDetailOverlayTemplate(task) {
 
 
              <div class="task-detail-description">
-                <h1 class="task-detail-description">${task.description}</h1>
+                <p>${task.description}</h1>
             </div>
 
 
@@ -277,21 +277,21 @@ function editTaskDetailOverlayTemplate() {
     return `
     <div class="task-detail-overlay">   
     
-        <div class="task-detail-header">
+        <div class="task-detail-header task-detail-edit-header">
                 <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
             </div>
 
             <div class="task-detail-edit-main">
-                <label for="title">Title*</label>
+                <label for="title">Title</label>
                     <input id="title" type="text" placeholder="Enter a title">
 
                       <label for="description">Description</label>
                     <textarea id="description" placeholder="Enter a Description"></textarea>
 
-                    <label for="due-date">Due date*</label>
+                    <label for="due-date">Due date</label>
                     <input id="due-date" type="date" required>
 
-                     <label>Priority</label>
+                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
                         <button type="button" class="priority-btn urgent">
                             Urgent
