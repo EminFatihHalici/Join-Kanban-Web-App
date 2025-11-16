@@ -277,12 +277,61 @@ function editTaskDetailOverlayTemplate() {
     return `
     <div class="task-detail-overlay">   
     
-    <div class="task-detail-header">
+        <div class="task-detail-header">
+                <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
+            </div>
 
-            <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
-        
-        </div>
+            <div class="task-detail-edit-main">
+                <label for="title">Title*</label>
+                    <input id="title" type="text" placeholder="Enter a title">
 
+                      <label for="description">Description</label>
+                    <textarea id="description" placeholder="Enter a Description"></textarea>
+
+                    <label for="due-date">Due date*</label>
+                    <input id="due-date" type="date" required>
+
+                     <label>Priority</label>
+                    <div class="priority-buttons">
+                        <button type="button" class="priority-btn urgent">
+                            Urgent
+                            <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
+                        </button>
+                        <button type="button" class="priority-btn medium active">
+                            Medium
+                            <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
+                        </button>
+                        <button type="button" class="priority-btn low">
+                            Low
+                            <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
+                        </button>
+                    </div>
+
+                     <label for="assigned">Assigned to</label>
+                    <div class="custom-select-container">
+                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                            Select contacts to assign
+                        </div>
+
+                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                        </div>
+                    </div>
+
+                    
+                    <label for="subtask">Subtasks</label>
+                    <input type="text" id="subtask" placeholder="Add new subtask">
+
+                    <div class="subtask-list-edit">
+                        <ul id="subtask-list-edit-ul">
+                        -Subtasks will be listed here-
+                        </ul>
+                    </div> 
+            </div>  
+
+            <div class="task-detail-edit-footer">
+                <button>OK</button>
+            </div>  
+                
     </div>
     `;
 }
