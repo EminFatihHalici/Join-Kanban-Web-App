@@ -384,7 +384,6 @@ main {
 
 .form-right-overlay {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
     padding: 0px;
     gap: 24px;
@@ -397,7 +396,6 @@ main {
 
 .form-actions-overlay {
     display: flex;
-    flex-direction: column;
     justify-content: flex-end;
     align-items: center;
     padding: 0px;

@@ -145,8 +145,8 @@ function getAddTaskOverlayTemplate(board) {
                             <textarea style="width: 440px" id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
                         </div>
 
+                        <label for="due-date">Due date*</label>
                         <div class="date-overlay">
-                            <label for="due-date">Due date*</label>
                             <input id="due-date" class="due-date-overlay" type="date" required>
                         </div>
                     </div>
@@ -171,8 +171,9 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         
-                        <div class="custom-select-container">
+
                         <label for="assigned">Assigned to</label>
+                        <div class="custom-select-container">
                             <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
                                 Select contacts to assign
                             </div>
@@ -182,16 +183,18 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         
-                        <select id="category" required>
-                        <label for="category">Category*</label>
-                            <option value="" disabled selected>Select task category</option>
-                            <option value="technical">Technical Task</option>
-                            <option value="user-story">User Story</option>
-                        </select>
-                        <div class="subtask-overlay">
-                            <label for="subtask">Subtasks</label>
-                            <input type="text" id="subtask" placeholder="Add new subtask">
-                        </div>
+                        
+                                     <label for="category">Category*</label>
+                                <select id="category" required>
+                                <option value="" disabled selected>Select task category</option>
+                                <option value="technical">Technical Task</option>
+                                <option value="user-story">User Story</option>
+                                </select>
+
+                                <label for="subtask">Subtasks</label>
+                            <div class="subtask-overlay">
+                                <input  type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
+                            </div>
 
                     </div>
                 </form>
