@@ -205,7 +205,7 @@ function getAddTaskOverlayTemplate(board) {
                     </p>
 
                     <div class="form-actions form-actions-overlay">
-                        <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                        <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">Cancel ✖</button>
                         <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">Create Task ✔</button>
                     </div>
                 </div>
