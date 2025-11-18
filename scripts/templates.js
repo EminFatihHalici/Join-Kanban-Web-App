@@ -251,7 +251,6 @@ function getTaskDetailOverlayTemplate(task) {
             <div class="task-detail-assigned pd-bottom-16">
                 <div style="font-size: 18px;">Assigned to:</div>
                 <div id="overlayContactContainer" class="contact-circle-container"></div>
-                //<div>${task.assigned.join(', ')}</div>
             </div>
 
             <div class="task-detail-subtasks pd-bottom-16">
