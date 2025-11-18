@@ -131,6 +131,10 @@ async function renderContactsInOverlay() {
   const container = document.getElementById('overlayContactContainer');
   container.innerHTML = Object.values(contactsObject).map((contact, index) => {
     const color = contactCircleColor[index % contactCircleColor.length];
-    return `<div class="user-circle-intials" style="background-color: ${color};">${getInitials(contact.name)}</div>`;
+    const initials = getInitials(contact.name);
+    return `<div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
+        <div style="font-size: 18px;">${contact.name}</div>
+      </div>`;
   }).join('');
 }

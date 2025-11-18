@@ -681,7 +681,8 @@ textarea {
     flex-direction: column;
     padding: 0px;
     gap: 8px;
-    width: 445px;
+    max-height: 180px;
+    overflow-y: scroll;
     flex: none;
     order: 5;
     align-self: stretch;
@@ -726,6 +727,7 @@ textarea {
 .task-detail-edit-main {
     max-height: 697px;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -760,7 +762,8 @@ textarea {
 }
 
 .contact-circle-container {
-  display: flex;
+ display: flex;
+  flex-direction: column;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 16px;
