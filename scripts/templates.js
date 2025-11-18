@@ -210,7 +210,7 @@ function getTaskDetailOverlayTemplate(task) {
                 <div style="font-size: 18px;">Subtasks:</div>
                         <div>
                             ${task.subtasks && task.subtasks.length > 0
-                            ? `<ul>${task.subtasks.map(subtask => `<li>${subtask.title}</li>`).join('')}</ul>`
+                            ? `<ul>${task.subtasks.map(subtask => `<li>${task.subtasks[1].name}</li>`).join('')}</ul>`
                             : '<p>No subtasks</p>'
                             }
                         </div>
