@@ -204,7 +204,7 @@ a {
 
 @keyframes floatFromRight {
     0% {
-        transform: translateX(100%);
+        transform: translateX(50%);
         opacity: 0;
     }
 
@@ -217,7 +217,7 @@ a {
 @keyframes floatFromRightOverlay {
     0% {
         top: 50%;
-        transform: translate(100%, -50%);
+        transform: translate(50%, -50%);
         opacity: 0;
     }
 
