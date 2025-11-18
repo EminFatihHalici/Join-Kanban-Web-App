@@ -127,3 +127,26 @@ async function renderEditTaskDetail() {
     overlay.classList.remove('d-none');
     setupPriorityButtons();
 }
+
+
+function renderSubtasks(subtasks) {
+  // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
+  const subtasksArray = Array.isArray(subtasks)
+    ? subtasks
+    : Object.values(subtasks || {});
+
+  // Filtere gültige Einträge (nicht null, haben 'name')
+  const validSubtasks = subtasksArray.filter(st => st && st.name);
+
+  // Wenn keine gültigen Subtasks, gib Hinweis zurück
+  if (validSubtasks.length === 0) {
+    return '<p>No subtasks</p>';
+  }
+
+  // Baue HTML-Liste
+  const listItems = validSubtasks
+    .map(st => `<li>${st.name}</li>`)
+    .join('');
+    
+  return `<ul>${listItems}</ul>`;
+}

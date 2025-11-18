@@ -205,22 +205,24 @@ function getTaskDetailOverlayTemplate(task) {
                 <div id="overlayContactContainer" class="contact-circle-container"></div>
             </div>
 
-            <div class="task-detail-subtasks pd-bottom-16">
-                
-                <div style="font-size: 18px;">Subtasks:</div>
-                        <div>
-                            ${task.subtasks && task.subtasks.length > 0
-                            ? `<ul>${task.subtasks.map(subtask => `<li>${task.subtasks[1].name}</li>`).join('')}</ul>`
-                            : '<p>No subtasks</p>'
-                            }
-                        </div>
-    
+           <div class="task-detail-subtasks pd-bottom-16">
+              <div style="font-size: 18px;">Subtasks:</div>
+                    <div>
+                        ${renderSubtasks(task.subtasks)}
+                    </div>
             </div>
 
 
             <div class="task-detail-delete-edit-button-container">
-                <button onclick="deleteTaskfromBoard('${task.id}')" class="task-detail-delete-button">Delete</button>
-                <button onclick="renderEditTaskDetail()" class="task-detail-edit-button">Edit Task</button>
+                <div onclick="deleteTaskfromBoard('${task.id}')" class="task-detail-delete-button">
+                <div class="task-delete-icon"></div>
+                </div>
+
+                <div class="task-detail-spacer"></div>
+
+                <div onclick="renderEditTaskDetail()" class="task-detail-edit-button">
+                <div class="task-edit-icon"></div>
+                </div>
             </div>
 
             
@@ -293,7 +295,7 @@ function editTaskDetailOverlayTemplate() {
     `;
 }
 
-function renderContactLargeHtml(contact,color) {
+function renderContactLargeHtml(contact, color) {
     const contactJson = JSON.stringify(contact).replace(/"/g, '&quot;');
     return `
     <div class="flex gap-56 align">
@@ -348,7 +350,7 @@ function renderContactLargeHtml(contact,color) {
     `;
 }
 
-function renderAddNewContactOverlayHtml(){
+function renderAddNewContactOverlayHtml() {
     return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
@@ -449,7 +451,7 @@ function renderAddNewContactOverlayHtml(){
         `
 }
 
-function renderEditContactOverlayHtml(contact, color){
+function renderEditContactOverlayHtml(contact, color) {
     return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
