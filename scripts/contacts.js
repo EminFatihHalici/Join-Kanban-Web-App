@@ -108,14 +108,17 @@ async function showDialogCreateContact(id, ev) {
     contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
     contactAddModal.showModal();
     checkAllCreateContactValidations('contactCreateBtn');
+    await renderContacts();
 }
 
 async function showDialogEditContact(id, contactJson, color, ev) {
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
     ev.stopPropagation();
+    bool = [1, 1];
     contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color)
     contactEditDeleteModal.showModal();
+    await renderContacts();
 }
 
 async function createContact() {
@@ -128,7 +131,20 @@ async function createContact() {
     }, 1500);
 }
 
-async function createNextIdPutDataAndRender() {
+async function updateSaveContact(currContactId) {
+    try {
+        let contactData = await setContactDataForBackendUpload();
+        await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
+        clearAllContactsInputFields();
+        await renderContacts();
+        document.getElementById('contactDisplayLarge').innerHTML = '';
+        document.getElementById('contactEditDeleteModal').close();
+    } catch (error) {
+        console.error('Error update/edit contact at putData():', error);
+    }
+}
+
+async function createNextIdPutDataAndRender() {    
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();

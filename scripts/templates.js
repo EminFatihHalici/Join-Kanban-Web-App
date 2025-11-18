@@ -239,7 +239,7 @@ function renderContactLargeHtml(contact,color) {
 }
 
 function renderAddNewContactOverlayHtml(){
-    return `
+    return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -301,7 +301,6 @@ function renderAddNewContactOverlayHtml(){
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" tabindex="1"
                             placeholder="Phone number">
-                        <!-- oninput="validateField('nameRegister', 'errMsgPhone', isNameValid, 0, 'Please enter forename + 'space' + surname')" -->
                         <div class="icon-div">
                             <img src="../assets/icons/call.png" alt="email icon">
                         </div>
@@ -341,7 +340,7 @@ function renderAddNewContactOverlayHtml(){
 }
 
 function renderEditContactOverlayHtml(contact, color){
-    return `
+    return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -367,7 +366,7 @@ function renderEditContactOverlayHtml(contact, color){
             </div>
 
             <div class="flex column justify pg-r30">
-                <form class="contact-form" onsubmit="createContact(); return false;">
+                <form class="contact-form" onsubmit="updateSaveContact(${contact.contactId}); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
                             oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
@@ -423,8 +422,8 @@ function renderEditContactOverlayHtml(contact, color){
             </div>
         </article>
 
-        <div id="popupContactCreated" class="popup btn">
-            <p class="btn_std">Contact succesfully created</p>
+        <div id="popupContactUpdated" class="popup btn">
+            <p class="btn_std">Contact updated succesfully</p>
         </div>
         `
 }
