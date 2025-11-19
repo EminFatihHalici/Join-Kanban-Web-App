@@ -2,7 +2,7 @@ async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
     loadContacts();
-    setupPriorityButtons();   
+    setupPriorityButtons();
 }
 
 
@@ -129,52 +129,45 @@ async function loadData(path = "") {
     }
 }
 
-async function loadContacts() {
-    let dropdownContainer = document.getElementById("assigned-dropdown");
-    dropdownContainer.innerHTML = ''; // Leere den Container
-
-    try {
-        let contacts = await loadData(`/${activeUserId}/contacts`);
-
-        if (contacts) {
-            Object.keys(contacts).forEach(key => {
-                const contact = contacts[key];
-
-                if (contact && contact.name) {
-                    // Erstelle Label und Checkbox für jeden Kontakt
-                    let contactItem = document.createElement('label');
-                    contactItem.className = 'contact-item';
-
-                    // Checkbox
-                    let checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = key; // Speichere die ID
-
-                    // Text
-                    let textSpan = document.createElement('span');
-                    textSpan.textContent = contact.name;
-
-                    contactItem.appendChild(checkbox);
-                    contactItem.appendChild(textSpan);
-                    dropdownContainer.appendChild(contactItem);
-                }
-            });
-        }
-    } catch (error) {
-        console.error("Could not load contacts:", error);
-        dropdownContainer.innerHTML = '(Error loading contacts)';
-    }
+function convertAndSortContacts(contactsObj) {
+  if (!contactsObj) return [];
+  const contactsArray = Object.entries(contactsObj).map(
+    ([key, contact]) => ({ id: key, ...contact })
+  );
+  contactsArray.sort((a, b) =>
+    a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })
+  );
+  return contactsArray;
 }
 
-/** Setup form buttons 
-function setupFormButtons() {
-    let createBtn = document.getElementById("create-btn");
-    let clearBtn = document.getElementById("clear-btn");
+function createContactElement(contact) {
+  const label = document.createElement('label');
+  label.className = 'contact-item';
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.value = contact.id;
+  const span = document.createElement('span');
+  span.textContent = contact.name;
+  label.appendChild(checkbox);
+  label.appendChild(span);
+  return label;
+}
 
-    createBtn.addEventListener("click", handleCreateTask);
-    clearBtn.addEventListener("click", clearForm);
-} */
-
+async function loadContacts() {
+  const dropdownContainer = document.getElementById('assigned-dropdown');
+  dropdownContainer.innerHTML = '';
+  try {
+    const contactsObj = await loadData(`/${activeUserId}/contacts`);
+    const sortedContacts = convertAndSortContacts(contactsObj);
+    sortedContacts.forEach(contact => {
+      const contactElement = createContactElement(contact);
+      dropdownContainer.appendChild(contactElement);
+    });
+  } catch (error) {
+    console.error('Could not load contacts:', error);
+    dropdownContainer.innerHTML = '(Error loading contacts)';
+  }
+}
 
 //overlay add_task
 
