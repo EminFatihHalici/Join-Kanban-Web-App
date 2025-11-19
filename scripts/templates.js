@@ -70,7 +70,7 @@ function renderContactsCardPartTwo(contact, color) {
                 <div class="contact-list-name">
                 ${contact.name}
                 </div>
-                <div style="color: #007CEE;">
+                <div class="contact-list-email" style="color: #007CEE;">
                 ${contact.email}
                 </div>
             </div>
@@ -193,7 +193,7 @@ function getTaskDetailOverlayTemplate(task) {
             </div>
 
 
-             <div class="task-detail-description">
+            <div class="task-detail-description">
                 <p class="pd-bottom-16">${task.description}</h1>
             </div>
 
@@ -214,11 +214,11 @@ function getTaskDetailOverlayTemplate(task) {
                 <div id="overlayContactContainer" class="contact-circle-container"></div>
             </div>
 
-           <div class="task-detail-subtasks pd-bottom-16">
-              <div style="font-size: 18px;">Subtasks:</div>
-                    <div>
-                        ${renderSubtasks(task.subtasks)}
-                    </div>
+            <div class="task-detail-subtasks pd-bottom-16">
+                <div style="font-size: 18px;">Subtasks:</div>
+                <div>
+                    ${renderSubtasks(task.subtasks)}
+                </div>
             </div>
 
 
@@ -242,7 +242,7 @@ function getTaskDetailOverlayTemplate(task) {
 }
 
 function editTaskDetailOverlayTemplate() {
-    return `
+    return /* html */`
     <div class="task-detail-overlay">   
     
         <div class="task-detail-header task-detail-edit-header">
@@ -253,13 +253,13 @@ function editTaskDetailOverlayTemplate() {
                 <label for="title">Title</label>
                     <input id="title" type="text" class="title-input-overlay" placeholder="Enter a title">
 
-                      <label for="description">Description</label>
+                    <label for="description">Description</label>
                     <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date</label>
                     <input id="due-date" class="title-input-overlay" type="date" required>
 
-                     <label><b>Priority</b></label>
+                    <label><b>Priority</b></label>
                     <div class="priority-buttons">
                         <button type="button" class="priority-btn urgent">
                             Urgent
@@ -275,7 +275,7 @@ function editTaskDetailOverlayTemplate() {
                         </button>
                     </div>
 
-                     <label for="assigned">Assigned to</label>
+                    <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
                         <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
                             Select contacts to assign
@@ -316,7 +316,7 @@ function renderContactLargeHtml(contact, color) {
                 ${contact.name}
             </div>
             <div class="flex gap-13">
-                <button id="edit" onclick="showDialogEditContact('contactEditDeleteModal', '${contactJson}', '${color}', event)" class="contacts-edit-delete-buttons" tabindex="0">
+                <button id="edit" onclick="showDialogContact('contactEditDeleteModal', '${contactJson}', '${color}', event, 'Edit')" class="contacts-edit-delete-buttons" tabindex="0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <mask id="mask0_75592_9969" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
@@ -331,7 +331,7 @@ function renderContactLargeHtml(contact, color) {
                     </svg>
                     Edit
                 </button>
-                <button id="edit" onclick="" class="contacts-edit-delete-buttons" tabindex="0">
+                <button id="edit" onclick="showDialogContact('contactEditDeleteModal', '${contactJson}', '${color}', event, 'Delete')" class="contacts-edit-delete-buttons" tabindex="0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <mask id="mask0_75592_9951" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
@@ -460,7 +460,7 @@ function renderAddNewContactOverlayHtml() {
         `
 }
 
-function renderEditContactOverlayHtml(contact, color) {
+function renderEditContactOverlayHtml(contact, color, option) {
     return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
@@ -475,7 +475,7 @@ function renderEditContactOverlayHtml(contact, color) {
                 <div class="flex column gap-13">
                     <img src="/assets/icons/Join_light.png" alt="Join Logo Small"
                         style="height: 66px; width: 55px;">
-                    <h2 class="contact-dialog-h2">Edit contact</h2>
+                    <h2 class="contact-dialog-h2">${option} contact</h2>
                     <div class="contact-dialog-line"></div>
                 </div>
             </div>
@@ -487,7 +487,7 @@ function renderEditContactOverlayHtml(contact, color) {
             </div>
 
             <div class="flex column justify pg-r30">
-                <form class="contact-form" onsubmit="updateSaveContact(${contact.contactId}); return false;">
+                <form class="contact-form" onsubmit="updateContact('${contact.contactId}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
                             oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
@@ -530,7 +530,7 @@ function renderEditContactOverlayHtml(contact, color) {
                             </svg>
                         </button>
                         <button id="contactCreateBtn" class="btn_contact_create btn flex align gap-13" type="submit" tabindex="1">
-                            Save
+                            ${option === 'Edit'? 'Save' : 'Delete'}
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path

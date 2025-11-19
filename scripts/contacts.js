@@ -27,13 +27,13 @@ function checkAllCreateContactValidations(id) {
 
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
-    let contacts = await fetchContacts(activeUserId);
+    contacts = await fetchContacts(activeUserId);
     if (contacts.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
         let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
-        let groupedContacts = groupContactsByLetter(sortedContacts)
-        contactListRef.innerHTML = renderGroupedContacts(groupedContacts)
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
     };
 }
 
@@ -111,12 +111,12 @@ async function showDialogCreateContact(id, ev) {
     await renderContacts();
 }
 
-async function showDialogEditContact(id, contactJson, color, ev) {
+async function showDialogContact(id, contactJson, color, ev, option) {
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
     ev.stopPropagation();
     bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color)
+    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option)
     contactEditDeleteModal.showModal();
     await renderContacts();
 }
@@ -131,16 +131,16 @@ async function createContact() {
     }, 1500);
 }
 
-async function updateSaveContact(currContactId) {
+async function updateContact(currContactId, option) {
     try {
         let contactData = await setContactDataForBackendUpload();
-        await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
+        option === 'Edit' ? await putData('/' + activeUserId + '/contacts/' + currContactId, contactData) : await deletePath('/' + activeUserId + '/contacts/' + currContactId);
         clearAllContactsInputFields();
         await renderContacts();
         document.getElementById('contactDisplayLarge').innerHTML = '';
         document.getElementById('contactEditDeleteModal').close();
     } catch (error) {
-        console.error('Error update/edit contact at putData():', error);
+        console.error('Error edit/delete contact at putData():', error);
     }
 }
 
