@@ -211,9 +211,6 @@ function contactRowHTML(contact, index) {
 }
 
 
-
-
-
 /**
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
@@ -262,3 +259,4 @@ function toggleDropDownMenu() {
         isUserMenuListenerAdded = true;
     }
 }
+
