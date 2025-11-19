@@ -1,6 +1,16 @@
 function renderTasksCardSmallHtml(task) {
+    // const taskJson = JSON.stringify(task)
+    // .replace(/&/g, '&amp;')
+    // .replace(/"/g, '&quot;')
+    // .replace(/'/g, '&#39;')
+    // .replace(/</g, '&lt;')
+    // .replace(/>/g, '&gt;')
+    // .replace(/\n/g, '\\n')
+    // .replace(/\r/g, '\\r')
+    // .replace(/\t/g, '\\t');
+    const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
     return `
-    <article class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
+    <article onclick="renderTaskDetail('${taskJson}')" class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">
             <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
@@ -21,7 +31,7 @@ function renderTasksCardSmallHtml(task) {
                         MB
                     </div>
                 </div>
-                <img src="/assets/icons/prio_medium_orange_icon.svg" alt="urgency icon">
+                <img src="/assets/icons/prio_medium_icon.svg" alt="urgency icon">
             </div>
         </div>
     </article>`
@@ -92,12 +102,12 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         <div class="description-overlay">
-                            <label for="description">Description</label>
-                            <textarea style="width: 440px" id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
+                            <label for="description" class="form-headline-text">Description</label>
+                            <textarea id="description" class="description-input-overlay title-input-overlay" placeholder="Enter a Description"></textarea>
                         </div>
 
+                        <label for="due-date" class="form-headline-text">Due date*</label>
                         <div class="date-overlay">
-                            <label for="due-date">Due date*</label>
                             <input id="due-date" class="due-date-overlay" type="date" required>
                         </div>
                     </div>
@@ -105,7 +115,7 @@ function getAddTaskOverlayTemplate(board) {
                     <div class="divider divider-overlay"></div>
 
                     <div class="form-right form-right-overlay">
-                            <label class="at-overlay-text">Priority</label>
+                            <label class="form-headline-text">Priority</label>
                         <div class="priority-buttons priority-buttons-overlay">
                             <button type="button" class="priority-btn urgent">
                                 Urgent
@@ -122,8 +132,9 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         
+
+                        <label for="assigned" class="form-headline-text">Assigned to</label>
                         <div class="custom-select-container">
-                        <label for="assigned">Assigned to</label>
                             <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
                                 Select contacts to assign
                             </div>
@@ -133,16 +144,18 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         
-                        <select id="category" required>
-                        <label for="category">Category*</label>
-                            <option value="" disabled selected>Select task category</option>
-                            <option value="Technical Task">Technical Task</option>
-                            <option value="User Story">User Story</option>
-                        </select>
-                        <div class="subtask-overlay">
-                            <label for="subtask">Subtasks</label>
-                            <input type="text" id="subtask" placeholder="Add new subtask">
-                        </div>
+                        
+                                     <label for="category" class="form-headline-text">Category*</label>
+                                <select id="category" required>
+                                <option value="" disabled selected>Select task category</option>
+                                <option value="technical">Technical Task</option>
+                                <option value="user-story">User Story</option>
+                                </select>
+
+                                <label for="subtask" class="form-headline-text">Subtasks</label>
+                            <div class="subtask-overlay">
+                                <input  type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
+                            </div>
 
                     </div>
                 </form>
@@ -153,7 +166,7 @@ function getAddTaskOverlayTemplate(board) {
                     </p>
 
                     <div class="form-actions form-actions-overlay">
-                        <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                        <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">Cancel ✖</button>
                         <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">Create Task ✔</button>
                     </div>
                 </div>
@@ -162,28 +175,136 @@ function getAddTaskOverlayTemplate(board) {
 }
 
 
-function getTaskDetailOverlayTemplate() {
+function getTaskDetailOverlayTemplate(task) {
+
     return `
     <div class="task-detail-overlay">
     
-        <div class="task-detail-header">
+        <div class="task-detail-header ">
 
-            <div class="overlay-task-category">
-            
-            </div>
+            <p class="${categoryColor(task)}">${task.category}</p>
 
-            <img onclick="closeTaskDetailOverlay()" class="" src="/assets/icons/close.svg" alt="close">
-        
+            <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
         
         </div>
 
+            <div class="task-detail-headline">
+                <h1>${task.title}</h1>
+            </div>
+
+
+             <div class="task-detail-description">
+                <p class="pd-bottom-16">${task.description}</h1>
+            </div>
+
+
+            <div class="task-detail-due-date pd-bottom-16">
+                    <div>Due Date:</div>
+                    <div>${task.dueDate}</div>
+            </div>
+            
+            <div class="task-detail-priority pd-bottom-16">
+                <div style="font-size: 18px;">Priority:</div>
+                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
+                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="priority icon">
+            </div>
+
+            <div class="task-detail-assigned pd-bottom-16">
+                <div style="font-size: 18px;">Assigned to:</div>
+                <div id="overlayContactContainer" class="contact-circle-container"></div>
+            </div>
+
+           <div class="task-detail-subtasks pd-bottom-16">
+              <div style="font-size: 18px;">Subtasks:</div>
+                    <div>
+                        ${renderSubtasks(task.subtasks)}
+                    </div>
+            </div>
+
+
+            <div class="task-detail-delete-edit-button-container">
+                <div onclick="deleteTaskfromBoard('${task.id}')" class="task-detail-delete-button">
+                <div class="task-delete-icon"></div>
+                </div>
+
+                <div class="task-detail-spacer"></div>
+
+                <div onclick="renderEditTaskDetail()" class="task-detail-edit-button">
+                <div class="task-edit-icon"></div>
+                </div>
+            </div>
+
+            
     
     
     </div>
     `
 }
 
-function renderContactLargeHtml(contact,color) {
+function editTaskDetailOverlayTemplate() {
+    return `
+    <div class="task-detail-overlay">   
+    
+        <div class="task-detail-header task-detail-edit-header">
+                <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
+            </div>
+
+            <div class="task-detail-edit-main">
+                <label for="title">Title</label>
+                    <input id="title" type="text" class="title-input-overlay" placeholder="Enter a title">
+
+                      <label for="description">Description</label>
+                    <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
+
+                    <label for="due-date">Due date</label>
+                    <input id="due-date" class="title-input-overlay" type="date" required>
+
+                     <label><b>Priority</b></label>
+                    <div class="priority-buttons">
+                        <button type="button" class="priority-btn urgent">
+                            Urgent
+                            <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
+                        </button>
+                        <button type="button" class="priority-btn medium active">
+                            Medium
+                            <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
+                        </button>
+                        <button type="button" class="priority-btn low">
+                            Low
+                            <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
+                        </button>
+                    </div>
+
+                     <label for="assigned">Assigned to</label>
+                    <div class="custom-select-container">
+                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                            Select contacts to assign
+                        </div>
+
+                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                        </div>
+                    </div>
+
+                    
+                    <label for="subtask">Subtasks</label>
+                    <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
+
+                    <div class="subtask-list-edit">
+                        <ul id="subtask-list-edit-ul">
+                        -Subtasks will be listed here-
+                        </ul>
+                    </div> 
+            </div>  
+
+            <div class="task-detail-edit-footer">
+                <button>OK</button>
+            </div>  
+                
+    </div>
+    `;
+}
+
+function renderContactLargeHtml(contact, color) {
     const contactJson = JSON.stringify(contact).replace(/"/g, '&quot;');
     return /* html */`
     <div class="flex gap-56 align">
@@ -238,7 +359,7 @@ function renderContactLargeHtml(contact,color) {
     `;
 }
 
-function renderAddNewContactOverlayHtml(){
+function renderAddNewContactOverlayHtml() {
     return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
@@ -339,7 +460,7 @@ function renderAddNewContactOverlayHtml(){
         `
 }
 
-function renderEditContactOverlayHtml(contact, color){
+function renderEditContactOverlayHtml(contact, color) {
     return /*html*/`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
