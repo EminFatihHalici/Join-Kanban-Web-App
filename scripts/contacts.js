@@ -31,7 +31,12 @@ async function renderContacts() {
     if (contacts.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
-        let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
+        let validContacts = contacts.filter(contact => contact.name && contact.email);
+        let sortedContacts = validContacts.sort((a, b) => {
+    let nameA = a.name || '';
+    let nameB = b.name || '';
+    return nameA.localeCompare(nameB);
+});
         let groupedContacts = groupContactsByLetter(sortedContacts);
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
     };
