@@ -86,6 +86,8 @@ function emptyContactsHtml() {
 }
 
 function getAddTaskOverlayTemplate(board) {
+    const todayStr = new Date().toISOString().split('T')[0]; // "yyyy-mm-dd"
+
     return `
             <section class="add-task-section overlay-add-task">
         <div class= overlay-header>
@@ -108,7 +110,7 @@ function getAddTaskOverlayTemplate(board) {
 
                         <label for="due-date" class="form-headline-text">Due date*</label>
                         <div class="date-overlay">
-                            <input id="due-date" class="due-date-overlay" type="date" required>
+                            <input id="due-date" class="due-date-overlay" min="${todayStr}" type="date" required>
                         </div>
                     </div>
 

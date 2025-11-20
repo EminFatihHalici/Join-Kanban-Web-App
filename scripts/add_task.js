@@ -1,3 +1,9 @@
+window.addEventListener('DOMContentLoaded', () => {
+  const dueDateInput = document.getElementById('due-date');
+  const todayStr = new Date().toISOString().split('T')[0]; // "2025-11-20"
+  dueDateInput.setAttribute('min', todayStr);
+});
+
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
