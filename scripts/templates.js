@@ -244,6 +244,7 @@ function getTaskDetailOverlayTemplate(task) {
 }
 
 function editTaskDetailOverlayTemplate() {
+     const todayStr = new Date().toISOString().split('T')[0]; 
     return `
     <div class="task-detail-overlay">   
     
@@ -259,7 +260,7 @@ function editTaskDetailOverlayTemplate() {
                     <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date</label>
-                    <input id="due-date" class="title-input-overlay" type="date" required>
+                    <input id="due-date" class="title-input-overlay" type="date" min="${todayStr}" required>
 
                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
