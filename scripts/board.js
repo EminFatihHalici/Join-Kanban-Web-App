@@ -45,6 +45,7 @@ function checkForAndDisplaySubtasks(task) {
     }
 }
 
+//////////// NOT COMPLETED, mind parent-div, grid-setup ///////////
 function checkForAndDisplayUserCircles(task) {
     let assignedArray = task.assigned;
     if (assignedArray.length !== 0) {
