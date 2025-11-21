@@ -1,13 +1,5 @@
 function renderTasksCardSmallHtml(task) {
-    // const taskJson = JSON.stringify(task)
-    // .replace(/&/g, '&amp;')
-    // .replace(/"/g, '&quot;')
-    // .replace(/'/g, '&#39;')
-    // .replace(/</g, '&lt;')
-    // .replace(/>/g, '&gt;')
-    // .replace(/\n/g, '\\n')
-    // .replace(/\r/g, '\\r')
-    // .replace(/\t/g, '\\t');
+    // const taskJson = JSON.stringify(task).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t');
     const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
     return `
     <article onclick="renderTaskDetail('${taskJson}')" class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
@@ -15,19 +7,10 @@ function renderTasksCardSmallHtml(task) {
             <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
             <p class="gray-text">${task.description}</p>
-            ${checkForAndDisplaySubtasks(task)}
+                ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
-                ${checkForAndDisplayUserCircles(task)}
-                <div class="grid-container" style="grid-template-columns: repeat(4, 12px); width: calc(3 * 12px + 44px);">
-                    <div style="background-color: orange;">
-                        AM
-                    </div>
-                    <div style="background-color: blue;">
-                        EM
-                    </div>
-                    <div style="background-color: purple;">
-                        MB
-                    </div>
+                <div class="grid-container" style="grid-template-columns: repeat(4, 22px); width: calc(3 *22px + 44px);">
+                    ${checkForAndDisplayUserCircles(task)}
                 </div>
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="urgency icon">
             </div>
@@ -40,6 +23,10 @@ function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
                 <progress value="${doneSubtasks}" max="${totalSubtasks}" style="width:96px"></progress>
                 <span>${doneSubtasks}/${totalSubtasks} Subtasks</span>
             </div>`
+}
+
+function renderTaskCardAssigned(initial, color){
+    return /*html*/`<div style="background-color: ${color};">${initial}</div>`
 }
 
 function renderTasksHtmlEmptyArray(categoryId) {

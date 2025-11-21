@@ -6,11 +6,23 @@ let scrollThreshold = 50; // Pixel vom Rand
 async function init() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
+    
+    let start = performance.now();
     await renderTasks();
+    let end = performance.now();
+    console.log("Dauer von renderTask in ms: " + (end - start));
 }
 
 async function renderTasks() {
-    let tasksWithId = await fetchTasks(activeUserId);
+    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
+    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    /* ab hier: doppelt mit global.js / fetchAndSortContacts(containerId) Zeile 67 bzw. 78-90 */
+    let contactsObj = await fetchData(`/${activeUserId}/contacts`);
+    let contactsWithId = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    let contactsWithoutUndefined = contactsWithId.filter(i => i.name !== undefined);
+    let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+    /* bis hier */
+    contacts = sortedContacts;
     let categories = {
         'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],
@@ -32,21 +44,20 @@ function checkForAndDisplaySubtasks(task) {
         return "";
     }
 }
-/////////////////////////////////////////// currently working on /////
-async function checkForAndDisplayUserCircles(task) {
+
+function checkForAndDisplayUserCircles(task) {
     let assignedArray = task.assigned;
-    if (assignedArray !== '') {
-        console.log(assignedArray);
+    if (assignedArray.length !== 0) {
+        let html = '';
         for (let i = 0; i < assignedArray.length; i++) {
-            console.log(assignedArray[i]);
-            let assignedName = await fetchData(`/${activeUserId}/contacts/${assignedArray[i]}`);
-            console.log(assignedName);
-            
+            let contact = contacts.find(c => c.id === assignedArray[i]);
+            const color = contactCircleColor[assignedArray[i] % contactCircleColor.length];
+            let initials = getInitials(contact.name)
+            html += renderTaskCardAssigned(initials, color);
         }
+        return html
     } else {
-        console.log("array assignedArray empty");
         return '';
-        
     }
 }
 

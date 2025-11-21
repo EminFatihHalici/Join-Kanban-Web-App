@@ -45,6 +45,10 @@ async function calcNextId(path = "") {
     return nextId;
 }
 
+function getInitials(name) {
+    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
+}
+
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -131,10 +135,6 @@ async function eachPageSetcurrentUserInitials() {
     currentUserInitials.innerHTML = initials;
 }
 
-// function to extract initials from a full name
-function getInitials(name) {
-    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
-}
 
 // function to fetch user data from firebase
 async function fetchUserData(path) {

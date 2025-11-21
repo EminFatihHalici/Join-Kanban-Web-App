@@ -263,7 +263,8 @@ main {
     grid-auto-flow: column;
 }
 
-.grid-container>div {
+.grid-container>div,
+.user-circle-task {
     box-sizing: border-box;
     border-radius: 50%;
     border: 2px solid var(--white);
