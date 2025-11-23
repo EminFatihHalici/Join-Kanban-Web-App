@@ -15,12 +15,6 @@ async function init() {
   await eachPageSetCurrentUserInitials();
 }
 
-async function fetchUserData(userId) {
-  let url = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user/" + userId + ".json";
-  let response = await fetch(url);
-  return await response.json();
-}
-
 function isTaskEntry(entry) {
   return entry && typeof entry === "object" && entry.board;
 }
@@ -118,7 +112,7 @@ function renderGreeting(userName, currentDate) {
 
 async function initSummary() {
   try {
-    let userData = await fetchUserData(activeUserId);
+    let userData = await fetchData(`/${activeUserId}`);
     if (!userData) return;
 
     let tasks = extractTasks(userData);

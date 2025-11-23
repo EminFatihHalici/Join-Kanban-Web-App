@@ -106,54 +106,14 @@ async function fetchData(path = "") {
     }
 }
 
-async function fetchTasks(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
-        let tasks = await res.json();
-        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
-            id: id,
-            ...taskData
-        }));
-        return tasksWithId
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-async function fetchUserName(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/name" + ".json");
-        let response = await res.json();
-        return response
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-
 async function eachPageSetCurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
-    let currentUser = await fetchUserName(activeUserId);
+    let currentUser = await fetchData(`/${activeUserId}/name`);
     let initials = await getInitials(currentUser);
     currentUserInitials.innerHTML = initials;
 }
 
-
-// function to fetch user data from firebase
-async function fetchUserData(path) {
-    try {
-        let url = `${BASE_URL}${path}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Error fetching data from ${path}`);
-        }
-        let result = await response.json();
-        return result
-    } catch (error) {
-        console.error("Error loading user data:", error);
-        return null;
-    }
-}
-
+///// 2b CLEANED UP /////
 // function to create a user circle and put it to the container
 function createUserCircle(containerId, initials, index) {
     const color = contactCircleColor[index % contactCircleColor.length]; // choose color from  contactCircleColor
@@ -172,7 +132,7 @@ function createUserCircle(containerId, initials, index) {
 
 // function to load user contacts and create user circles for each contact
 async function renderUserCircles() {
-    const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
+    const contacts = await fetchData(`/${activeUserId}/contacts`); // fetch contacts for the active user
     if (!contacts) {
         console.error("No contacts found for user:", activeUserId); // error message
         return;
@@ -226,7 +186,7 @@ function getInitials(name) {
 }
 
 async function fetchContactsForOverlay() {
-    return await fetchUserData(`/${activeUserId}/contacts.json`);
+    return await fetchData(`/${activeUserId}/contacts`);
 }
 
 function logout() {

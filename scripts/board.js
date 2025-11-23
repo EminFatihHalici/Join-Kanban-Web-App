@@ -13,23 +13,26 @@ async function init() {
     console.log("Dauer von renderTask in ms: " + (end - start));
 }
 
-// FIND right position to inject new code (?!)
-// BEFORE fetch(?) / BEFORE work with(?) Tasks --> at renderTasks():
-// compare contacts to tasks.assigned
-// and delete tasks.assigned.id from firebase
-// handle issue "undefined/blanks" tasks.assigned: 0,1, ,3,4.usw.
+// done (checked) - FIND right position to inject new code
+// done (checked) - BEFORE work with Tasks --> at renderTasks():
+// done (checked) - compare contacts to tasks.assigned
+// done (checked) - and delete tasks.assigned.id from firebase & tasks @board.js
 
 
 async function renderTasks() {
     contacts = await fetchAndSortContacts();
-    console.log(contacts)
     let tasksObj = await fetchData(`/${activeUserId}/tasks`);
+    
+    await console.log(tasksObj);
+    
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    
+    console.log(tasksWithId[0].assigned);
+    // issue "undefined/null" tasks.assigned: 0,1,null,null,4.usw. // array.length = 5 instead of 3
+    // let tasksWithoutUndefined = tasksObj.forEach(assigned => assigned.assigned != undefined).filter(i => i.name !== undefined);
+    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
     tasks = tasksWithId;
-    console.log(tasks);
-    // maybe wrong if-statement // double check
-    if (tasks && tasks.length > 0) { tasks = await compareContactsWithTasksAssignedContactsAndCleanUp(tasks) }
-    console.log(tasks);
+    console.log(tasks[4].assigned);
     
     let categories = {
         'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
