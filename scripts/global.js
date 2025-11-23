@@ -209,8 +209,6 @@ async function deleteTask(taskId) {
 
 async function deletePath(path = "") {
     try {
-        console.log(BASE_URL + path + ".json");
-        
         const response = await fetch(BASE_URL + path + ".json", {
             method: "DELETE"
         });

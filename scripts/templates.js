@@ -487,7 +487,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
             </div>
 
             <div class="flex column justify pg-r30">
-                <form class="contact-form" onsubmit="updateContact('${contact.contactId}', '${option}'); return false;">
+                <form class="contact-form" onsubmit="updateContact('${contact.id}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
                             oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"

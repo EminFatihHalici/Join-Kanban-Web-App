@@ -26,21 +26,6 @@ function checkAllCreateContactValidations(id) {
     }
 }
 
-// async function renderContacts() {
-//     let contactListRef = document.getElementById('contactList');
-//     let contactsFetch = await loadData(`/${activeUserId}/contacts`);
-//     if (contactsFetch.length == 0) {
-//         contactListRef.innerHTML = emptyContactsHtml();
-//     } else {
-//         let contactsWithId = Object.entries(contactsFetch || {}).map(([key, contact]) => ({ id: key, ...contact }));
-//         let contacts = contactsFetch.filter(i => i.name !== undefined);
-//         let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
-        
-//         let groupedContacts = groupContactsByLetter(sortedContacts);
-//         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
-//     };
-// }
-
 function renderGroupedContacts(groupedContacts) {
     let html = '';
     let globalIndex = 0;
