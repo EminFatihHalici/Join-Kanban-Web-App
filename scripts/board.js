@@ -17,7 +17,7 @@ async function renderTasks() {
     tasks = tasksWithId;
     // console.log(tasksWithId[0].assigned);
     if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
-    
+
     let categories = {
         'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasks.filter(cat => cat.board === "inProgress") || [],
@@ -103,12 +103,13 @@ function checkForAndDisplayUserCircles(task) {
  * @param {string} html 
  * @returns {string} to be rendered HTML-String.
  */
-function createInitialCircle(arrAssigned, i, html) {
+function createInitialCircle(arrAssigned, i, html, overlay = "") {
     let contactIndex = contacts.indexOf(contacts.find(c => c.id === arrAssigned[i]));
     const color = contactCircleColor[arrAssigned[i] % contactCircleColor.length];
     if (contactIndex !== -1) {
         let initials = getInitials(contacts[contactIndex].name);
         html += renderTaskCardAssignedSectionInitials(initials, color);
+        if (overlay === 'overlay') { html += `<div>${contacts[contactIndex].name}</div>`}
     } else {
         html += '';
     }
@@ -208,24 +209,30 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
-    await renderContactsInOverlay(task); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
+    renderContactsInOverlay(task); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
 }
 
 /**
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
-async function renderContactsInOverlay(task) {
-    // const contactsObject = await fetchData(`/${activeUserId}/contacts`); // all contacts for activeUserId
-    // if (!contactsObject) return;
+function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
-    // console.log(contactsObject);
-    console.log(contacts);
-    
-    // console.log(Object.values(contactsObject));
-    
+    let arrAssigned = task.assigned;
+    let html = '';
     // container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-    container.innerHTML = checkForAndDisplayUserCircles(task)
+    if (arrAssigned && arrAssigned.length > 0) {
+        html += `<div class="rendered-assigned-contacts-names">`
+        for (let i = 0; i < arrAssigned.length; i++) {
+            html = createInitialCircle(arrAssigned, i, html, 'overlay');
+        }
+        html += `</div>`
+    }
+
+    container.innerHTML = html;
+
+    
+    // container.innerHTML = checkForAndDisplayUserCircles(task)
     // contacts.map((contact, index) => {
     //     const color = contactCircleColor[index % contactCircleColor.length];
     //     const initials = getInitials(contact.name);

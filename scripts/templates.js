@@ -31,7 +31,7 @@ function renderTaskCardAssignedSectionGridMoreThanFive() {
 }
 
 function renderTaskCardAssignedSectionInitials(initial, color){
-    return /*html*/`<div style="background-color: ${color};">${initial}</div>`
+    return /*html*/`<div class="user-circle-task" style="background-color: ${color};">${initial}</div>`
 }
 
 function renderTasksHtmlEmptyArray(categoryId) {

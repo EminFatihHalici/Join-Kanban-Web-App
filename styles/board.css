@@ -263,6 +263,14 @@ main {
     grid-auto-flow: column;
 }
 
+
+
+.rendered-assigned-contacts-names {
+    display: flex;
+    /* flex-direction: column; */
+    color: #000;
+}
+
 .grid-container>div,
 .user-circle-task {
     box-sizing: border-box;
