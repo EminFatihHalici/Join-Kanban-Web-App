@@ -15,7 +15,7 @@ async function renderTasks() {
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
     sortOutUndefined(tasksWithId);
     tasks = tasksWithId;
-    console.log(tasksWithId[0].assigned);
+    // console.log(tasksWithId[0].assigned);
     if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
     
     let categories = {
@@ -208,26 +208,33 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
-    await renderContactsInOverlay(); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
+    await renderContactsInOverlay(task); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
 }
 
 /**
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
-async function renderContactsInOverlay() {
-    const contactsObject = await fetchData(`/${activeUserId}/contacts`); // all contacts for activeUserId
-    if (!contactsObject) return;
+async function renderContactsInOverlay(task) {
+    // const contactsObject = await fetchData(`/${activeUserId}/contacts`); // all contacts for activeUserId
+    // if (!contactsObject) return;
     const container = document.getElementById('overlayContactContainer');
-    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-        const color = contactCircleColor[index % contactCircleColor.length];
-        const initials = getInitials(contact.name);
-        return `
-        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-        <div style="font-size: 18px;">${contact.name}</div>
-        </div>`;
-    }).join('');
+    // console.log(contactsObject);
+    console.log(contacts);
+    
+    // console.log(Object.values(contactsObject));
+    
+    // container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+    container.innerHTML = checkForAndDisplayUserCircles(task)
+    // contacts.map((contact, index) => {
+    //     const color = contactCircleColor[index % contactCircleColor.length];
+    //     const initials = getInitials(contact.name);
+    //     return `
+    //     <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+    //     <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
+    //     <div style="font-size: 18px;">${contact.name}</div>
+    //     </div>`;
+    // }).join('');
 }
 
 async function deleteTaskfromBoard(taskId) {
