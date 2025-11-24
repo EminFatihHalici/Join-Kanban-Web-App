@@ -26,6 +26,19 @@ function checkAllCreateContactValidations(id) {
     }
 }
 
+async function renderContacts() {
+    let contactListRef = document.getElementById('contactList');
+    contactsFetch = await fetchContacts(activeUserId);
+    if (contactsFetch.length == 0) {
+        contactListRef.innerHTML = emptyContactsHtml();
+    } else {
+        let contacts = contactsFetch.filter(i => i.name !== undefined);
+        let sortedContacts = contacts.sort((a, b) => { return a.name.localeCompare(b.name) });
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
+    };
+}
+
 function renderGroupedContacts(groupedContacts) {
     let html = '';
     let globalIndex = 0;
@@ -91,23 +104,30 @@ function contactsLargeSlideIn(ev, contactJson, color) {
 }
 
 async function showDialogCreateContact(id, ev) {
-    let contactAddModal = document.getElementById(id);
     ev.stopPropagation();
+    const modal = document.getElementById(id);
     bool = [0, 0];
-    contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
-    contactAddModal.showModal();
+    modal.innerHTML = renderAddNewContactOverlayHtml();
+    modal.showModal();
+    setTimeout(() => {
+        modal.classList.add("open");
+    }, 10);
+
     checkAllCreateContactValidations('contactCreateBtn');
     await loadAndRenderContacts('contactList', 'contacts');;
 }
 
 async function showDialogContact(id, contactJson, color, ev, option) {
+    ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    ev.stopPropagation();
     bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option)
+    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
     contactEditDeleteModal.showModal();
-    await loadAndRenderContacts('contactList', 'contacts');;
+    setTimeout(() => {
+        contactEditDeleteModal.classList.add("open");
+    }, 10);
+    await renderContacts();
 }
 
 async function createContact() {
@@ -133,7 +153,7 @@ async function updateContact(currContactId, option) {
     }
 }
 
-async function createNextIdPutDataAndRender() {    
+async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
@@ -193,10 +213,53 @@ function showPopup(id) {
 }
 
 function contactCancel(ev) {
+    ev.preventDefault();
     ev.stopPropagation();
-    let contactAddModal = document.getElementById('contactAddModal');
-    let contactEditDeleteModal = document.getElementById('contactEditDeleteModal');
-    clearAllContactsInputFields();
-    contactAddModal.close();
-    contactEditDeleteModal.close();
+
+    const modal = ev.target.closest("dialog");
+    if (!modal) return;
+
+    modal.classList.remove("open");
+    modal.close();
+}
+
+function closeContactOverlay() {
+    const overlay = document.getElementById('contactDisplayLarge');
+
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+
+    document.body.classList.remove('no-scroll');
+}
+
+function toggleMobileContactMenu() {
+    const menu = document.getElementById('mobileContactMenu');
+
+    const isOpen = menu.classList.contains('show');
+
+    if (isOpen) {
+        menu.classList.remove('show');
+        document.body.onclick = null;
+    } else {
+        menu.classList.add('show');
+        setTimeout(() => {
+            document.body.onclick = (ev) => {
+                if (!menu.contains(ev.target) &&
+                    !document.querySelector('.mobile-actions-btn').contains(ev.target)) {
+                    menu.classList.remove('show');
+                    document.body.onclick = null;
+                }
+            }
+        }, 0);
+    }
+}
+
+function openEditContact(contactJson, color) {
+    toggleMobileContactMenu();
+    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
+}
+
+function openDeleteContact(contactJson, color) {
+    toggleMobileContactMenu();
+    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
 }
