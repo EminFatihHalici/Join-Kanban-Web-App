@@ -461,7 +461,7 @@ function renderAddNewContactOverlayHtml() {
 }
 
 function renderEditContactOverlayHtml(contact, color, option) {
-    return /*html*/`
+    return /* html */`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

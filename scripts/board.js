@@ -6,33 +6,17 @@ let scrollThreshold = 50;
 async function init() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
-
-    let start = performance.now();
     await renderTasks();
-    let end = performance.now();
-    console.log("Dauer von renderTask in ms: " + (end - start));
 }
-
-// done (checked) - FIND right position to inject new code
-// done (checked) - BEFORE work with Tasks --> at renderTasks():
-// done (checked) - compare contacts to tasks.assigned
-// done (checked) - and delete tasks.assigned.id from firebase & tasks @board.js
-
 
 async function renderTasks() {
     contacts = await fetchAndSortContacts();
     let tasksObj = await fetchData(`/${activeUserId}/tasks`);
-    
-    await console.log(tasksObj);
-    
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
-    
-    console.log(tasksWithId[0].assigned);
-    // issue "undefined/null" tasks.assigned: 0,1,null,null,4.usw. // array.length = 5 instead of 3
-    // let tasksWithoutUndefined = tasksObj.forEach(assigned => assigned.assigned != undefined).filter(i => i.name !== undefined);
-    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
+    sortOutUndefined(tasksWithId);
     tasks = tasksWithId;
-    console.log(tasks[4].assigned);
+    console.log(tasksWithId[0].assigned);
+    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
     
     let categories = {
         'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
@@ -44,6 +28,21 @@ async function renderTasks() {
         const container = document.getElementById(htmlContainerId);
         tasks.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasks.map(task => renderTasksCardSmallHtml(task)).join('');
     });
+}
+
+function sortOutUndefined(tasksWithId) {
+    for (let i = 0; i < tasksWithId.length; i++) {
+        if (tasksWithId[i].assigned !== undefined) {
+            let tasksAssignedFiltered = []
+            let assignedArr = tasksWithId[i].assigned
+            for (let j = 0; j < assignedArr.length; j++) {
+                if (assignedArr[j] !== null) {
+                    tasksAssignedFiltered.push(assignedArr[j])
+                }
+            }
+            tasksWithId[i].assigned = tasksAssignedFiltered;
+        }
+    }
 }
 
 async function compareContactsWithTasksAssignedContactsAndCleanUp(tasks) {
