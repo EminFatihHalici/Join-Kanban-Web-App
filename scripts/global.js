@@ -185,10 +185,6 @@ function getInitials(name) {
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
-async function fetchContactsForOverlay() {
-    return await fetchData(`/${activeUserId}/contacts`);
-}
-
 function logout() {
     localStorage.removeItem('activeUserId');
     localStorage.removeItem('shownGreeting');

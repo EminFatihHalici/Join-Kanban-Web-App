@@ -216,7 +216,7 @@ async function renderTaskDetail(taskJson) {
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
 async function renderContactsInOverlay() {
-    const contactsObject = await fetchContactsForOverlay(); // all contacts for activeUserId
+    const contactsObject = await fetchData(`/${activeUserId}/contacts`); // all contacts for activeUserId
     if (!contactsObject) return;
     const container = document.getElementById('overlayContactContainer');
     container.innerHTML = Object.values(contactsObject).map((contact, index) => {
