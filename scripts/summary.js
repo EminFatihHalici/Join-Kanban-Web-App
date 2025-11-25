@@ -27,9 +27,6 @@ function extractTasks(userData) {
       if (isTaskEntry(task)) tasks.push(task);
     }
   }
-  for (let key in userData) {
-    if (key !== "tasks" && isTaskEntry(userData[key])) tasks.push(userData[key]);
-  }
   return tasks;
 }
 
@@ -43,16 +40,21 @@ function formatDate(deadlineDate) {
 }
 
 function findNextDeadline(tasks) {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let urgentTasks = tasks.filter(t =>
+    String(t.priority || "").toLowerCase() === "urgent"
+  );
+  if (urgentTasks.length === 0) return null;
   let deadlines = [];
-  for (let i = 0; i < tasks.length; i++) {
-    let task = tasks[i];
-    if (task.dueDate) {
-      let dueDate = new Date(task.dueDate);
-      if (!isNaN(dueDate)) deadlines.push(dueDate);
-    }
+  for (let task of urgentTasks) {
+    if (!task.dueDate) continue;
+    let due = new Date(task.dueDate);
+    if (isNaN(due)) continue;
+    due.setHours(0, 0, 0, 0);
+    if (due >= today) deadlines.push(due);
   }
-  if (deadlines.length === 0) return null;
-  return new Date(Math.min.apply(null, deadlines));
+  return deadlines.length ? new Date(Math.min(...deadlines)) : null;
 }
 
 function countTasks(tasks) {

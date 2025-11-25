@@ -11,9 +11,14 @@ async function init() {
     await renderTasks(tasks); 
 }
 
-async function renderTasks(tasks) {
-    let currentTasks = tasks;
-    // filteredTasks ? tasks = filteredTasks : tasks = tasksWithId;
+async function renderTasks() {
+    contacts = await fetchAndSortContacts();
+    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
+    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    sortOutUndefined(tasksWithId);
+    tasks = tasksWithId;
+    // console.log(tasksWithId[0].assigned);
+    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
 
     let categories = {
         'categoryToDo': currentTasks.filter(cat => cat.board === "toDo") || [],
@@ -209,6 +214,8 @@ async function renderTaskDetail(taskJson) {
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
+
+
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
@@ -268,7 +275,7 @@ function renderSubtasksForOverlay(task) {
         let subtaskTitle = subtask.title || subtask.name || "Unnamed Subtask"; // subtasks has title or name (old vs. new version)
         let isChecked = subtask.done === true || subtask.done === 'true';
         let icon = isChecked ? getCheckIcon() : getUncheckIcon();
-        html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
+       html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
     }
     html += '</div>';
     return html;
