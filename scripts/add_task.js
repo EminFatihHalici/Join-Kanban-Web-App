@@ -114,7 +114,7 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-// Helper functions for contacts, to sort and render them
+///////////// to be DELETED??????? /////////////
 function convertAndSortContacts(contactsObj) {
     if (!contactsObj) return [];
     const contactsArray = Object.entries(contactsObj).map(
@@ -126,6 +126,7 @@ function convertAndSortContacts(contactsObj) {
     return contactsArray;
 }
 
+///////////// to be DELETED??????? /////////////
 function createContactElement(contact) {
     const label = document.createElement('label');
     label.className = 'contact-item';
@@ -139,7 +140,7 @@ function createContactElement(contact) {
     return label;
 }
 
-
+///////////// to be DELETED??????? /////////////
 function renderTaskCard(task) {
     return `
         <div class="task-card" draggable="true">

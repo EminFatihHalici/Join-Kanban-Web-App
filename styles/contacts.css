@@ -91,6 +91,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     gap: 16px;
     padding: 16px 24px;
     background-color: #2A3647;
@@ -478,6 +479,7 @@ a {
 
 .go_back {
     display: none;
+    cursor: pointer;
 }
 
 .tile_summary_2 {
