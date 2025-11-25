@@ -232,7 +232,7 @@ function renderContactsInOverlay(task) {
                 let color = contactCircleColor[contact.id % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
 
                 let initials = getInitials(contact.name);
-                //baue pro contact eigen Div 
+                //pwn Div for each contact
                 html += `
                 <div class="overlay-contact-row">  
                     <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
