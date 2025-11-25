@@ -550,7 +550,7 @@ a {
         overflow: hidden;
     }
 
-    .title_mobile{
+    .title_mobile {
         padding-left: 16px;
     }
 
@@ -749,7 +749,7 @@ a {
     }
 
     .mobile-contact-menu.show {
-        right: 20px;
+        right: 16px;
     }
 
     .mobile-contact-menu button {
@@ -768,7 +768,7 @@ a {
     }
 
     #contactEditDeleteModal {
-        position: ;
+        position: fixed;
         top: 120%;
         left: 50%;
         transform: translate(-50%, -60%);
@@ -817,6 +817,8 @@ a {
     .overlay_form,
     .contact-form {
         width: 100%;
+        gap: 8px;
+        height: auto;
         align-items: center;
     }
 
@@ -840,10 +842,6 @@ a {
     .btn_contact_cancel {
         display: none;
     }
-
-
-
-
 
     @keyframes floatFromBottomOverlay {
         0% {
@@ -880,6 +878,14 @@ a {
         animation: none;
     }
 
+    .popup {
+        left: 50%;
+    }
+
+    .contact-form {
+        gap: 8px;
+    }
+
     .contacts-wrapper {
         margin: 80px 0 0 0;
         height: calc(100vh - 80px);
@@ -896,12 +902,22 @@ a {
         height: calc(100svh - 80px);
     }
 
-    .user-circle-large{
+    .user-circle-large_edit {
+        height: 80px;
+        width: 80px;
+        transform: translateY(-40px);
+    }
+
+    .user-circle-large {
         min-height: 80px;
         min-width: 80px;
     }
 
-    .edit_cirle_name{
+    .user_idle_add_task {
+        transform: translateY(-40px);
+    }
+
+    .edit_cirle_name {
         flex-direction: column;
         gap: 24px;
     }
@@ -920,7 +936,10 @@ a {
     .contact-form {
         width: 100%;
         align-items: center;
-        margin: 0 16px;
+    }
+
+    .mobile_input{
+        width: 100%;
     }
 
     .input-field {

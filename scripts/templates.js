@@ -521,7 +521,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                 </div>
             </div>
 
-            <div class="flex column justify pg-r30">
+            <div class="flex column justify pg-r30 mobile_input">
                 <form class="contact-form" onsubmit="updateContact('${contact.id}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
