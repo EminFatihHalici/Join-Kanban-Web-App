@@ -5,60 +5,55 @@ let scrollThreshold = 50;
 
 async function init() {
     checkLoggedInPageSecurity();
-    await eachPageSetCurrentUserInitials();
-    await renderTasks();
+    await eachPageSetCurrentUserInitials(); 
+    contacts = await fetchAndSortContacts();
+    tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
+    await renderTasks(tasks); 
 }
 
-async function renderTasks() {
-    contacts = await fetchAndSortContacts();
-    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
-    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
-    sortOutUndefined(tasksWithId);
-    tasks = tasksWithId;
-    // console.log(tasksWithId[0].assigned);
-    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
+async function renderTasks(tasks) {
+    let currentTasks = tasks;
+    // filteredTasks ? tasks = filteredTasks : tasks = tasksWithId;
 
     let categories = {
-        'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
-        'categoryInProgress': tasks.filter(cat => cat.board === "inProgress") || [],
-        'categoryAwaitFeedback': tasks.filter(cat => cat.board === "awaitFeedback") || [],
-        'categoryDone': tasks.filter(cat => cat.board === "done") || []
+        'categoryToDo': currentTasks.filter(cat => cat.board === "toDo") || [],
+        'categoryInProgress': currentTasks.filter(cat => cat.board === "inProgress") || [],
+        'categoryAwaitFeedback': currentTasks.filter(cat => cat.board === "awaitFeedback") || [],
+        'categoryDone': currentTasks.filter(cat => cat.board === "done") || []
     }
-    Object.entries(categories).forEach(([htmlContainerId, tasks]) => {
+    Object.entries(categories).forEach(([htmlContainerId, tasksFiltered]) => {
         const container = document.getElementById(htmlContainerId);
-        tasks.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasks.map(task => renderTasksCardSmallHtml(task)).join('');
+        tasksFiltered.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksFiltered.map(task => renderTasksCardSmallHtml(task)).join('');
     });
 }
 
-function sortOutUndefined(tasksWithId) {
+async function fetchAndAddIdAndRemoveUndefinedContacts() {
+    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
+    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    if (tasksWithId && tasksWithId.length > 0) {
+        await checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId);
+        return tasksWithId;
+    }
+    return [];
+}
+
+async function checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId) {
     for (let i = 0; i < tasksWithId.length; i++) {
         if (tasksWithId[i].assigned !== undefined) {
             let tasksAssignedFiltered = []
-            let assignedArr = tasksWithId[i].assigned
-            for (let j = 0; j < assignedArr.length; j++) {
-                if (assignedArr[j] !== null) {
-                    tasksAssignedFiltered.push(assignedArr[j])
+            for (let j = 0; j < tasksWithId[i].assigned.length; j++) {
+                let contactIndex = contacts.indexOf(contacts.find(c => c.id === tasksWithId[i].assigned[j]));
+                if (contactIndex === -1) {
+                    await deletePath(`/${activeUserId}/tasks/${tasksWithId[i].id}/assigned/${j}`);
+                } else if (tasksWithId[i].assigned[j] !== null) {
+                    tasksAssignedFiltered.push(tasksWithId[i].assigned[j])
                 }
             }
             tasksWithId[i].assigned = tasksAssignedFiltered;
         }
     }
+    return tasksWithId;
 }
-
-async function compareContactsWithTasksAssignedContactsAndCleanUp(tasks) {
-    for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].assigned && Array.isArray(tasks[i].assigned)) {
-            for (let j = 0; j < tasks[i].assigned.length; j++) {
-                let contactIndex = contacts.indexOf(contacts.find(c => c.id === tasks[i].assigned[j]));
-                if (contactIndex === -1) {
-                    await deletePath(`/${activeUserId}/tasks/${tasks[i].id}/assigned/${j}`);
-                }
-            }
-        }
-    }
-    return tasks;
-}
-
 
 function checkForAndDisplaySubtasks(task) {
     if (task.subtasks) {
@@ -137,7 +132,6 @@ function dragoverHandler(ev) {
 
 function dragendHandler(event) {
     event.target.style.transform = '';
-    // Auto-scroll stoppen
     stopAutoScroll();
 }
 
@@ -215,8 +209,6 @@ async function renderTaskDetail(taskJson) {
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
-
-
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
@@ -276,7 +268,7 @@ function renderSubtasksForOverlay(task) {
         let subtaskTitle = subtask.title || subtask.name || "Unnamed Subtask"; // subtasks has title or name (old vs. new version)
         let isChecked = subtask.done === true || subtask.done === 'true';
         let icon = isChecked ? getCheckIcon() : getUncheckIcon();
-       html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
+        html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
     }
     html += '</div>';
     return html;
@@ -341,4 +333,15 @@ function handleAutoScroll(event) {
             autoScrollInterval = null;
         }
     }
+}
+
+function searchTasks() {
+    let searchInput = document.getElementById('searchTasks').value.trim().toLowerCase();
+    if (searchInput.length === 0) {renderTasks(tasks)}
+    let filteredTasks = tasks.filter(task => {
+        if (task.description.toLowerCase().includes(searchInput) || task.title.toLowerCase().includes(searchInput)) {
+            return task;
+        }
+    });    
+    renderTasks(filteredTasks)
 }

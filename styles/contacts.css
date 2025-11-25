@@ -466,6 +466,7 @@ a {
 
 .go_back {
     display: none;
+    cursor: pointer;
 }
 
 .tile_summary_2 {
@@ -769,7 +770,7 @@ a {
     }
 
     #contactEditDeleteModal {
-        position: ;
+        /* position: ; */
         top: 120%;
         left: 50%;
         transform: translate(-50%, -60%);

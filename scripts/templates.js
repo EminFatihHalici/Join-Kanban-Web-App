@@ -586,11 +586,10 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
 
 function contactRowHTML(contact, index) {
-    const circleHTML = renderContactCircle(contact, index);
     return `
     <div class="contact-row">
       <div class="left-info">
-        ${circleHTML}
+        ${renderContactCircle(contact, index)}
         <span class="contact-name">${contact.name}</span>
       </div>
       <input type="checkbox" value="${contact.id}">
@@ -600,7 +599,7 @@ function contactRowHTML(contact, index) {
 
 // to be reviewed later !!!
 function renderContactCircle(contact, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
+    const color = contactCircleColor[contact.id % contactCircleColor.length];
     const initials = getInitials(contact.name);
     return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }

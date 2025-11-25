@@ -41,15 +41,12 @@ async function renderContacts() {
 
 function renderGroupedContacts(groupedContacts) {
     let html = '';
-    let globalIndex = 0;
     const sortedKeys = Object.keys(groupedContacts).sort();
     for (const key of sortedKeys) {
         html += renderContactsCardPartOne(key);
-
         groupedContacts[key].forEach(contact => {
-            const color = contactCircleColor[globalIndex % contactCircleColor.length];
+            const color = contactCircleColor[contact.id % contactCircleColor.length];
             html += renderContactsCardPartTwo(contact, color);
-            globalIndex++;
         });
     }
     return html;
