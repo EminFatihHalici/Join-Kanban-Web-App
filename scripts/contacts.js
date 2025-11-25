@@ -32,7 +32,7 @@ async function renderContacts() {
     if (contactsFetch.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
-        let contacts = contactsFetch.filter(i => i.name !== undefined);
+        let contacts = contactsFetch.filter(i => i && i.name);
         let sortedContacts = contacts.sort((a, b) => { return a.name.localeCompare(b.name) });
         let groupedContacts = groupContactsByLetter(sortedContacts);
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
@@ -143,11 +143,18 @@ async function createContact() {
 async function updateContact(currContactId, option) {
     try {
         let contactData = await setContactDataForBackendUpload();
-        option === 'Edit' ? await putData('/' + activeUserId + '/contacts/' + currContactId, contactData) : await deletePath('/' + activeUserId + '/contacts/' + currContactId);
+        if (option === 'Edit') {
+            await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
+        } else {
+            await deletePath('/' + activeUserId + '/contacts/' + currContactId);
+        }
         clearAllContactsInputFields();
         await loadAndRenderContacts('contactList', 'contacts');
-        document.getElementById('contactDisplayLarge').innerHTML = '';
-        document.getElementById('contactEditDeleteModal').close();
+        const big = document.getElementById('contactDisplayLarge');
+        big.innerHTML = '';
+        big.style.display = 'none';
+        const modal = document.getElementById('contactEditDeleteModal');
+        modal.close();
     } catch (error) {
         console.error('Error edit/delete contact at putData():', error);
     }
