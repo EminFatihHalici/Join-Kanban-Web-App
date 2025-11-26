@@ -4,12 +4,18 @@ let autoScrollIntervalX = null;
 let scrollSpeed = 10;
 let scrollThreshold = 50;
 
+//
+let editAssignedIds = [];
+let editSubtasks = [];
+let editPriority = 'medium';
+
+
 async function init() {
     checkLoggedInPageSecurity();
-    await eachPageSetCurrentUserInitials(); 
+    await eachPageSetCurrentUserInitials();
     contacts = await fetchAndSortContacts();
     tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
-    await renderTasks(tasks); 
+    await renderTasks(tasks);
 }
 
 async function renderTasks(tasks) {
@@ -250,13 +256,40 @@ async function deleteTaskfromBoard(taskId) {
     }
 }
 
-async function renderEditTaskDetail() {
+async function renderEditTaskDetail(taskId) {
+    let task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // 1. WICHTIG: Daten in die globalen Variablen laden
+    editAssignedIds = [...(task.assigned || [])]; // Kopie der IDs erstellen
+    editSubtasks = JSON.parse(JSON.stringify(task.subtasks || []));
+    editPriority = task.priority;
+
+    // 2. Template laden
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = editTaskDetailOverlayTemplate();
+    overlay.innerHTML = editTaskDetailOverlayTemplate(task); // task übergeben!
     overlay.classList.remove('d-none');
+
+    // 3. Inputs füllen
+    document.getElementById('title').value = task.title;
+    document.getElementById('description').value = task.description;
+    document.getElementById('due-date').value = task.dueDate;
+
+    // 4. Kontakte laden
     await loadAndRenderContacts('assigned-dropdown', 'addTask');
-    setupPriorityButtons();
+
+    // 5. Kreise malen (Jetzt kennt er die Variable!)
+    renderAssignedEditCircles();
 }
+
+// async function renderEditTaskDetail() {
+//     let overlay = document.getElementById("add-task-overlay");
+//     overlay.innerHTML = editTaskDetailOverlayTemplate();
+//     overlay.classList.remove('d-none');
+//     await loadAndRenderContacts('assigned-dropdown', 'addTask');
+//     setupPriorityButtons();
+//     renderAssignedEditCircles()
+// }
 
 function renderSubtasksForOverlay(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
@@ -365,8 +398,8 @@ function handleAutoScroll(event) {
 function searchTasks() {
     let searchInput = document.getElementById('searchTasks').value.trim().toLowerCase();
     let searchFailedRef = document.getElementById('searchFailed');
-    if (searchInput === '') {renderTasks(tasks); return}
-    let filteredTasks = tasks.filter(task => { return task.description.toLowerCase().includes(searchInput) || task.title.toLowerCase().includes(searchInput)});
+    if (searchInput === '') { renderTasks(tasks); return }
+    let filteredTasks = tasks.filter(task => { return task.description.toLowerCase().includes(searchInput) || task.title.toLowerCase().includes(searchInput) });
     // task.length === 0 ? searchFailedRef.innerHTML = 'no result, try another search' : task;
     filteredTasks.length === 0 ? searchFailedRef.innerHTML = `no result with "${searchInput}"` : searchFailedRef.innerHTML = '';
     renderTasks(filteredTasks)
@@ -384,14 +417,43 @@ window.addEventListener('resize', positionSearchField);
 function positionSearchField() {
     let searchDesktopRef = document.getElementById('searchPositionDesktop');
     let searchMobileRef = document.getElementById('searchPositionMobile');
-    if(window.innerWidth>1074) {
+    if (window.innerWidth > 1074) {
         searchMobileRef.innerHTML = '';
         searchDesktopRef.innerHTML = displaySearchInBoardHtml();
-        searchMobileRef.style.marginTop ="0px"
+        searchMobileRef.style.marginTop = "0px"
     } else {
         searchDesktopRef.innerHTML = '';
         searchMobileRef.innerHTML = displaySearchInBoardHtml();
-        searchMobileRef.style.marginTop ="40px"
+        searchMobileRef.style.marginTop = "40px"
     }
 }
 // #endregion
+
+
+function renderAssignedEditCircles() {
+    let container = document.getElementById('user-circle-assigned-edit-overlay');
+    container.innerHTML = '';
+
+    if (editAssignedIds.length > 5) {
+        for (let i = 0; i < 5; i++) {
+            let userId = editAssignedIds[i];
+            let contact = contacts.find(c => c.id === userId);
+            if (contact) {
+                container.innerHTML += renderContactCircle(contact, contact.id);
+            }
+        }
+        
+        let remainingCount = editAssignedIds.length - 5;
+        container.innerHTML += `
+            <div class="user-circle-intials" style="background-color: #2A3647; color: white;">
+                +${remainingCount}
+            </div>`;
+    } else {
+        editAssignedIds.forEach(userId => {
+            let contact = contacts.find(c => c.id === userId);
+            if (contact) {
+                container.innerHTML += renderContactCircle(contact, contact.id);
+            }
+        });
+    }
+}

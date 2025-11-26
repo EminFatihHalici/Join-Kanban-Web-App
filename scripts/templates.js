@@ -228,7 +228,7 @@ function getTaskDetailOverlayTemplate(task) {
 
                 <div class="task-detail-spacer"></div>
 
-                <div onclick="renderEditTaskDetail()" class="task-detail-edit-button">
+                <div onclick="renderEditTaskDetail('${task.id}')" class="task-detail-edit-button">
                 <div class="task-edit-icon"></div>
                 </div>
             </div>
@@ -240,7 +240,7 @@ function getTaskDetailOverlayTemplate(task) {
     `
 }
 
-function editTaskDetailOverlayTemplate() {
+function editTaskDetailOverlayTemplate(task) {
     const todayStr = new Date().toISOString().split('T')[0];
     return `
     <div class="task-detail-overlay">   
@@ -285,7 +285,7 @@ function editTaskDetailOverlayTemplate() {
                         </div>
                     </div>
 
-                    <div id="user-circle-assigned-edit-overlay">${checkForAndDisplayUserCircles()}</div>
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
                     
                     <label for="subtask">Subtasks</label>
                     <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
@@ -298,7 +298,7 @@ function editTaskDetailOverlayTemplate() {
             </div>  
 
             <div class="task-detail-edit-footer">
-                <button onclick="handleCreateTask()" class="btn btn-primary">
+                <button onclick="saveEditedTask('${task.id}')" class="btn btn-primary">
                 Ok
                 <img src="/assets/icons/check.svg" alt="check">
                 </button>
