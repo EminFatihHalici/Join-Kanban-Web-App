@@ -284,9 +284,6 @@ function editTaskDetailOverlayTemplate() {
                         <div id="assigned-dropdown" class="select-dropdown" style="display: block;">
                         </div>
                     </div>
-
-                    <div id="assigned-badges-container"></div>
-
                     
                     <label for="subtask">Subtasks</label>
                     <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
