@@ -24,13 +24,13 @@ function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
 }
 
 function renderTaskCardAssignedSectionGrid(arrAssigned) {
-    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(${arrAssigned.length}, 22px); width: calc(${arrAssigned.length -1} *22px + 44px);">`
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(${arrAssigned.length}, 22px); width: calc(${arrAssigned.length - 1} *22px + 44px);">`
 }
 function renderTaskCardAssignedSectionGridMoreThanFive() {
     return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(6, 22px); width: calc(5 *22px + 44px);">`
 }
 
-function renderTaskCardAssignedSectionInitials(initial, color){
+function renderTaskCardAssignedSectionInitials(initial, color) {
     return /*html*/`<div class="user-circle-task" style="background-color: ${color};">${initial}</div>`
 }
 
@@ -397,7 +397,7 @@ function renderContactLargeHtml(contact, color) {
 function renderAddNewContactOverlayHtml() {
     return /*html*/`
         <article class="flex h-100 add_contact_overlay" style="color: var(--white); position: relative;">
-            <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
+            <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button" style="cursor: pointer;">
                 <svg class="close-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
@@ -498,7 +498,7 @@ function renderAddNewContactOverlayHtml() {
 function renderEditContactOverlayHtml(contact, color, option) {
     return /*html*/`
         <article class="flex h-100 overlay_edit_delete" style="color: var(--white); position: relative;">
-            <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
+            <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button" style="cursor: pointer;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
@@ -541,10 +541,11 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             <img src="../assets/icons/mail.png" alt="email icon">
                         </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
+                    <div id="errMsgEmail" class="error-msg" style="display: none"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
+                            oninput="validateField('phoneContact', 'errMsgPhone', isPhoneValid, 1, 'Allowed 20 symbols [0-9+()/-] and [space]', false)"
                             tabindex="1" placeholder="Phone number">
                         <div class="icon-div">
                             <img src="../assets/icons/call.png" alt="email icon">
@@ -629,3 +630,19 @@ function getCheckIcon() {
             <path d="M8 12L11 15L16 9" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`;
 }
+
+// #region board_search
+
+function displaySearchInBoardHtml() {
+    return /* html */`
+        <div class="searchbar">
+            <input id="searchTasks" oninput="searchTasks()" class="searchbar__input" type="text"
+                placeholder="Find Task" autocomplete="off">
+            <div class="searchbar__divider"></div>
+            <button class="btn_glass" onclick="searchAndClearSearchField()">
+                <img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon">
+            </button>
+        </div>`
+}
+
+// #endregion

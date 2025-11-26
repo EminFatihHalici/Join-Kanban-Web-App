@@ -71,7 +71,7 @@
     background-color: var(--primary-active);
 }
     
-.d-none {
+.d-none.d-none {
     display: none;
 }
 

@@ -1,5 +1,6 @@
 let currentDraggedId;
 let autoScrollInterval = null;
+let autoScrollIntervalX = null;
 let scrollSpeed = 10;
 let scrollThreshold = 50;
 
@@ -145,8 +146,9 @@ function toggleStyle(ev) {
 
 async function moveTo(category) {
     try {
-        let result = await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
-        renderTasks();
+        await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
+        let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
+        renderTasks(tasksRefetch);
     } catch (error) {
         console.error('Error moveTask():', error);
     }
@@ -204,10 +206,8 @@ async function renderTaskDetail(taskJson) {
 
 /**
  * Render contact circles in the overlay container.
- * Fetches contacts, generates initials, and displays them with colored circles.
+ * And generates initials, and displays them with colored circles.
  */
-
-
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
@@ -243,7 +243,8 @@ async function deleteTaskfromBoard(taskId) {
     try {
         await deleteTask(taskId);
         closeAddTaskOverlay();
-        await renderTasks();
+        let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
+        renderTasks(tasksRefetch);
     } catch (error) {
         console.error("Error deleting task:", error);
     }
@@ -267,7 +268,7 @@ function renderSubtasksForOverlay(task) {
         let subtaskTitle = subtask.title || subtask.name || "Unnamed Subtask"; // subtasks has title or name (old vs. new version)
         let isChecked = subtask.done === true || subtask.done === 'true';
         let icon = isChecked ? getCheckIcon() : getUncheckIcon();
-       html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
+        html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
     }
     html += '</div>';
     return html;
@@ -284,7 +285,8 @@ async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  
         await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
         const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
         renderTaskDetail(taskJson);
-        renderTasks();
+        let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
+        renderTasks(tasksRefetch);
     } catch (error) {
         console.error("Update failed:", error);
     }
@@ -310,7 +312,7 @@ function handleAutoScroll(event) {
     const mouseY = event.clientY;
     const mouseX = event.clientX;
 
-    // Vertikales Scrollen
+    // Vertikal
     if (mouseY < rect.top + scrollThreshold) {
         // Nach oben scrollen
         if (!autoScrollInterval) {
@@ -332,15 +334,63 @@ function handleAutoScroll(event) {
             autoScrollInterval = null;
         }
     }
+
+    // Horizontal
+    if (mouseX < rect.left + scrollThreshold) {
+        // Nach links scrollen
+        if (!autoScrollIntervalX) {
+            autoScrollIntervalX = setInterval(() => {
+                main.scrollLeft -= scrollSpeed;
+            }, 16);
+        }
+    } else if (mouseX > rect.right - scrollThreshold) {
+        // Nach rechts scrollen
+        if (!autoScrollIntervalX) {
+            autoScrollIntervalX = setInterval(() => {
+                main.scrollLeft += scrollSpeed;
+            }, 16);
+        }
+    } else {
+        // Horizontales Scrollen stoppen
+        if (autoScrollIntervalX) {
+            clearInterval(autoScrollIntervalX);
+            autoScrollIntervalX = null;
+        }
+    }
 }
+
+// #region search
 
 function searchTasks() {
     let searchInput = document.getElementById('searchTasks').value.trim().toLowerCase();
-    if (searchInput.length === 0) {renderTasks(tasks)}
-    let filteredTasks = tasks.filter(task => {
-        if (task.description.toLowerCase().includes(searchInput) || task.title.toLowerCase().includes(searchInput)) {
-            return task;
-        }
-    });    
+    let searchFailedRef = document.getElementById('searchFailed');
+    if (searchInput === '') {renderTasks(tasks); return}
+    let filteredTasks = tasks.filter(task => { return task.description.toLowerCase().includes(searchInput) || task.title.toLowerCase().includes(searchInput)});
+    // task.length === 0 ? searchFailedRef.innerHTML = 'no result, try another search' : task;
+    filteredTasks.length === 0 ? searchFailedRef.innerHTML = `no result with "${searchInput}"` : searchFailedRef.innerHTML = '';
     renderTasks(filteredTasks)
 }
+
+function searchAndClearSearchField() {
+    let searchInput = document.getElementById('searchTasks')
+    searchTasks();
+    searchInput.value = ''
+}
+
+document.addEventListener('DOMContentLoaded', positionSearchField);
+window.addEventListener('resize', positionSearchField);
+
+function positionSearchField() {
+    let searchDesktopRef = document.getElementById('searchPositionDesktop');
+    let searchMobileRef = document.getElementById('searchPositionMobile');
+    if(window.innerWidth>1074) {
+        searchMobileRef.innerHTML = '';
+        searchDesktopRef.innerHTML = displaySearchInBoardHtml();
+        searchMobileRef.style.marginTop ="0px"
+    } else {
+        searchDesktopRef.innerHTML = '';
+        searchMobileRef.innerHTML = displaySearchInBoardHtml();
+        searchMobileRef.style.marginTop ="40px"
+    }
+}
+// #endregion
