@@ -11,24 +11,16 @@ async function init() {
     await renderTasks(tasks); 
 }
 
-async function renderTasks() {
-    contacts = await fetchAndSortContacts();
-    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
-    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
-    sortOutUndefined(tasksWithId);
-    tasks = tasksWithId;
-    // console.log(tasksWithId[0].assigned);
-    if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
-
+async function renderTasks(tasks) {
     let categories = {
-        'categoryToDo': currentTasks.filter(cat => cat.board === "toDo") || [],
-        'categoryInProgress': currentTasks.filter(cat => cat.board === "inProgress") || [],
-        'categoryAwaitFeedback': currentTasks.filter(cat => cat.board === "awaitFeedback") || [],
-        'categoryDone': currentTasks.filter(cat => cat.board === "done") || []
+        'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
+        'categoryInProgress': tasks.filter(cat => cat.board === "inProgress") || [],
+        'categoryAwaitFeedback': tasks.filter(cat => cat.board === "awaitFeedback") || [],
+        'categoryDone': tasks.filter(cat => cat.board === "done") || []
     }
-    Object.entries(categories).forEach(([htmlContainerId, tasksFiltered]) => {
+    Object.entries(categories).forEach(([htmlContainerId, task]) => {
         const container = document.getElementById(htmlContainerId);
-        tasksFiltered.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksFiltered.map(task => renderTasksCardSmallHtml(task)).join('');
+        task.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = task.map(task => renderTasksCardSmallHtml(task)).join('');
     });
 }
 
