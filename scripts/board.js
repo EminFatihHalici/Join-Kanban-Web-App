@@ -262,7 +262,9 @@ async function renderEditTaskDetail() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = editTaskDetailOverlayTemplate();
     overlay.classList.remove('d-none');
+    await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
+    renderAssignedBadges();
 }
 
 function renderSubtasksForOverlay(task) {
@@ -342,3 +344,5 @@ function handleAutoScroll(event) {
         }
     }
 }
+
+

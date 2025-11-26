@@ -160,7 +160,7 @@ async function renderUserCircles() {
     contacts.forEach((contact, index) => {
         if (contact) {
             const initials = getInitials(contact.name); // // Extract initials
-            createUserCircle('user-initial-circle', initials, index); // create and append the user circle
+            createUserCircle('user-initial-circle',  initials, index); // create and append the user circle
         }
     });
 }
