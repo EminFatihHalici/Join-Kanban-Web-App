@@ -351,6 +351,7 @@ a {
     border: none;
     background-color: var(--white);
     z-index: 9999;
+    cursor: pointer;
 }
 
 .close-button-position:hover {
@@ -511,6 +512,7 @@ a {
     justify-content: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
     z-index: 300;
+    cursor: pointer;
 }
 
 .mobile-actions-btn img {
@@ -526,6 +528,12 @@ a {
 
 .mobile-contact-menu {
     display: none;
+}
+
+.mobile-contact-menu>button:hover {
+    cursor: pointer;
+    color: var(--primary-hover);
+    font-weight: bold;
 }
 
 
@@ -882,6 +890,12 @@ a {
             transform: translate(-50%, -50%);
             opacity: 1;
         }
+    }
+
+    .error-msg {
+        width: 100%;
+        margin-right: auto;
+        padding-left: 12px;
     }
 }
 

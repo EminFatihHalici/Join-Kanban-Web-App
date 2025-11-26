@@ -1,8 +1,9 @@
 
-bool = [0, 0]
+bool = [0, 0];
 
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
+const isPhoneValid = val => /^[0-9 +()/\-]{6,20}$/.test(val);
 
 async function init() {
     checkLoggedInPageSecurity();

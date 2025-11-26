@@ -7,9 +7,9 @@
     <title>Join - Board</title>
     <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/add_task.css">
-    <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/media_queries.css">
 
@@ -75,73 +75,69 @@
         </div>
     </header>
 
-    <main>
+    <main class="board-header" style="border: 1px solid orange">
 
-        <section class="board-header">
-            <div class="board-header__top">
-                <h1 class="board-title">Board</h1>
+        <section class="board-header__top">
+            <h1 class="board-title">Board</h1>
 
-                <div class="board-actions">
-                    <div class="searchbar">
-                        <input id="searchTasks" oninput="searchTasks()" class="searchbar__input" type="text" placeholder="Find Task">
-                        <div class="searchbar__divider"></div>
-                        <button class="btn_glass" onclick="searchTasks()">
-                            <img class="searchbar__icon" src="/assets/icons/search.svg"
-                                alt="search icon">
-                        </button>
-                    </div>
-
-                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">
-                        <span class="board_add_task_button_text">Add Task&nbsp;</span>+
-                    </button>
+            <div class="board-actions">
+                <div id="searchPositionDesktop">
                 </div>
+                
+                <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">
+                    <span class="board_add_task_button_text">Add Task&nbsp;</span>+
+                </button>
+            </div>
+        </section>
+
+        <section id="searchPositionMobile">
+        </section>
+        <div id="searchFailed" class="search-error"></div>
+
+        <section class="board_categories">
+            <div class="category-block">
+                <div class="category">
+                    <h2>To do</h2>
+                    <button onclick="renderAddTaskOverlay('toDo')" class="add_btn">+</button>
+                </div>
+                <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
+                </section>
             </div>
 
-            <section class="board_categories">
-                <div class="category-block">
-                    <div class="category">
-                        <h2>To do</h2>
-                        <button onclick="renderAddTaskOverlay('toDo')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2>In Progress</h2>
+                    <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn">+</button>
                 </div>
+                <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
+                </section>
+            </div>
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>In Progress</h2>
-                        <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2>Await Feedback</h2>
+                    <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn">+</button>
                 </div>
+                <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
+                </section>
+            </div>
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>Await Feedback</h2>
-                        <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2>Done</h2>
                 </div>
+                <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>Done</h2>
-                    </div>
-                    <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
+                </section>
+            </div>
 
-                    </section>
-                </div>
-
-            </section>
     </main>
 
-    <div id="add-task-overlay" class="add-task-overlay d-none slide-in">
+    <div id="add-task-overlay" class="add-task-overlay slide-in d-none">
     </div>
 
 </body>

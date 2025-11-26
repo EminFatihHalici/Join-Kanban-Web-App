@@ -2,16 +2,6 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-main {
-    position: fixed;
-    top: 96px;
-    left: 328px;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-    background: #F6F7F8;
-}
-
 .flex {
     display: flex;
     gap: 12px;
@@ -22,8 +12,15 @@ main {
 }
 
 .board-header {
-    padding: 79.5px 40px 0 0px;
+    padding: 80px 40px 0 0px;
     max-width: 1208px;
+    position: fixed;
+    top: 96px;
+    left: 328px;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background: var(--bg-color);
 }
 
 .board-header__top {
@@ -50,7 +47,6 @@ main {
     display: flex;
     align-items: center;
     height: 48px;
-    width: 312px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
     background-color: #fff;
@@ -67,6 +63,7 @@ main {
     background: transparent;
     height: 100%;
     cursor: pointer;
+    min-width: 100px;
 }
 
 .searchbar__input::placeholder {
@@ -85,6 +82,11 @@ main {
     height: 18px;
     object-fit: contain;
     opacity: 0.8;
+}
+
+.search-error {
+    color: orange;
+    padding: 12px 0 0 24px;
 }
 
 /* Primary Button */
@@ -829,12 +831,36 @@ textarea {
     transition: background-color 0.1s ease;
 }
 
+
+
 @media (max-width: 1000px) {
     .board_add_task_button_text {
         display: none;
     }
+
     .btn-primary {
         width: 52px;
         height: 52px;
+    }
+}
+
+@media (max-width: 768px) {
+    .board-header {
+        top: 80px;
+        left: 16px;
+    }
+
+    .board-header {
+        padding: 80px 16px 0 0;
+    }
+
+}
+
+@media (max-width: 556px) {
+    .category-block {
+        width: 100%;
+    } 
+    .category {
+        width: 100%;
     }
 }
