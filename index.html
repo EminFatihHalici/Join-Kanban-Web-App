@@ -51,13 +51,13 @@
 
                     <div class="input-field">
                         <input class="input_login" type="password" id="passwordLogin"
+                            onfocus="changePasswordIcon('passwordIcon')"
                             oninput="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)"
                             tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
-                            <img src="../assets/icons/lock.png" alt="lock icon">
+                            <img id="passwordIcon" src="../assets/icons/lock.png" alt="lock icon" onclick="passwordVisible('passwordLogin','passwordIcon')">
                         </div>
                     </div>
-
                     <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
 
 

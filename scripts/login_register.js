@@ -54,6 +54,42 @@ function checkAllValidations() {
     }
 }
 
+function changePasswordIcon(id) {
+    let containerId = document.getElementById(`${id}`);
+    if (containerId.src.endsWith('visibility.png')) {
+        return;
+    }
+    containerId.src = '../assets/icons/visibility_off.png';
+    containerId.alt = 'visibility_off icon';
+}
+
+function passwordVisible(inputId, iconId, event) {
+    if (event) { event.preventDefault() }
+    let input = document.getElementById(`${inputId}`);
+    let icon = document.getElementById(`${iconId}`);
+    let cursorPosition = input.selectionStart;
+    checkIconPathAndSetNewIconAndInputType (icon, input);
+    setTimeout(() => {
+        input.focus();
+        input.setSelectionRange(cursorPosition, cursorPosition)
+    }, 0);
+}
+
+function checkIconPathAndSetNewIconAndInputType (icon, input) {
+    if (icon.src.endsWith('lock.png')) {
+        return
+    }
+    else if (icon.src.endsWith('visibility_off.png')) {
+        icon.src = '../assets/icons/visibility.png';
+        icon.alt = 'visibility icon';
+        input.type = 'text';
+    } else {
+        icon.src = '../assets/icons/visibility_off.png';
+        icon.alt = 'visibility_off icon';
+        input.type = 'password';
+    }
+}
+
 // #endregion
 
 // #region registration -> add New User to firebase DB
@@ -87,17 +123,6 @@ function setDataForBackendUpload() {
     return data;
 }
 
-async function putData(path = "", data = {}) {
-    let response = await fetch(BASE_URL + path + ".json", {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-    return await response.json();
-}
-
 function clearAllSignUpInputFields() {
     let nameRegister = document.getElementById('nameRegister');
     let emailRegister = document.getElementById('emailRegister');
@@ -112,7 +137,9 @@ function clearAllSignUpInputFields() {
 function showPopup(id) {
     const popup = document.getElementById(id);
     popup.style.display = 'block';
-    popup.classList.add('show');
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 10);
     setTimeout(function () {
         popup.classList.remove('show');
         setTimeout(() => {
@@ -151,16 +178,11 @@ function animateLogoFirstVisit() {
     let logoOverlay = document.getElementById('logoOverlay');
     let logo = document.getElementById('logo');
 
-    if (window.innerWidth > 768) {
-        logoOverlay.classList.add('animate-out');
-        setTimeout(() => {
-            logoOverlay.style.display = 'none';
-            logo.style.opacity = 1;
-        }, 1500);
-    } else {
+    logoOverlay.classList.add('animate-out');
+    setTimeout(() => {
         logoOverlay.style.display = 'none';
         logo.style.opacity = 1;
-    }
+    }, 800);
 }
 
 function saveToLocalStorage(activeUserId) {
