@@ -261,15 +261,15 @@ function editTaskDetailOverlayTemplate(task) {
 
                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
-                        <button type="button" class="priority-btn urgent">
+                        <button type="button" class="priority-btn urgent" id="prio-urgent" onclick="setEditPrio('urgent')">
                             Urgent
                             <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
                         </button>
-                        <button type="button" class="priority-btn medium active">
+                        <button type="button" class="priority-btn medium active" id="prio-medium" onclick="setEditPrio('medium')">
                             Medium
                             <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
                         </button>
-                        <button type="button" class="priority-btn low">
+                        <button type="button" class="priority-btn low" id="prio-low" onclick="setEditPrio('low')">
                             Low
                             <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
                         </button>
@@ -277,25 +277,31 @@ function editTaskDetailOverlayTemplate(task) {
 
                     <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
-                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
                             Select contacts to assign
                         </div>
 
-                        <div id="assigned-dropdown" class="select-dropdown" style="display: block;">
+                        <div id="assigned-dropdown-edit" class="select-dropdown" style="display: block;">
                         </div>
                     </div>
 
                     <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
                     
                     <label for="subtask">Subtasks</label>
-                    <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
 
-                    <div class="subtask-list-edit">
-                        <ul id="subtask-list-edit-ul">
-                        -Subtasks will be listed here-
-                        </ul>
-                    </div> 
-            </div>  
+                        <div class="subtask-input-wrapper">
+                            <input type="text" id="subtask-input-edit" class="subtask-input-field" 
+                                placeholder="Add new subtask" 
+                                onfocus="showMainSubtaskIcons()"
+                                onkeydown="handleSubtaskKey(event)">
+                            
+                            <div id="main-subtask-icons" class="input-action-icons">
+                        
+                            </div>
+                                </div>
+
+                                <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
+                  </div>  
 
             <div class="task-detail-edit-footer">
                 <button onclick="saveEditedTask('${task.id}')" class="btn btn-primary">

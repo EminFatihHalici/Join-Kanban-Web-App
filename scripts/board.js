@@ -8,6 +8,7 @@ let scrollThreshold = 50;
 let editAssignedIds = [];
 let editSubtasks = [];
 let editPriority = 'medium';
+let editingSubtaskIndex = -1;
 
 
 async function init() {
@@ -276,20 +277,12 @@ async function renderEditTaskDetail(taskId) {
     document.getElementById('due-date').value = task.dueDate;
 
     // 4. Kontakte laden
-    await loadAndRenderContacts('assigned-dropdown', 'addTask');
+    await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
 
     // 5. Kreise malen (Jetzt kennt er die Variable!)
     renderAssignedEditCircles();
+    setCheckboxesById()
 }
-
-// async function renderEditTaskDetail() {
-//     let overlay = document.getElementById("add-task-overlay");
-//     overlay.innerHTML = editTaskDetailOverlayTemplate();
-//     overlay.classList.remove('d-none');
-//     await loadAndRenderContacts('assigned-dropdown', 'addTask');
-//     setupPriorityButtons();
-//     renderAssignedEditCircles()
-// }
 
 function renderSubtasksForOverlay(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
@@ -442,7 +435,7 @@ function renderAssignedEditCircles() {
                 container.innerHTML += renderContactCircle(contact, contact.id);
             }
         }
-        
+
         let remainingCount = editAssignedIds.length - 5;
         container.innerHTML += `
             <div class="user-circle-intials" style="background-color: #2A3647; color: white;">
@@ -455,5 +448,180 @@ function renderAssignedEditCircles() {
                 container.innerHTML += renderContactCircle(contact, contact.id);
             }
         });
+    }
+}
+
+
+
+async function saveEditedTask(taskId) {
+    let title = document.getElementById('title').value;
+    let description = document.getElementById('description').value;
+    let dueDate = document.getElementById('due-date').value;
+    let oldTask = tasks.find(t => t.id === taskId);
+    let updatedTask = {
+        ...oldTask,             
+        title: title,             
+        description: description, 
+        dueDate: dueDate,         
+        priority: editPriority,  
+        assigned: editAssignedIds,
+        subtasks: editSubtasks   
+    };
+    try {
+        await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
+        closeAddTaskOverlay();
+        tasks = await fetchAndAddIdAndRemoveUndefinedContacts(); 
+        await renderTasks(tasks); 
+    } catch (error) {
+        console.error("Can't save:", error);
+    }
+}
+
+function setEditPrio(newPrio) {
+    editPriority = newPrio;
+    ['urgent', 'medium', 'low'].forEach(p => {
+        document.getElementById('prio-' + p).classList.remove('active');
+    });
+    document.getElementById('prio-' + newPrio).classList.add('active');
+}
+
+
+function toggleEditAssign(userId) {
+    let index = editAssignedIds.indexOf(userId);
+    if (index === -1) {
+        editAssignedIds.push(userId);
+    } else {
+        editAssignedIds.splice(index, 1);
+    }
+    renderAssignedEditCircles();
+}
+
+
+
+function renderSubtasksEditMode() {
+    let list = document.getElementById('subtask-list-edit-ul');
+    list.innerHTML = '';
+
+    editSubtasks.forEach((st, i) => {
+        if (i === editingSubtaskIndex) {
+            list.innerHTML +=`
+            <li class="subtask-edit-row-editing">
+                <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}">
+                
+                <div class="subtask-icons-container" style="display: flex;"> <img src="/assets/icons/delete.svg" class="subtask-icon" onmousedown="deleteSubtaskEdit(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/check.svg" class="subtask-icon" onmousedown="saveEditedSubtask(${i})">
+                </div>
+            </li>`;
+
+        } else {
+            list.innerHTML +=`
+            <li class="subtask-edit-row" ondblclick="editSubtask(${i})">
+                <span onclick="editSubtask(${i})" style="cursor:text; flex-grow:1;">• ${st.title}</span>
+                
+                <div class="subtask-icons-container">
+                    <img src="/assets/icons/edit.svg" class="subtask-icon" onclick="editSubtask(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/delete.svg" class="subtask-icon" onclick="deleteSubtaskEdit(${i})">
+                </div>
+            </li>`;
+        }
+    });
+}
+
+function editSubtask(index) {
+    editingSubtaskIndex = index;
+    renderSubtasksEditMode();
+}
+
+function saveEditedSubtask(index) {
+    let input = document.getElementById(`edit-subtask-input-${index}`);
+    if (input.value.trim().length > 0) {
+        editSubtasks[index].title = input.value;
+        editingSubtaskIndex = -1;
+        renderSubtasksEditMode();
+    } else {
+        deleteSubtaskEdit(index);
+    }
+}
+function addSubtaskEdit() {
+    let input = document.getElementById('subtask-input-edit');
+    let title = input.value.trim();
+    if (title) {
+        editSubtasks.push({ title: title, done: false });
+        renderSubtasksEditMode();
+        input.value = '';
+    }
+    resetMainSubtaskIcons();
+}
+
+function toggleContactDropdownEdit() {
+    let dropdown = document.getElementById('assigned-dropdown-edit');
+    
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        dropdown.style.display = 'block';
+    }
+}
+//
+
+function setCheckboxesById() {
+    let container = document.getElementById('assigned-dropdown-edit');
+    if (!container) return;
+    let checkboxes = container.getElementsByTagName('input');
+    for (let i = 0; i < checkboxes.length; i++) {
+        let cb = checkboxes[i];
+        cb.checked = editAssignedIds.includes(cb.value);
+        cb.onclick = function(e) {
+            e.stopPropagation();
+            toggleEditAssign(cb.value);
+        };
+    }
+}
+
+function deleteSubtaskEdit(index) {
+    editSubtasks.splice(index, 1);
+    editingSubtaskIndex = -1; 
+    renderSubtasksEditMode();
+}
+
+function showMainSubtaskIcons() {
+    let container = document.getElementById('main-subtask-icons');
+    container.innerHTML = `
+        <div onmousedown="cancelMainSubtaskInput()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="separator-vertical"></div>
+        <div onmousedown="addSubtaskEdit()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+    `;
+}
+
+function cancelMainSubtaskInput() {
+    let input = document.getElementById('subtask-input-edit');
+    input.value = '';      
+    input.blur();          
+    resetMainSubtaskIcons(); 
+}
+function resetMainSubtaskIcons() {
+    let container = document.getElementById('main-subtask-icons');
+    container.innerHTML = `
+        <div onclick="addSubtaskEdit()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+    `;
+}
+
+
+function handleSubtaskKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); 
+        addSubtaskEdit();       
     }
 }
