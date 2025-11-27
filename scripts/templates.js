@@ -82,6 +82,12 @@ function emptyContactsHtml() {
     `
 }
 
+function contactsLoadingIssueHTML() {
+    return `
+   <div>Error loading contacts.</div>
+     `
+}
+
 function getAddTaskOverlayTemplate(board) {
     const todayStr = new Date().toISOString().split('T')[0];
 
@@ -312,6 +318,54 @@ function editTaskDetailOverlayTemplate(task) {
                 
     </div>
     `;
+}
+
+function showMainSubtaskIcons() {
+    let container = document.getElementById('main-subtask-icons');
+    container.innerHTML = `
+        <div onmousedown="cancelMainSubtaskInput()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="separator-vertical"></div>
+        <div onmousedown="addSubtaskEdit()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+    `;
+}
+
+function renderSubtasksEditMode() {
+    let list = document.getElementById('subtask-list-edit-ul');
+    list.innerHTML = '';
+
+    editSubtasks.forEach((st, i) => {
+        if (i === editingSubtaskIndex) {
+            list.innerHTML +=`
+            <li class="subtask-edit-row-editing">
+                <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}">
+                
+                <div class="subtask-icons-container" style="display: flex;"> <img src="/assets/icons/delete.svg" class="subtask-icon" onmousedown="deleteSubtaskEdit(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/check.svg" class="subtask-icon" onmousedown="saveEditedSubtask(${i})">
+                </div>
+            </li>`;
+
+        } else {
+            list.innerHTML +=`
+            <li class="subtask-edit-row" ondblclick="editSubtask(${i})">
+               <span onclick="editSubtask(${i})" style="cursor:text; flex-grow:1;">• ${st.title}</span>
+                
+                <div class="subtask-icons-container">
+                    <img src="/assets/icons/edit.svg" class="subtask-icon" onclick="editSubtask(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/delete.svg" class="subtask-icon" onclick="deleteSubtaskEdit(${i})">
+                </div>
+            </li>`;
+        }
+    });
 }
 
 function renderContactLargeHtml(contact, color) {
