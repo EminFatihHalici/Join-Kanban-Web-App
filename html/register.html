@@ -19,17 +19,17 @@
 
 <body>
     <div class="wrapper">
-    <header>
-        <div class="header-left">
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
-        </div>
-        <div class="header-right">
-            <a class="a_help_summary" href="/html/help.html">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
-            </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
-        </div>
-    </header>
+        <header>
+            <div class="header-left">
+                <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            </div>
+            <div class="header-right">
+                <a class="a_help_summary" href="/html/help.html">
+                    <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+                </a>
+                <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+            </div>
+        </header>
 
         <main class="inner-wrapper">
             <div class="register-login">
@@ -64,20 +64,22 @@
 
                     <div class="input-field">
                         <input class="input_login" type="password" id="passwordRegister"
+                            onfocus="changePasswordIcon('passwordIcon')"
                             oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
                             tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
-                            <img src="../assets/icons/lock.png" alt="lock icon">
+                            <img id="passwordIcon" onclick="passwordVisible('passwordRegister','passwordIcon', event)" src="../assets/icons/lock.png" alt="lock icon">
                         </div>
                     </div>
                     <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="password" id="passwordRegisterConfirm"
+                            onfocus="changePasswordIcon('passwordConfirmIcon')"
                             oninput="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')"
                             tabindex="1" placeholder="Confirm Password" minlength="12">
                         <div class="icon-div">
-                            <img src="../assets/icons/lock.png" alt="lock icon">
+                            <img id="passwordConfirmIcon" onclick="passwordVisible('passwordRegisterConfirm','passwordConfirmIcon', event)" src="../assets/icons/lock.png" alt="lock icon">
                         </div>
                     </div>
                     <div id="errMsgPasswordConfirm" class="error-msg" style="display: none;"></div>

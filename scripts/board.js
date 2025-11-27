@@ -208,6 +208,7 @@ async function renderTaskDetail(taskJson) {
  * Render contact circles in the overlay container.
  * And generates initials, and displays them with colored circles.
  */
+///////////// to be refactor'd (>14 lines) //////////////////
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
