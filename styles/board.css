@@ -910,6 +910,7 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 440px;
     padding: 6px 8px;
     border-radius: 8px;
     transition: background-color 0.1s;
@@ -917,7 +918,7 @@ textarea {
 
 
 .subtask-icons-container {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 8px;
 }
@@ -931,6 +932,7 @@ textarea {
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
+    width: 440px;
     border-bottom: 1px solid #29ABE2;
     background-color: white;
     margin-bottom: 4px;

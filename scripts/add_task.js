@@ -1,9 +1,14 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
-    await loadAndRenderContacts('assigned-dropdown', 'addTask');
+    
+    await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setupPriorityButtons();
     setupFormElements();
+    setCheckboxesById();
+    editSubtasks = [];
+    editAssignedIds = [];
+    editPriority = 'medium';
 }
 
 function setupFormElements() {
@@ -26,56 +31,96 @@ function setupPriorityButtons() {
 }
 
 /** Handle create task */
+// async function handleCreateTask(boardCategory) {
+//     let board = boardCategory;
+//     let title = document.getElementById("title").value.trim();
+//     let description = document.getElementById("description").value.trim();
+//     let dueDate = document.getElementById("due-date").value;
+//     let category = document.getElementById("category").value;
+//     let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
+//     let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+//     let subtaskText = document.getElementById("subtask").value.trim();
+//     let subtasksArray = [];
+//     if (subtaskText) {
+//         const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
+//         subtasksArray = rawSubtasks.map((title, index) => ({
+//             done: "false",
+//             title: title.trim()
+//         }));
+//     }
+//     let activePriority = document.querySelector(".priority-btn.active");
+//     let priority = activePriority ? activePriority.classList[1] : "medium";
+
+//     if (!title || !dueDate || !category) {
+//         alert("Please fill in all required fields.");
+//         return;
+//     }
+
+//     let newTask = {
+//         title,
+//         description,
+//         dueDate,
+//         category,
+//         assigned,
+//         board,
+//         priority,
+//         subtasks: subtasksArray,
+//         createdAt: new Date().toISOString()
+//     }
+
+//     console.log("New Task Created:", newTask);
+
+//     try {
+//         let taskPath = `/${activeUserId}/tasks`;
+//         let nextTaskId = await calcNextId(taskPath);
+//         await putData(`${taskPath}/${nextTaskId}`, newTask);
+//         clearForm();
+//     } catch (error) {
+//         console.error("Error creating task:", error);
+//     }
+
+// }
+
+
 async function handleCreateTask(boardCategory) {
-    let board = boardCategory;
-    let title = document.getElementById("title").value.trim();
-    let description = document.getElementById("description").value.trim();
-    let dueDate = document.getElementById("due-date").value;
-    let category = document.getElementById("category").value;
-    let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
-    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
-    let subtaskText = document.getElementById("subtask").value.trim();
-    let subtasksArray = [];
-    if (subtaskText) {
-        const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
-        subtasksArray = rawSubtasks.map((title, index) => ({
-            done: "false",
-            title: title.trim()
-        }));
-    }
-    let activePriority = document.querySelector(".priority-btn.active");
-    let priority = activePriority ? activePriority.classList[1] : "medium";
+ let title = document.getElementById('title').value.trim();
+    let description = document.getElementById('description').value.trim();
+    let dueDate = document.getElementById('due-date').value;
+    let categoryElement = document.getElementById('category');
+    let category = categoryElement ? categoryElement.value : '';
 
-    if (!title || !dueDate || !category) {
-        alert("Please fill in all required fields.");
-        return;
-    }
+    if (title && dueDate && category) {
+        let newTask = {
+            title: title,
+            description: description,
+            dueDate: dueDate,
+            category: category,
+            
+            // WIEDERVERWENDUNG: Daten aus den globalen Variablen von board.js
+            priority: editPriority,     
+            assigned: editAssignedIds,  
+            subtasks: editSubtasks,     
+            
+            board: boardCategory,
+            createdAt: new Date().getTime()
+        };
 
-    let newTask = {
-        title,
-        description,
-        dueDate,
-        category,
-        assigned,
-        board,
-        priority,
-        subtasks: subtasksArray,
-        createdAt: new Date().toISOString()
-    }
-
-    console.log("New Task Created:", newTask);
+    // console.log("New Task Created:", newTask);
 
     try {
         let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
-        clearForm();
+        
+        // WICHTIG: Nach dem Speichern aufräumen & Weiterleiten
+        clearForm(); 
+        // Optional: Zurück zum Board leiten
+        window.location.href = 'board.html'; 
     } catch (error) {
         console.error("Error creating task:", error);
     }
-
+ }
 }
-
 
 
 

@@ -293,17 +293,13 @@ function editTaskDetailOverlayTemplate(task) {
 
                     <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
                     
-                    <label for="subtask">Subtasks</label>
-
-                        <div class="subtask-input-wrapper">
-                            <input type="text" id="subtask-input-edit" class="subtask-input-field" 
-                                placeholder="Add new subtask" 
-                                onfocus="showMainSubtaskIcons()"
-                                onkeydown="handleSubtaskKey(event)">
-                            
-                            <div id="main-subtask-icons" class="input-action-icons">
-                        
-                            </div>
+                                                   <label for="subtask">Subtasks</label>
+                                <div class="subtask-input-wrapper">
+                                    <input type="text" id="subtask-input-edit" class="subtask-input-field"
+                                        placeholder="Add new subtask" 
+                                        onclick="showMainSubtaskIcons()" 
+                                        onkeydown="handleSubtaskKey(event)">
+                                    <div id="main-subtask-icons" class="input-action-icons"></div>
                                 </div>
 
                                 <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
@@ -347,7 +343,7 @@ function renderSubtasksEditMode() {
                     
                     <div class="separator-vertical"></div>
                     
-                    <img src="/assets/icons/check.svg" class="subtask-icon" onmousedown="saveEditedSubtask(${i})">
+                    <img src="/assets/icons/check_black.svg" class="subtask-icon" onmousedown="saveEditedSubtask(${i})">
                 </div>
             </li>`;
 

@@ -93,7 +93,7 @@ select {
     width: 1px;
     background-color: #D1D1D1;
     margin: 0 24px;
-    align-self: stretch;
+    height: 424px;
 }
 
 .form-left,
@@ -101,7 +101,7 @@ select {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    flex: 1;
+    width: 440px;
 }
 
 .form-footer {
@@ -356,9 +356,17 @@ select:focus {
 }
 
 .subtask-icons-container {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 8px;
+}
+
+.subtask-edit-row:hover {
+    background-color: #eee;
+}
+
+.subtask-edit-row:hover .subtask-icons-container {
+    display: flex;
 }
 
 .subtask-edit-row {
@@ -395,16 +403,14 @@ select:focus {
 
 
 .subtask-input-wrapper {
-    width: 440px;
     display: flex;
     align-items: center;
     background-color: white;
     padding: 2px 4px;
     margin-bottom: 16px;
     border: 1px solid #D1D1D1;
-    width: 100%;
     border-radius: 10px;
-    width: 412px;
     justify-content: space-between;
     cursor: pointer;
 }
+
