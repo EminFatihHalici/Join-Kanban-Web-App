@@ -52,8 +52,8 @@ body {
     flex-direction: column;
     height: 100vh;
 }
-
 /*----------End Region----------*/
+
 /*----------Header----------*/
 header {
     padding: 0 77px 0;
@@ -94,6 +94,10 @@ header {
     transition: all 0.8s ease-in-out;
 }
 
+#animatedImgMobile {
+    display: none;
+}
+
 .logo-overlay.animate-out {
     background-color: transparent;
     backdrop-filter: blur(0px);
@@ -118,7 +122,74 @@ header {
     color: var(--white);
 }
 
+/**----------Login----------*/
+.btn_login_header {
+    width: 99px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    flex: 1;
+    background-color: var(--primary);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn_login_header:focus,
+.btn_login_header:hover {
+    background-color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+}
+
+.btn_log_in {
+    width: 110px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    background-color: var(--primary);
+    font-size: 21px;
+    font-weight: 700;
+    color: white;
+}
+
+.btn_log_in:focus,
+.btn_log_in:hover {
+    background-color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    /* transform: ; */
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn_guest_log_in {
+    width: 177px;
+    height: 48px;
+    outline: 1px solid var(--primary);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    background-color: transparent;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.btn_guest_log_in:focus,
+.btn_guest_log_in:hover {
+    outline-color: #29ABE2;
+    color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 /*----------End Region----------*/
+
 /*----------Main inner Wrapper----------*/
 .inner-wrapper {
     display: flex;
@@ -207,8 +278,8 @@ header {
     display: flex;
     gap: 35px;
 }
-
 /*----------End Region----------*/
+
 /*----------Footer----------*/
 footer {
     display: flex;
@@ -227,8 +298,8 @@ footer a:hover {
     font-weight: 700;
     color: var(--primary-hover);
 }
-
 /*----------End Region----------*/
+
 /*--------------------register.html--------------------*/
 .register-form {
     display: flex;
@@ -310,6 +381,37 @@ footer a:hover {
     margin-left: 3px;
 }
 
+
+.btn_sign_up {
+    width: 126px;
+    height: 55px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    color: white;
+    background-color: var(--primary);
+    font-size: 21px;
+    font-weight: 700;
+}
+
+#signUp:disabled {
+    background-color: #D1D1D1;
+    color: #A5A5A5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#signUp:not(:disabled) {
+    cursor: pointer;
+}
+
+#signUp:not(:disabled):hover {
+    background-color:var(--primary-hove);
+    /* transform: scale(1.05); */
+    box-shadow: var(--shadow-hover);
+}
+
 /*----------Popup for Register.html----------*/
 .sign_up_link {
     color: var(--primary-hover);
@@ -366,17 +468,51 @@ footer a:hover {
         height: 122px;
     }
 
-    .logo-overlay.animate-out img {
-        top: 37px;
-        left: 38px;
-        width: 64px;
-        height: 78px;
-        transform: translate(0, 0);
+    #animatedImg {
+        display: none;
     }
 
-    .logo-overlay.animate-out {
-        background-color: transparent;
+    #animatedImgMobile {
+        display: block;
+    }
+
+    .logo-overlay.animate-out-mobile {
+        animation: mobileLogoAnimation 800ms ease-in-out forwards;
         backdrop-filter: blur(0px);
+    }
+
+    .logo-overlay.animate-out-mobile #animatedImgMobile {
+        animation: mobileLogoMove 800ms ease-in-out forwards;
+    }
+
+    @keyframes mobileLogoAnimation {
+        0% {
+            background-color: var(--primary);
+            backdrop-filter: blur(2px);
+        }
+        50% {
+            background-color: var(--bg-color); /* Hier wird der Hintergrund transparent */
+            backdrop-filter: blur(1px);
+        }
+        100% {
+            background-color: transparent;
+            backdrop-filter: blur(0px);
+        }
+    }
+
+    @keyframes mobileLogoMove {
+        0% {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        100% {
+            top: 37px;
+            left: 38px;
+            transform: translate(0, 0);
+            width: 64px;
+            height: 78px;
+        }
     }
 
     .header-left-img {
@@ -419,11 +555,10 @@ footer a:hover {
     }
 
     .error-msg {
-        white-space: normal !important;
+        white-space: normal;
         word-break: break-word;
         line-height: 1.2em;
         text-align: left;
-        padding-right: 8px;
         width: 100%;
     }
 
@@ -437,24 +572,21 @@ footer a:hover {
         gap: 10px;
     }
 
-    button.btn_log_in:hover,
-    button.btn_login_header:hover,
-    button.btn_log_in:active,
-    button.btn_login_header:active {
-        background-color: #091931 !important;
-        color: var(--white) !important;
-        box-shadow: none !important;
-        transform: none !important;
-        border: none !important;
+    .btn_log_in:active,
+    .btn_login_header:active {
+        background-color: var(--primary-active);
+        color: var(--white);
+        box-shadow: none;
+        transform: none;
+        border: none;
     }
 
-    button.btn_guest_log_in:hover,
-    button.btn_guest_log_in:active {
-        background-color: var(--white) !important;
-        color: #091931 !important;
-        border: 1px solid #091931 !important;
-        box-shadow: none !important;
-        transform: none !important;
+    .btn_guest_log_in:active {
+        background-color: var(--white);
+        color: var(--primary-active) ;
+        outline: 1px solid var(--primary-active) ;
+        box-shadow: none;
+        transform: none;
     }
 
     .index_a {

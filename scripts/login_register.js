@@ -177,21 +177,20 @@ function guestLogin() {
 function animateLogoFirstVisit() {
     let logoOverlay = document.getElementById('logoOverlay');
     let logo = document.getElementById('logo');
-    let animatedImg = document.getElementById('animatedImg');
+    let animatedImgMobile = document.getElementById('animatedImgMobile');
     if (window.innerWidth <= 768) {
-        animatedImg.src = './assets/icons/Join_light.png';
-        logoOverlay.classList.add('animate-out');
+        // animatedImg.src = './assets/icons/Join_light.png';
+        logoOverlay.classList.add('animate-out-mobile');
         setTimeout(() => {
-            animatedImg.src = './assets/icons/Join_dark.png';
-            animatedImg.alt = 'Join Logo Light Animation';
-        }, 300);
+            animatedImgMobile.src = './assets/icons/Join_dark.png';
+        }, 400);
     } else {
         logoOverlay.classList.add('animate-out');
-        setTimeout(() => {
-            logoOverlay.style.display = 'none';
-            logo.style.opacity = 1;
-        }, 800);
     }
+    setTimeout(() => {
+        logoOverlay.style.display = 'none';
+        logo.style.opacity = 1;
+    }, 800);
 }
 
 function saveToLocalStorage(activeUserId) {
