@@ -330,3 +330,10 @@ select:focus {
 .contact-name {
   font-size: 16px;
 }
+
+
+
+
+.subtask-input-field {
+    border: none;
+}
