@@ -337,3 +337,34 @@ select:focus {
 .subtask-input-field {
     border: none;
 }
+
+.subtask-input-wrapper:hover {
+    border-color: #4fb9e7;
+}
+
+.input-action-icons{
+    display: flex;
+    gap: 4px;
+}
+
+.separator-vertical {
+    width: 0px;
+    border: 1px solid #D1D1D1;
+    height: 24px;
+}
+
+
+.subtask-input-wrapper {
+    width: 440px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 2px 4px;
+    margin-bottom: 16px;
+    border: 1px solid #D1D1D1;
+    width: 100%;
+    border-radius: 10px;
+    width: 412px;
+    justify-content: space-between;
+    cursor: pointer;
+}
