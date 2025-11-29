@@ -9,6 +9,7 @@ async function initAddTask() {
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
+    
 }
 
 function setupFormElements() {
@@ -31,57 +32,6 @@ function setupPriorityButtons() {
 }
 
 /** Handle create task */
-// async function handleCreateTask(boardCategory) {
-//     let board = boardCategory;
-//     let title = document.getElementById("title").value.trim();
-//     let description = document.getElementById("description").value.trim();
-//     let dueDate = document.getElementById("due-date").value;
-//     let category = document.getElementById("category").value;
-//     let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
-//     let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
-//     let subtaskText = document.getElementById("subtask").value.trim();
-//     let subtasksArray = [];
-//     if (subtaskText) {
-//         const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
-//         subtasksArray = rawSubtasks.map((title, index) => ({
-//             done: "false",
-//             title: title.trim()
-//         }));
-//     }
-//     let activePriority = document.querySelector(".priority-btn.active");
-//     let priority = activePriority ? activePriority.classList[1] : "medium";
-
-//     if (!title || !dueDate || !category) {
-//         alert("Please fill in all required fields.");
-//         return;
-//     }
-
-//     let newTask = {
-//         title,
-//         description,
-//         dueDate,
-//         category,
-//         assigned,
-//         board,
-//         priority,
-//         subtasks: subtasksArray,
-//         createdAt: new Date().toISOString()
-//     }
-
-//     console.log("New Task Created:", newTask);
-
-//     try {
-//         let taskPath = `/${activeUserId}/tasks`;
-//         let nextTaskId = await calcNextId(taskPath);
-//         await putData(`${taskPath}/${nextTaskId}`, newTask);
-//         clearForm();
-//     } catch (error) {
-//         console.error("Error creating task:", error);
-//     }
-
-// }
-
-
 async function handleCreateTask(boardCategory) {
  let title = document.getElementById('title').value.trim();
     let description = document.getElementById('description').value.trim();
@@ -95,27 +45,17 @@ async function handleCreateTask(boardCategory) {
             description: description,
             dueDate: dueDate,
             category: category,
-            
-            // WIEDERVERWENDUNG: Daten aus den globalen Variablen von board.js
             priority: editPriority,     
             assigned: editAssignedIds,  
             subtasks: editSubtasks,     
-            
             board: boardCategory,
             createdAt: new Date().getTime()
         };
-
-    // console.log("New Task Created:", newTask);
-
     try {
         let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
-        
-        // WICHTIG: Nach dem Speichern aufräumen & Weiterleiten
         clearForm(); 
-        // Optional: Zurück zum Board leiten
-        window.location.href = 'board.html'; 
     } catch (error) {
         console.error("Error creating task:", error);
     }
@@ -170,7 +110,6 @@ function renderAddTAskOverlay() {
 function renderAssignedEditCircles() {
     let container = document.getElementById('user-circle-assigned-edit-overlay');
     container.innerHTML = '';
-
     if (editAssignedIds.length > 5) {
         for (let i = 0; i < 5; i++) {
             let userId = editAssignedIds[i];
@@ -179,7 +118,6 @@ function renderAssignedEditCircles() {
                 container.innerHTML += renderContactCircle(contact, contact.id);
             }
         }
-
         let remainingCount = editAssignedIds.length - 5;
         container.innerHTML += `
             <div class="user-circle-intials" style="background-color: #2A3647; color: white;">

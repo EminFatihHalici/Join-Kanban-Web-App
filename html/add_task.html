@@ -14,8 +14,9 @@
 
     <script src="/scripts/global.js" defer></script>
     <script src="/scripts/templates.js" defer></script>
-    <script src="/scripts/add_task.js" defer></script>
     <script src="/scripts/board.js" defer></script>
+    <script src="/scripts/add_task.js" defer></script>
+    
 </head>
 
 <body onload="initAddTask(); eachPageSetCurrentUserInitials()">
@@ -115,6 +116,19 @@
                                 </div>
 
                                 <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
+
+
+
+
+
+
+                                      <label for="category" class="form-headline-text">Category<span class="required-marker">*</span></label>
+                                <select id="category" required>
+                                <option value="" disabled selected>Select task category</option>
+                                <option value="technical">Technical Task</option>
+                                <option value="user-story">User Story</option>
+                                </select> 
+
 
 
                                 <label for="subtask">Subtasks</label>
