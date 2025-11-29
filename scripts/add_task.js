@@ -1,9 +1,15 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
-    await loadAndRenderContacts('assigned-dropdown', 'addTask');
+    
+    await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setupPriorityButtons();
     setupFormElements();
+    setCheckboxesById();
+    editSubtasks = [];
+    editAssignedIds = [];
+    editPriority = 'medium';
+    
 }
 
 function setupFormElements() {
@@ -27,70 +33,52 @@ function setupPriorityButtons() {
 
 /** Handle create task */
 async function handleCreateTask(boardCategory) {
-    let board = boardCategory;
-    let title = document.getElementById("title").value.trim();
-    let description = document.getElementById("description").value.trim();
-    let dueDate = document.getElementById("due-date").value;
-    let category = document.getElementById("category").value;
-    let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
-    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
-    let subtaskText = document.getElementById("subtask").value.trim();
-    let subtasksArray = [];
-    if (subtaskText) {
-        const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
-        subtasksArray = rawSubtasks.map((title, index) => ({
-            done: "false",
-            title: title.trim()
-        }));
-    }
-    let activePriority = document.querySelector(".priority-btn.active");
-    let priority = activePriority ? activePriority.classList[1] : "medium";
+ let title = document.getElementById('title').value.trim();
+    let description = document.getElementById('description').value.trim();
+    let dueDate = document.getElementById('due-date').value;
+    let categoryElement = document.getElementById('category');
+    let category = categoryElement ? categoryElement.value : '';
 
-    if (!title || !dueDate || !category) {
-        alert("Please fill in all required fields.");
-        return;
-    }
-
-    let newTask = {
-        title,
-        description,
-        dueDate,
-        category,
-        assigned,
-        board,
-        priority,
-        subtasks: subtasksArray,
-        createdAt: new Date().toISOString()
-    }
-
-    console.log("New Task Created:", newTask);
-
+    if (title && dueDate && category) {
+        let newTask = {
+            title: title,
+            description: description,
+            dueDate: dueDate,
+            category: category,
+            priority: editPriority,     
+            assigned: editAssignedIds,  
+            subtasks: editSubtasks,     
+            board: boardCategory,
+            createdAt: new Date().getTime()
+        };
     try {
         let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
-        clearForm();
+        clearForm(); 
     } catch (error) {
         console.error("Error creating task:", error);
     }
-
+ }
 }
-
 
 
 
 /** Clear form */
 function clearForm() {
-    document.getElementById("task-form").reset();
-    document.querySelectorAll(".priority-btn").forEach(btn => btn.classList.remove("active"));
-    document.querySelector(".priority-btn.medium").classList.add("active");
+   document.getElementById("task-form").reset();
+    editSubtasks = [];
+    editAssignedIds = [];
+    editPriority = 'medium';
+    renderAssignedEditCircles(); 
+    renderSubtasksEditMode();
+    setCheckboxesById();
 }
-
-
 
 /** Post data to backend */
 async function putData(path = "", data = {}) {
     try {
+
         let response = await fetch(BASE_URL + path + ".json", {
             method: "PUT",
             headers: {
@@ -120,21 +108,18 @@ function renderAddTAskOverlay() {
     overlay.innerHTML = getAddTaskOverlayTemplate();
 }
 
-
-
 function renderAssignedEditCircles() {
     let container = document.getElementById('user-circle-assigned-edit-overlay');
+    if (!container) return;
     container.innerHTML = '';
-
     if (editAssignedIds.length > 5) {
         for (let i = 0; i < 5; i++) {
             let userId = editAssignedIds[i];
-            let contact = contacts.find(c => c.id === userId);
+            let contact = contacts.find(c => c.id == userId); 
             if (contact) {
-                container.innerHTML += renderContactCircle(contact, contact.id);
+                container.innerHTML += renderContactCircle(contact);
             }
         }
-
         let remainingCount = editAssignedIds.length - 5;
         container.innerHTML += `
             <div class="user-circle-intials" style="background-color: #2A3647; color: white;">
@@ -142,14 +127,15 @@ function renderAssignedEditCircles() {
             </div>`;
     } else {
         editAssignedIds.forEach(userId => {
-            let contact = contacts.find(c => c.id === userId);
+            let contact = contacts.find(c => c.id == userId);
             if (contact) {
-                container.innerHTML += renderContactCircle(contact, contact.id);
+                container.innerHTML += renderContactCircle(contact);
+            } else {
+                console.warn("Kontakt nicht gefunden für ID:", userId);
             }
         });
     }
 }
-
 
 
 async function saveEditedTask(taskId) {

@@ -72,6 +72,7 @@ select {
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
+    resize: vertical;
     font-size: 16px;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
@@ -92,7 +93,7 @@ select {
     width: 1px;
     background-color: #D1D1D1;
     margin: 0 24px;
-    align-self: stretch;
+    height: 424px;
 }
 
 .form-left,
@@ -100,7 +101,7 @@ select {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    flex: 1;
+    width: 440px;
 }
 
 .form-footer {
@@ -243,9 +244,9 @@ select::placeholder {
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: #4fb9e7 !important;
-    outline: none !important;
-    box-shadow: none !important;
+    border-color: #4fb9e7;
+    outline: none;
+    box-shadow: none;
 }
 
 .custom-select-container {
@@ -255,6 +256,8 @@ select:focus {
 }
 
 .select-display {
+    display: flex;
+    justify-content: space-between;
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
@@ -328,4 +331,99 @@ select:focus {
 }
 .contact-name {
   font-size: 16px;
+}
+
+
+
+
+.subtask-input-field {
+    border: none;
+}
+
+.subtask-input-wrapper:hover {
+    border-color: #4fb9e7;
+}
+
+.input-action-icons{
+    display: flex;
+    gap: 4px;
+}
+
+.separator-vertical {
+    width: 0px;
+    border: 1px solid #D1D1D1;
+    height: 24px;
+}
+
+.subtask-icons-container {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.subtask-edit-row:hover {
+    background-color: #eee;
+}
+
+.subtask-edit-row:hover .subtask-icons-container {
+    display: flex;
+}
+
+.subtask-edit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background-color 0.1s;
+}
+
+.subtask-edit-row:hover .subtask-icons-container {
+    display: flex;
+}
+
+.subtask-edit-row-editing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #29ABE2;
+    background-color: #f5f6f7;
+    margin-bottom: 4px;
+}
+
+.subtask-row-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background-color: #f5f6f7;
+    font-size: 16px;
+    padding: 4px 8px;
+}
+
+
+.subtask-input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 2px 4px;
+    margin-bottom: 16px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.assigned-circles-edit-overlay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.user-circle-intials {
+    width: 40px; height: 40px; 
+    border-radius: 50%; color: white; 
+    display: flex; justify-content: center; align-items: center;
+    border: 2px solid white;
+    margin: 0;
 }

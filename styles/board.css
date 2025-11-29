@@ -432,7 +432,7 @@ body {
     box-sizing: border-box;
     align-items: center;
     padding: 12px 21px;
-    height: 48px;
+    resize: vertical;
     background: #FFFFFF;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
@@ -888,39 +888,49 @@ textarea {
     .category {
         width: 100%;
     }
-} 
+}
 
 
 
 
-
+.subtask-input-wrapper:hover {
+    border-color: #4fb9e7;
+}
 
 .subtask-input-wrapper {
-    display: flex;            
-    align-items: center;       
+    display: flex;
+    align-items: center;
     background-color: white;
-    padding: 4px 8px;
-    margin-bottom: 16px; 
+    padding: 2px 4px;
+    margin-bottom: 16px;
+    border: 1px solid #D1D1D1;
+    width: 100%;
+    border-radius: 10px;
+    width: 412px;
+    justify-content: space-between;
+    cursor: pointer;
 }
 
 
 
 .input-action-icons {
     display: flex;
+    padding-right: 12px;
     gap: 4px;
     cursor: pointer;
 }
 
 #subtask-list-edit-ul {
-    list-style: none; 
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .subtask-edit-row {
-    display: flex;           
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 440px;
     padding: 6px 8px;
     border-radius: 8px;
     transition: background-color 0.1s;
@@ -928,7 +938,7 @@ textarea {
 
 
 .subtask-icons-container {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 8px;
 }
@@ -938,10 +948,11 @@ textarea {
 }
 
 .subtask-edit-row-editing {
-    display: flex;          
+    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
+    width: 440px;
     border-bottom: 1px solid #29ABE2;
     background-color: white;
     margin-bottom: 4px;
@@ -961,9 +972,9 @@ textarea {
     cursor: pointer;
     padding: 2px;
 }
+
 .separator-vertical {
-    width: 1px;
-    height: 20px;
-    background-color: #D1D1D1;
-    margin: 0 4px;
+    width: 0px;
+    border: 1px solid #D1D1D1;
+    height: 24px;
 }

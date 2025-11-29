@@ -261,26 +261,17 @@ async function deleteTaskfromBoard(taskId) {
 async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
-
-    // 1. WICHTIG: Daten in die globalen Variablen laden
     editAssignedIds = [...(task.assigned || [])]; // Kopie der IDs erstellen
     editSubtasks = JSON.parse(JSON.stringify(task.subtasks || []));
     editPriority = task.priority;
-
-    // 2. Template laden
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = editTaskDetailOverlayTemplate(task); // task übergeben!
+    overlay.innerHTML = editTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
-
-    // 3. Inputs füllen
     document.getElementById('title').value = task.title;
     document.getElementById('description').value = task.description;
     document.getElementById('due-date').value = task.dueDate;
-
-    // 4. Kontakte laden
+    renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-
-    // 5. Kreise malen (Jetzt kennt er die Variable!)
     renderAssignedEditCircles();
     setCheckboxesById()
 }
