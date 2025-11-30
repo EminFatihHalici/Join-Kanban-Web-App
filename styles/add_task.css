@@ -451,3 +451,39 @@ select:focus {
     bottom: 50%;
     transform: translate(-50%, 50%);
 }
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 56px;
+    margin-bottom: 2px;
+    transition: all 0.1s ease-in-out;
+}
+
+.contact-item:hover:not(.selected) {
+    background-color: #EEEEEE;
+}
+
+.contact-item.selected {
+    background-color: #2A3647;
+    color: white;
+}
+
+.contact-item.selected:hover {
+    background-color: #091931;
+}
+
+.contact-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-checkbox-icon {
+    width: 24px;
+    height: 24px;
+}

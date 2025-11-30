@@ -286,3 +286,21 @@ function updatePrioUI(prio) {
         activeBtn.classList.add('active');
     }
 }
+
+function toggleContactSelection(contactId) {
+    toggleEditAssign(contactId);
+    updateContactRowVisuals(contactId);
+}
+
+function updateContactRowVisuals(contactId) {
+    let row = document.getElementById(`contact-row-${contactId}`);
+    if (!row) return;
+    let isSelected = editAssignedIds.includes(contactId);
+    if (isSelected) {
+        row.classList.add('selected');
+        row.querySelector('.contact-checkbox-icon').innerHTML = getCheckboxCheckedSvg();
+    } else {
+        row.classList.remove('selected');
+        row.querySelector('.contact-checkbox-icon').innerHTML = getCheckboxEmptySvg();
+    }
+}
