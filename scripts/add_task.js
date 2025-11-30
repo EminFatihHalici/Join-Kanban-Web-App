@@ -74,6 +74,7 @@ function clearForm() {
     renderAssignedEditCircles(); 
     renderSubtasksEditMode();
     setCheckboxesById();
+    updatePrioUI('medium');
 }
 
 /** Post data to backend */
@@ -271,4 +272,17 @@ function showSuccessImageAnimation() {
     setTimeout(() => {
         window.location.href = 'board.html';
     }, 2000); 
+}
+
+function updatePrioUI(prio) {
+    ['urgent', 'medium', 'low'].forEach(p => {
+        let btn = document.getElementById('prio-' + p);
+        if (btn) {
+            btn.classList.remove('active');
+        }
+    });
+    let activeBtn = document.getElementById('prio-' + prio);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
 }
