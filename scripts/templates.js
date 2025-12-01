@@ -903,7 +903,7 @@ function renderAddNewContactOverlayHtml() {
                 <form class="contact-form" onsubmit="createContact(); return false;" novalidate>
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact"
-                            oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
+                            oninput="validateFieldContact('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
                             tabindex="0" 
                             placeholder="Full name"
                             aria-required="true"
@@ -919,7 +919,7 @@ function renderAddNewContactOverlayHtml() {
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact"
-                            oninput="validateField('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
+                            oninput="validateFieldContact('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
                             tabindex="0" 
                             placeholder="Email"
                             aria-required="true"
@@ -1033,7 +1033,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             type="text" 
                             id="nameContact" 
                             value="${contact.name}"
-                            oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
+                            oninput="validateFieldContact('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
                             tabindex="0" 
                             placeholder="Full name"
                             aria-required="true"
@@ -1049,7 +1049,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact" value="${contact.email}"
-                            oninput="validateField('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
+                            oninput="validateFieldContact('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
                             tabindex="0" 
                             placeholder="Email"
                             aria-required="true"
@@ -1064,7 +1064,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
-                            oninput="validateField('phoneContact', 'errMsgPhone', isPhoneValid, 1, 'Allowed 20 symbols [0-9+()/-] and [space]', false)"
+                            oninput="validateFieldContact('phoneContact', 'errMsgPhone', isPhoneValid, 1, 'Allowed 20 symbols [0-9+()/-] and [space]', false)"
                             tabindex="0" 
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"

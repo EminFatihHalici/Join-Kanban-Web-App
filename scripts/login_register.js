@@ -182,24 +182,6 @@ function clearAllSignUpInputFields() {
     signUpBtn.checked = false;
 }
 
-/**
- * Shows a popup notification with fade-in/fade-out animation
- * @param {string} id - The ID of the popup element
- */
-function showPopup(id) {
-    const popup = document.getElementById(id);
-    popup.style.display = 'block';
-    setTimeout(() => {
-        popup.classList.add('show');
-    }, 10);
-    setTimeout(function () {
-        popup.classList.remove('show');
-        setTimeout(() => {
-            popup.style.display = 'none';
-        }, 500);
-    }, 1000);
-}
-
 // #endregion
 
 /**

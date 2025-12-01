@@ -89,33 +89,6 @@ function clearForm() {
 }
 
 /**
- * Sends a PUT request to the backend with the provided data
- * @param {string} path - The API path to send data to
- * @param {Object} data - The data object to send
- * @returns {Promise<Response>} The fetch response
- */
-async function putData(path = "", data = {}) {
-    try {
-
-        let response = await fetch(BASE_URL + path + ".json", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-    } catch (error) {
-        console.error("Error posting data:", error);
-        throw error;
-    }
-
-}
-
-
-/**
  * Toggles the visibility of the contact dropdown
  */
 function toggleContactDropdown() {
@@ -198,18 +171,6 @@ function handleCloseKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         closeAddTaskOverlay();
-    }
-}
-
-function handleAssignedDropdownKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleContactDropdown();
-    } else if (event.key === 'Escape') {
-        let dropdown = document.getElementById('assigned-dropdown');
-        if (dropdown.style.display === 'block') {
-            toggleContactDropdown();
-        }
     }
 }
 
