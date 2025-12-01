@@ -5,11 +5,19 @@ let isUserMenuListenerAdded = false;
 let contacts = [];
 let tasks = [];
 
+/**
+ * Loads the active user ID from localStorage
+ * @returns {number} The active user ID, defaults to 0 if not found
+ */
 function loadActiveUserId() {
     const val = localStorage.getItem("activeUserId");
     return val ? JSON.parse(val) : 0;
 }
 
+/**
+ * Loads the greeting shown status from localStorage
+ * @returns {boolean} True if greeting was already shown, false otherwise
+ */
 function loadShownGreeting() {
     const val = localStorage.getItem("shownGreeting");
     return val === "true";
@@ -33,6 +41,11 @@ let contactCircleColor = [
     '#FFBB2B',
 ]
 
+/**
+ * Calculates the next available ID for a given path
+ * @param {string} path - The database path to check for existing IDs
+ * @returns {Promise<number>} The next available ID
+ */
 async function calcNextId(path = "") {
     let nextId;
     try {
@@ -46,10 +59,21 @@ async function calcNextId(path = "") {
     return nextId;
 }
 
+/**
+ * Generates initials from a full name
+ * @param {string} name - The full name to generate initials from
+ * @returns {string} The initials in uppercase
+ */
 function getInitials(name) {
     return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
 }
 
+/**
+ * Sends a PUT request to the Firebase database
+ * @param {string} path - The database path
+ * @param {Object} data - The data to send
+ * @returns {Promise<Response>} The fetch response
+ */
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -67,6 +91,11 @@ async function putData(path = "", data = {}) {
     }
 }
 
+/**
+ * Loads and renders contacts for a specific page
+ * @param {string} divId - The ID of the container element
+ * @param {string} useAtPage - The page type ('addTask' or 'contacts')
+ */
 async function loadAndRenderContacts(divId, useAtPage) {
     const containerId = document.getElementById(divId);
     let sortedContacts = await fetchAndSortContacts(containerId);
@@ -81,6 +110,11 @@ async function loadAndRenderContacts(divId, useAtPage) {
     }
 }
 
+/**
+ * Fetches and sorts contacts from the database
+ * @param {HTMLElement} containerId - The container element for error display
+ * @returns {Promise<Array>} Sorted array of contacts
+ */
 async function fetchAndSortContacts(containerId = "") {
     try {
         const contactsObj = await fetchData(`/${activeUserId}/contacts`);
@@ -95,6 +129,11 @@ async function fetchAndSortContacts(containerId = "") {
     }
 }
 
+/**
+ * Fetches data from the Firebase database
+ * @param {string} path - The database path to fetch from
+ * @returns {Promise<Object|null>} The fetched data or null on error
+ */
 async function fetchData(path = "") {
     try {
         let response = await fetch(BASE_URL + path + ".json");
@@ -107,13 +146,43 @@ async function fetchData(path = "") {
     }
 }
 
+/**
+ * Sets the current user's initials in the navigation
+ */
 async function eachPageSetCurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
     let currentUser = await fetchData(`/${activeUserId}/name`);
     let initials = await getInitials(currentUser);
     currentUserInitials.innerHTML = initials;
+    currentUserInitials.setAttribute('aria-label', `${initials} - User menu`);
+    if (!window.resizeListenerAdded) {
+        window.addEventListener('resize', handleGlobalResize);
+        window.resizeListenerAdded = true;
+    }
 }
 
+/**
+ * Handles global window resize events
+ */
+function handleGlobalResize() {
+    if (typeof handleResizeOverlay === 'function') {
+        handleResizeOverlay();
+    }
+}
+
+/**
+ * Handles overlay resize events
+ */
+function handleResizeOverlay() {
+    if (typeof window.handleResizeOverlay === 'function') {
+        window.handleResizeOverlay();
+    }
+}
+
+/**
+ * Deletes data from the Firebase database
+ * @param {string} path - The database path to delete
+ */
 async function deletePath(path = "") {
     try {
         const response = await fetch(BASE_URL + path + ".json", {
@@ -127,11 +196,19 @@ async function deletePath(path = "") {
     }
 }
 
+/**
+ * Generates initials from a full name (enhanced version with null check)
+ * @param {string} name - The full name to generate initials from
+ * @returns {string} The initials in uppercase or '?' if name is invalid
+ */
 function getInitials(name) {
     if (!name) return "?";
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
+/**
+ * Logs out the current user and redirects to login page
+ */
 function logout() {
     localStorage.removeItem('activeUserId');
     localStorage.removeItem('shownGreeting');
@@ -141,9 +218,11 @@ function logout() {
     window.location.replace(window.location.origin + '/index.html');
 }
 
+/**
+ * Checks if user is logged in, redirects to login if not
+ */
 function checkLoggedInPageSecurity() {
     if (!localStorage.getItem('activeUserId')) {
-        // window.location.href = '../index.html';
         for (let i = 0; i < 50; i++) {
             history.pushState(null, null, '../index.html');
         }
@@ -152,6 +231,10 @@ function checkLoggedInPageSecurity() {
     }
 }
 
+/**
+ * Toggles the user dropdown menu
+ * @param {Event} event - The triggering event
+ */
 function toggleDropDownMenu(event) {
     if (event && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); }
     let userMenu = document.getElementById('user-menu');
@@ -166,6 +249,9 @@ function toggleDropDownMenu(event) {
     }
 }
 
+/**
+ * Adds click outside listener for dropdown menu
+ */
 function clickOutsideEventListener() {
     document.addEventListener('click', function (event) {
         let userMenu = document.getElementById('user-menu');
@@ -178,28 +264,32 @@ function clickOutsideEventListener() {
     });
 }
 
+/**
+ * Opens dropdown menu and sets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
 function openDropDownResetFocusAndAddListener(userMenu, userCircle) {
     userMenu.classList.add('show');
     userMenu.setAttribute('aria-hidden', 'false');
     userCircle.setAttribute('aria-expanded', 'true');
-    
-    // Längerer Delay um sicherzustellen, dass CSS-Transition abgeschlossen ist
     setTimeout(() => {
         const firstMenuItem = userMenu.querySelector('a[role="menuitem"]');
         if (firstMenuItem) {
             firstMenuItem.focus();
         } else {
-            // Fallback: versuche alle Links im Menu
             const menuLinks = userMenu.querySelectorAll('a');
-            if (menuLinks.length > 0) {
-                menuLinks[0].focus();
-            }
+            if (menuLinks.length > 0) { menuLinks[0].focus() }
         }
     }, 150);
-    
     document.addEventListener('keydown', handleMenuEscapeKey);
 }
 
+/**
+ * Closes dropdown menu and resets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
 function closeDropDownAndResetFocus(userMenu, userCircle) {
     userMenu.classList.remove('show');
     userMenu.setAttribute('aria-hidden', 'true');
@@ -233,6 +323,10 @@ document.addEventListener('click', function (event) {
     handleEditDropdown(event);
 });
 
+/**
+ * Handles edit dropdown events
+ * @param {Event} event - The triggering event
+ */
 function handleEditDropdown(event) {
     let dropdownEdit = document.getElementById('assigned-dropdown-edit');
     let displayElementEdit = document.getElementById('assigned-display-edit');
@@ -247,6 +341,12 @@ function handleEditDropdown(event) {
     }
 }
 
+/**
+ * Checks if clicked element is not dropdown or display element
+ * @param {HTMLElement} dropdown - The dropdown element
+ * @param {Event} event - The click event
+ * @param {HTMLElement} displayElement - The display element
+ */
 function checkIfElementIsNotDropdownOrDisplayElement(dropdown, event, displayElement) {
     if (dropdown && dropdown.style.display === 'block' &&
         !dropdown.contains(event.target) &&

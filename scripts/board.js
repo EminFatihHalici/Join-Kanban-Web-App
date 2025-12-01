@@ -11,6 +11,10 @@ let editPriority = 'medium';
 let editingSubtaskIndex = -1;
 
 
+/**
+ * Initializes the board page by checking security, loading user initials,
+ * fetching contacts and tasks, then rendering the tasks on the board
+ */
 async function init() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
@@ -19,6 +23,10 @@ async function init() {
     await renderTasks(tasks);
 }
 
+/**
+ * Renders tasks on the board by categorizing them into different columns
+ * @param {Array} tasks - Array of task objects to render
+ */
 async function renderTasks(tasks) {
     let categories = {
         'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
@@ -39,6 +47,10 @@ function handleTaskCardKeydown(event, taskJson) {
     }
 }
 
+/**
+ * Fetches tasks from database, adds IDs and removes undefined contacts
+ * @returns {Promise<Array>} Array of tasks with IDs and cleaned contact assignments
+ */
 async function fetchAndAddIdAndRemoveUndefinedContacts() {
     let tasksObj = await fetchData(`/${activeUserId}/tasks`);
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
@@ -49,6 +61,11 @@ async function fetchAndAddIdAndRemoveUndefinedContacts() {
     return [];
 }
 
+/**
+ * Checks task assignments and removes invalid or null contacts
+ * @param {Array} tasksWithId - Array of tasks with IDs
+ * @returns {Promise<Array>} Cleaned tasks array
+ */
 async function checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId) {
     for (let i = 0; i < tasksWithId.length; i++) {
         if (tasksWithId[i].assigned !== undefined) {
@@ -67,6 +84,11 @@ async function checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId) {
     return tasksWithId;
 }
 
+/**
+ * Checks for subtasks in a task and displays progress bar if subtasks exist
+ * @param {Object} task - The task object to check for subtasks
+ * @returns {string} HTML string for subtask progress or empty string
+ */
 function checkForAndDisplaySubtasks(task) {
     if (task.subtasks) {
         let totalSubtasks = task.subtasks.length;
@@ -77,6 +99,11 @@ function checkForAndDisplaySubtasks(task) {
     }
 }
 
+/**
+ * Checks for assigned users in a task and displays user circles
+ * @param {Object} task - The task object to check for assigned users
+ * @returns {string} HTML string for user circles or empty div
+ */
 function checkForAndDisplayUserCircles(task) {
     let arrAssigned = task.assigned;
     let html = '';
@@ -122,6 +149,11 @@ function createInitialCircle(arrAssigned, i, html) {
     return html;
 }
 
+/**
+ * Returns the appropriate color class based on task category
+ * @param {Object} task - The task object
+ * @returns {string} Color class name ('blue' or 'turquoise')
+ */
 function categoryColor(task) {
     if (task.category === 'User Story') {
         return "blue"
@@ -130,23 +162,40 @@ function categoryColor(task) {
     }
 }
 
+/**
+ * Handles the drag start event for task cards
+ * @param {DragEvent} event - The drag event
+ * @param {string} id - The ID of the task being dragged
+ */
 function dragstartHandler(event, id) {
     currentDraggedId = id;
     event.target.style.transform = 'rotate(2deg)';
     startAutoScroll();
 }
 
+/**
+ * Handles the drag over event for drop zones
+ * @param {DragEvent} ev - The drag event
+ */
 function dragoverHandler(ev) {
     ev.preventDefault();
     toggleStyle(ev);
     handleAutoScroll(ev);
 }
 
+/**
+ * Handles the drag end event and cleans up drag state
+ * @param {DragEvent} event - The drag event
+ */
 function dragendHandler(event) {
     event.target.style.transform = '';
     stopAutoScroll();
 }
 
+/**
+ * Toggles visual styling for drag over effects
+ * @param {DragEvent} ev - The drag event
+ */
 function toggleStyle(ev) {
     ev.preventDefault();
     const targetDiv = ev.target.closest('.draggable');
@@ -158,6 +207,10 @@ function toggleStyle(ev) {
     }
 }
 
+/**
+ * Moves a task to a different category/column on the board
+ * @param {string} category - The target category ('toDo', 'inProgress', 'awaitFeedback', 'done')
+ */
 async function moveTo(category) {
     try {
         await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
@@ -170,6 +223,10 @@ async function moveTo(category) {
     elements.forEach(el => el.classList.remove('highlight'));
 }
 
+/**
+ * Renders the add task overlay with animation and focus management
+ * @param {string} board - The default board category for the new task (default: 'toDo')
+ */
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
@@ -184,6 +241,9 @@ async function renderAddTaskOverlay(board = "toDo") {
     }, 50);
 }
 
+/**
+ * Closes the add task overlay with slide-out animation
+ */
 function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     let section = overlay.querySelector('.add-task-section');
@@ -196,21 +256,28 @@ function closeAddTaskOverlay() {
     }, 400);
 }
 
+/**
+ * Adds slide-in animation to the overlay
+ */
 function slideInOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.classList.add("slide-in");
 }
 
 
+/**
+ * Renders the task detail overlay for viewing task information
+ * @param {string} taskJson - Base64 encoded JSON string of the task object
+ */
 async function renderTaskDetail(taskJson) {
-    // let task = JSON.parse(taskJson);
-    let task = JSON.parse(atob(taskJson));// Base64-Decoding
+    let task = JSON.parse(atob(taskJson));
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
+    overlay.setAttribute('aria-hidden', 'false');
     setupPriorityButtons();
     setTimeout(() => {
-        let section = overlay.querySelector('.add-task-section');
+        let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
         if (section) {
             section.classList.add('slide-in');
         }
@@ -219,34 +286,23 @@ async function renderTaskDetail(taskJson) {
 }
 
 /**
- * Render contact circles in the overlay container.
- * And generates initials, and displays them with colored circles.
+ * Renders contact circles in the overlay container with initials and colored circles
+ * @param {Object} task - The task object containing assigned contacts
  */
-///////////// to be refactor'd (>14 lines) //////////////////
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
     let html = '';
-
     if (arrAssigned && arrAssigned.length > 0) {
         for (let i = 0; i < arrAssigned.length; i++) {
-            let contactId = arrAssigned[i]; // holen die ID raus
-            let contact = contacts.find(c => c.id === contactId); //das ganze contact object wird anhand der ID gesucht
-
+            let contactId = arrAssigned[i];
+            let contact = contacts.find(c => c.id === contactId);
             if (contact) {
-                let color = contactCircleColor[contactId % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
-
+                let color = contactCircleColor[contactId % contactCircleColor.length];
                 let initials = getInitials(contact.name);
-                //pwn Div for each contact
-                html += `
-                <div class="overlay-contact-row">  
-                    <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
-                    <span>${contact.name}</span>
-                </div>
-                `;
+                html += getContactsInTaskOverlayHtml(color, initials, contact);
             }
         }
-
     } else {
         html = '<span class="gray-text">No contact assigned</span>';
     }
@@ -254,6 +310,10 @@ function renderContactsInOverlay(task) {
 }
 
 
+/**
+ * Deletes a task from the board and updates the UI
+ * @param {string} taskId - The ID of the task to delete
+ */
 async function deleteTaskfromBoard(taskId) {
     try {
         await deletePath(`/${activeUserId}/tasks/${taskId}`);
@@ -265,6 +325,10 @@ async function deleteTaskfromBoard(taskId) {
     }
 }
 
+/**
+ * Renders the edit task detail overlay with pre-filled data
+ * @param {string} taskId - The ID of the task to edit
+ */
 async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
@@ -291,6 +355,11 @@ async function renderEditTaskDetail(taskId) {
     setCheckboxesById()
 }
 
+/**
+ * Renders subtasks for display in the task detail overlay
+ * @param {Object} task - The task object containing subtasks
+ * @returns {string} HTML string for subtasks display
+ */
 function renderSubtasksForOverlay(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
         return '<div>No subtasks</div>';
@@ -309,6 +378,11 @@ function renderSubtasksForOverlay(task) {
 }
 
 
+/**
+ * Toggles the completion status of a subtask
+ * @param {string} taskId - The ID of the task containing the subtask
+ * @param {number} subtaskIndex - The index of the subtask to toggle
+ */
 async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  | subtaskIndex = which subtask
     let task = tasks.find(t => t.id === taskId); // find the task by its ID
     if (!task || !task.subtasks) return;
@@ -326,10 +400,16 @@ async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  
     }
 }
 
+/**
+ * Starts the auto-scroll functionality during drag operations
+ */
 function startAutoScroll() {
     document.addEventListener('dragover', handleAutoScroll);
 }
 
+/**
+ * Stops the auto-scroll functionality and cleans up intervals
+ */
 function stopAutoScroll() {
     document.removeEventListener('dragover', handleAutoScroll);
     if (autoScrollInterval) {
@@ -338,6 +418,10 @@ function stopAutoScroll() {
     }
 }
 
+/**
+ * Handles auto-scrolling based on mouse position during drag operations
+ * @param {DragEvent} event - The drag event containing mouse coordinates
+ */
 ////////// to be refactor'd (>14 lines) ///////////
 function handleAutoScroll(event) {
     // Auto-scroll basierend auf Mausposition
@@ -395,6 +479,9 @@ function handleAutoScroll(event) {
 
 // #region search
 
+/**
+ * Searches tasks based on title and description content
+ */
 function searchTasks() {
     let searchInput = document.getElementById('searchTasks').value.trim().toLowerCase();
     let searchFailedRef = document.getElementById('searchFailed');
@@ -405,6 +492,9 @@ function searchTasks() {
     renderTasks(filteredTasks)
 }
 
+/**
+ * Performs search and clears the search input field
+ */
 function searchAndClearSearchField() {
     let searchInput = document.getElementById('searchTasks')
     searchTasks();
@@ -414,6 +504,9 @@ function searchAndClearSearchField() {
 document.addEventListener('DOMContentLoaded', positionSearchField);
 window.addEventListener('resize', positionSearchField);
 
+/**
+ * Positions the search field based on screen size for responsive design
+ */
 function positionSearchField() {
     let searchDesktopRef = document.getElementById('searchPositionDesktop');
     let searchMobileRef = document.getElementById('searchPositionMobile');
@@ -431,6 +524,13 @@ function positionSearchField() {
     }
 }
 
+/**
+ * Positions search field for desktop view with WCAG compliance
+ * @param {HTMLElement} searchMobileRef - Mobile search container reference
+ * @param {HTMLElement} searchDesktopRef - Desktop search container reference  
+ * @param {string} currentValue - Current search input value
+ * @param {boolean} wasFocused - Whether the search input was previously focused
+ */
 function searchFieldPositionInclusiveWcagAriaConformityA(searchMobileRef, searchDesktopRef, currentValue, wasFocused) {
     searchMobileRef.innerHTML = '';
     searchMobileRef.setAttribute('aria-hidden', 'true');
@@ -446,6 +546,13 @@ function searchFieldPositionInclusiveWcagAriaConformityA(searchMobileRef, search
     }
 }
 
+/**
+ * Positions search field for mobile view with WCAG compliance
+ * @param {HTMLElement} searchDesktopRef - Desktop search container reference
+ * @param {HTMLElement} searchMobileRef - Mobile search container reference
+ * @param {string} currentValue - Current search input value
+ * @param {boolean} wasFocused - Whether the search input was previously focused
+ */
 function searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searchMobileRef, currentValue, wasFocused) {
     searchDesktopRef.innerHTML = '';
     searchDesktopRef.setAttribute('aria-hidden', 'true');

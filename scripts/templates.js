@@ -1,10 +1,10 @@
 function renderTasksCardSmallHtml(task) {
     const taskJson = btoa(JSON.stringify(task));
-    return `
-    <article 
+    return /* html */`
+    <div 
         role="button" 
         tabindex="0" 
-        aria-label="Task: ${task.title}. Description: ${task.description}. Category: ${task.category}. Click to view details"
+        aria-label="${task.title}"
         onclick="renderTaskDetail('${taskJson}')" 
         onkeydown="handleTaskCardKeydown(event, '${taskJson}')"
         class="drag-item" 
@@ -21,13 +21,13 @@ function renderTasksCardSmallHtml(task) {
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
             </div>
         </div>
-    </article>`
+    </div>`
 }
 
 function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
     const progressPercentage = Math.round((doneSubtasks / totalSubtasks) * 100);
 
-    return `<div class="flex" role="group" aria-label="Subtask progress">
+    return `<div class="flex">
                 <progress 
                     value="${doneSubtasks}" 
                     max="${totalSubtasks}" 
@@ -155,7 +155,7 @@ function getAddTaskOverlayTemplate(board) {
                 <div class="form-left form-left-overlay">
                     <div class="overlay-add-task-div">
                         <label for="title" class="form-headline-text">
-                            Title<span class="required-marker" aria-label="required">*</span>
+                            Title<span class="required-marker" aria-hidden="true">*</span>
                         </label>
                         <div class="title-input-container-overlay">
                             <input 
@@ -182,7 +182,7 @@ function getAddTaskOverlayTemplate(board) {
                     </div>
 
                     <label for="due-date" class="form-headline-text">
-                        Due date<span class="required-marker" aria-label="required">*</span>
+                        Due date<span class="required-marker" aria-hidden="true">*</span>
                     </label>
                     <div class="date-overlay">
                         <input 
@@ -283,90 +283,80 @@ function getAddTaskOverlayTemplate(board) {
 
 
 function getTaskDetailOverlayTemplate(task) {
-
     return /* html */`
-    <section class="task-detail-overlay" 
+    <div class="task-detail-overlay" 
             role="dialog" 
-            aria-modal="true" 
+            aria-modal="true"
             aria-labelledby="task-detail-title"
             aria-describedby="task-detail-description">
     
         <div class="task-detail-header ">
-
             <p class="${categoryColor(task)}">${task.category}</p>
-
             <button onclick="closeAddTaskOverlay()" 
                     onkeydown="handleCloseKeydown(event)"
                     class="close-board-info-overlay" 
-                    aria-label="Close task details dialog"
+                    aria-label="Close"
                     tabindex="0"
                     style="border: none; background: none; cursor: pointer; padding: 4px;">
                 <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
             </button>
-        
         </div>
 
-            <div class="task-detail-headline">
-                <h2 id="task-detail-title">${task.title}</h2>
+        <div class="task-detail-headline">
+            <h2 id="task-detail-title">${task.title}</h2>
+        </div>
+
+        <div class="task-detail-description">
+            <p id="task-detail-description" class="pd-bottom-16">${task.description}</p>
+        </div>
+
+        <div class="task-detail-due-date pd-bottom-16">
+                <div>Due Date:</div>
+                <div>${task.dueDate}</div>
+        </div>
+        
+        <div class="task-detail-priority pd-bottom-16">
+            <div style="font-size: 18px;">Priority:</div>
+            <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
+            <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
+        </div>
+
+        <div class="task-detail-assigned pd-bottom-16">
+            <div style="font-size: 18px;">Assigned to:</div>
+            <div id="overlayContactContainer" class="contact-circle-container"></div>
+        </div>
+
+        <div class="task-detail-subtasks pd-bottom-16">
+            <div style="font-size: 18px;">Subtasks:</div>
+            <div>
+                ${renderSubtasksForOverlay(task)}
             </div>
+        </div>
 
+        <div class="task-detail-delete-edit-button-container">
+            <button onclick="deleteTaskfromBoard('${task.id}')" 
+                    onkeydown="handleDeleteTaskKeydown(event, '${task.id}')"
+                    class="task-detail-delete-button"
+                    aria-label="Delete"
+                    tabindex="0"
+                    style="border: none; cursor: pointer;">
+                <div class="task-delete-icon" aria-hidden="true"></div>
+                <span class="sr-only">Delete</span>
+            </button>
 
-            <div class="task-detail-description">
-                <p id="task-detail-description" class="pd-bottom-16">${task.description}</p>
-            </div>
+            <div class="task-detail-spacer"></div>
 
+            <button onclick="renderEditTaskDetail('${task.id}')" 
+                    onkeydown="handleEditTaskKeydown(event, '${task.id}')"
+                    class="task-detail-edit-button"
+                    aria-label="Edit"
+                    tabindex="0"
+                    style="border: none; cursor: pointer;">
+                <div class="task-edit-icon" aria-hidden="true"></div>
+                <span class="sr-only">Edit</span>
+            </button>
+        </div>
 
-            <div class="task-detail-due-date pd-bottom-16">
-                    <div>Due Date:</div>
-                    <div>${task.dueDate}</div>
-            </div>
-            
-            <div class="task-detail-priority pd-bottom-16">
-                <div style="font-size: 18px;">Priority:</div>
-                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
-                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
-            </div>
-
-            <div class="task-detail-assigned pd-bottom-16">
-                <div style="font-size: 18px;">Assigned to:</div>
-                <div id="overlayContactContainer" class="contact-circle-container" role="group" aria-label="Assigned contacts"></div>
-            </div>
-
-            <div class="task-detail-subtasks pd-bottom-16">
-                <div style="font-size: 18px;">Subtasks:</div>
-                <div role="group" aria-label="Task subtasks">
-                    ${renderSubtasksForOverlay(task)}
-                </div>
-            </div>
-
-
-            <div class="task-detail-delete-edit-button-container" role="group" aria-label="Task actions">
-                <button onclick="deleteTaskfromBoard('${task.id}')" 
-                        onkeydown="handleDeleteTaskKeydown(event, '${task.id}')"
-                        class="task-detail-delete-button"
-                        aria-label="Delete this task"
-                        tabindex="0"
-                        style="border: none; cursor: pointer;">
-                    <div class="task-delete-icon" aria-hidden="true"></div>
-                    <span class="sr-only">Delete task</span>
-                </button>
-
-                <div class="task-detail-spacer"></div>
-
-                <button onclick="renderEditTaskDetail('${task.id}')" 
-                        onkeydown="handleEditTaskKeydown(event, '${task.id}')"
-                        class="task-detail-edit-button"
-                        aria-label="Edit this task"
-                        tabindex="0"
-                        style="border: none; cursor: pointer;">
-                    <div class="task-edit-icon" aria-hidden="true"></div>
-                    <span class="sr-only">Edit task</span>
-                </button>
-            </div>
-
-            
-    
-    
     </div>
     `
 }
@@ -398,7 +388,7 @@ function editTaskDetailOverlayTemplate(task) {
             
             <div class="edit-form-section">
                 <label for="edit-title" class="form-headline-text">
-                    Title<span class="required-marker" aria-label="required">*</span>
+                    Title<span class="required-marker" aria-hidden="true">*</span>
                 </label>
                 <input 
                     id="edit-title" 
@@ -425,7 +415,7 @@ function editTaskDetailOverlayTemplate(task) {
 
             <div class="edit-form-section">
                 <label for="edit-due-date" class="form-headline-text">
-                    Due date<span class="required-marker" aria-label="required">*</span>
+                    Due date<span class="required-marker" aria-hidden="true">*</span>
                 </label>
                 <input 
                     id="edit-due-date" 
@@ -440,7 +430,7 @@ function editTaskDetailOverlayTemplate(task) {
 
             <fieldset class="priority-fieldset edit-form-section" style="border: none; padding: 0; margin: 0;">
                 <legend class="form-headline-text" style="padding: 0; margin-bottom: 0.5rem;">Priority</legend>
-                <div class="priority-buttons" role="group" aria-label="Task priority selection">
+                <div class="priority-buttons">
                     <button 
                         type="button" 
                         class="priority-btn urgent" 
@@ -511,8 +501,7 @@ function editTaskDetailOverlayTemplate(task) {
 
                 <div id="user-circle-assigned-edit-overlay" 
                     class="assigned-circles-edit-overlay"
-                    role="group"
-                    aria-label="Currently assigned contacts"
+                    role="status"
                     aria-live="polite"></div>
             </div>
             
@@ -539,7 +528,7 @@ function editTaskDetailOverlayTemplate(task) {
         </div>  
 
         <div class="task-detail-edit-footer">
-            <div class="form-actions" role="group" aria-label="Save or cancel changes">
+            <div class="form-actions">
                 <button 
                     onclick="saveEditedTask('${task.id}')" 
                     onkeydown="handleSaveKeydown(event, '${task.id}')"
@@ -554,6 +543,15 @@ function editTaskDetailOverlayTemplate(task) {
             
     </section>
     `;
+}
+
+function getContactsInTaskOverlayHtml(color, initials, contact) {
+    return /* html */`
+        <div class="overlay-contact-row">  
+            <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
+            <span>${contact.name}</span>
+        </div>
+        `
 }
 
 function showMainSubtaskIcons() {
@@ -594,7 +592,7 @@ function renderSubtasksEditMode() {
     editSubtasks.forEach((st, i) => {
         if (i === editingSubtaskIndex) {
             list.innerHTML += `
-            <li class="subtask-edit-row-editing" role="listitem">
+            <li class="subtask-edit-row-editing">
                 <input 
                     id="edit-subtask-input-${i}" 
                     class="subtask-row-input" 
@@ -603,7 +601,7 @@ function renderSubtasksEditMode() {
                     aria-label="Edit subtask: ${st.title}"
                     onkeydown="handleSubtaskEditKeydown(event, ${i})">
                 
-                <div class="subtask-icons-container" style="display: flex;" role="group" aria-label="Subtask actions">
+                <div class="subtask-icons-container" style="display: flex;">
                     <button 
                         type="button"
                         class="subtask-icon" 
@@ -632,39 +630,43 @@ function renderSubtasksEditMode() {
 
         } else {
             list.innerHTML += `
-            <li class="subtask-edit-row" 
-                role="listitem" 
-                tabindex="0"
-                aria-label="Subtask: ${st.title}. Press Enter or Space to edit, or use Tab to access actions"
-                onclick="editSubtask(${i})"
-                onkeydown="handleSubtaskRowKeydown(event, ${i})">
-                <span style="cursor:text; flex-grow:1;">• ${st.title}</span>
-                
-                <div class="subtask-icons-container" role="group" aria-label="Subtask actions">
-                    <button 
-                        type="button"
-                        class="subtask-icon" 
-                        onclick="editSubtask(${i})"
-                        onkeydown="handleSubtaskEditActionKeydown(event, ${i})"
-                        aria-label="Edit subtask: ${st.title}"
-                        tabindex="0"
-                        style="border: none; background: none; cursor: pointer; padding: 2px;">
-                        <img src="/assets/icons/edit.svg" alt="" aria-hidden="true">
-                    </button>
+            <li class="subtask-edit-row">
+                <button 
+                    type="button"
+                    class="subtask-row-button"
+                    aria-label="Subtask: ${st.title}. Press to edit this subtask"
+                    onclick="editSubtask(${i})"
+                    onkeydown="handleSubtaskRowKeydown(event, ${i})"
+                    style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: space-between;">
                     
-                    <div class="separator-vertical" aria-hidden="true"></div>
+                    <span style="flex-grow:1; text-align: left;">• ${st.title}</span>
                     
-                    <button 
-                        type="button"
-                        class="subtask-icon" 
-                        onclick="deleteSubtaskEdit(${i})"
-                        onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
-                        aria-label="Delete subtask: ${st.title}"
-                        tabindex="0"
-                        style="border: none; background: none; cursor: pointer; padding: 2px;">
-                        <img src="/assets/icons/delete.svg" alt="" aria-hidden="true">
-                    </button>
-                </div>
+                    <div class="subtask-icons-container" style="display: flex;">
+                        <button 
+                            type="button"
+                            class="subtask-icon" 
+                            onclick="editSubtask(${i}); event.stopPropagation();"
+                            onkeydown="handleSubtaskEditActionKeydown(event, ${i})"
+                            aria-label="Edit subtask: ${st.title}"
+                            tabindex="0"
+                            style="border: none; background: none; cursor: pointer; padding: 2px;">
+                            <img src="/assets/icons/edit.svg" alt="" aria-hidden="true">
+                        </button>
+                        
+                        <div class="separator-vertical" aria-hidden="true"></div>
+                        
+                        <button 
+                            type="button"
+                            class="subtask-icon" 
+                            onclick="deleteSubtaskEdit(${i}); event.stopPropagation();"
+                            onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
+                            aria-label="Delete subtask: ${st.title}"
+                            tabindex="0"
+                            style="border: none; background: none; cursor: pointer; padding: 2px;">
+                            <img src="/assets/icons/delete.svg" alt="" aria-hidden="true">
+                        </button>
+                    </div>
+                </button>
             </li>`;
         }
     });
@@ -1017,7 +1019,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                 </div>
             </div>
 
-            <div class="flex align user_icon_edit" aria-hidden="true">
+            <div class="flex align user-circle-intials" aria-hidden="true">
                 <div class="user-circle-intials user-circle-large_edit" style="background-color: ${color}; font-size: 47px;">
                     ${getInitials(contact.name)}
                 </div>
@@ -1179,7 +1181,7 @@ function getCheckIcon() {
 function displaySearchInBoardHtml() {
     return /* html */`
         <div class="searchbar" role="search" aria-label="Task search">
-            <label for="searchTasks" class="sr-only">Search tasks</label>
+            <label for="searchTasks" class="sr-only">Find Task</label>
             <input 
                 id="searchTasks" 
                 oninput="searchTasks()" 
@@ -1188,16 +1190,14 @@ function displaySearchInBoardHtml() {
                 type="text"
                 placeholder="Find Task" 
                 autocomplete="off"
-                aria-describedby="search-hint"
-                aria-label="Search for tasks by title or description">
-            <div id="search-hint" class="sr-only">Enter keywords to search through all tasks</div>
+                aria-label="Find Task">
             <div class="searchbar__divider" aria-hidden="true"></div>
             <button 
                 type="button"
                 class="btn_glass" 
                 onclick="searchAndClearSearchField()"
                 onkeydown="handleSearchButtonKeydown(event)"
-                aria-label="Search tasks or clear search field"
+                aria-label="Find Task"
                 tabindex="0">
                 <img class="searchbar__icon" src="/assets/icons/search.svg" alt="" aria-hidden="true">
             </button>

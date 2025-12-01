@@ -579,34 +579,34 @@ a {
 /* Focus improvements for buttons */
 .contacts-edit-delete-buttons:focus-visible,
 .mobile-actions-btn:focus-visible {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 2px;
 }
 
 /* Additional focus styles for better visibility */
 .go_back:focus-visible,
 .go_back:focus {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 2px;
     border-radius: 4px;
 }
 
 /* Menu item focus styles */
 .mobile-contact-menu button:focus-visible {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 1px;
     background-color: #f0f0f0;
 }
 
 /* Focus styles for edit/delete buttons */
 .contacts-edit-delete-buttons:focus-visible {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 2px;
     background-color: rgba(42, 54, 71, 0.1);
 }
 
 .contacts-edit-delete-buttons:focus {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 2px;
     background-color: rgba(42, 54, 71, 0.1);
 }
@@ -623,12 +623,12 @@ a {
 
 /* Focus improvements for dialog */
 .add_contact_overlay input:focus {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 1px;
 }
 
 .add_contact_overlay button:focus-visible {
-    outline: 2px solid #2A3647;
+    outline: 2px solid #29ABE2;
     outline-offset: 2px;
 }
 

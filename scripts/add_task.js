@@ -1,3 +1,6 @@
+/**
+ * Initializes the Add Task page
+ */
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
@@ -12,6 +15,9 @@ async function initAddTask() {
     
 }
 
+/**
+ * Sets up form elements with default values and constraints
+ */
 function setupFormElements() {
     const dueDateInput = document.getElementById('due-date');
     if (dueDateInput) {
@@ -20,7 +26,9 @@ function setupFormElements() {
     }
 }
 
-/** Setup priority buttons */
+/**
+ * Sets up priority button event listeners and interactions
+ */
 function setupPriorityButtons() {
     let buttons = document.querySelectorAll(".priority-btn");
     buttons.forEach(button => {
@@ -31,7 +39,10 @@ function setupPriorityButtons() {
     });
 }
 
-/** Handle create task */
+/**
+ * Handles the creation of a new task
+ * @param {string} boardCategory - The board category for the new task
+ */
 async function handleCreateTask(boardCategory) {
  let title = document.getElementById('title').value.trim();
     let description = document.getElementById('description').value.trim();
@@ -64,7 +75,9 @@ async function handleCreateTask(boardCategory) {
 
 
 
-/** Clear form */
+/**
+ * Clears all form inputs and resets form state
+ */
 function clearForm() {
    document.getElementById("task-form").reset();
     editSubtasks = [];
@@ -75,7 +88,12 @@ function clearForm() {
     setCheckboxesById();
 }
 
-/** Post data to backend */
+/**
+ * Sends a PUT request to the backend with the provided data
+ * @param {string} path - The API path to send data to
+ * @param {Object} data - The data object to send
+ * @returns {Promise<Response>} The fetch response
+ */
 async function putData(path = "", data = {}) {
     try {
 
@@ -97,12 +115,17 @@ async function putData(path = "", data = {}) {
 }
 
 
+/**
+ * Toggles the visibility of the contact dropdown
+ */
 function toggleContactDropdown() {
     let dropdown = document.getElementById('assigned-dropdown');
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-//////////////////// understand + remove comments (later) ////////////////////
+/**
+ * Toggles the contact dropdown with accessibility features
+ */
 function toggleContactDropdown() {
     let dropdown = document.getElementById('assigned-dropdown');
     let display = document.getElementById('assigned-display');
@@ -110,8 +133,6 @@ function toggleContactDropdown() {
     if (dropdown.style.display === 'none') {
         dropdown.style.display = 'block';
         display.setAttribute('aria-expanded', 'true');
-        
-        // Fokus auf erste Checkbox setzen
         setTimeout(() => {
             let firstCheckbox = dropdown.querySelector('input[type="checkbox"]');
             if (firstCheckbox) {
@@ -121,10 +142,15 @@ function toggleContactDropdown() {
     } else {
         dropdown.style.display = 'none';
         display.setAttribute('aria-expanded', 'false');
-        display.focus(); // Fokus zurück zum Button
+        display.focus();
     }
 }
 
+/**
+ * Handles keyboard navigation for priority buttons
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} priority - The current priority level
+ */
 function handlePriorityKeydown(event, priority) {
     const priorities = ['urgent', 'medium', 'low'];
     const currentIndex = priorities.indexOf(priority);
@@ -164,6 +190,10 @@ function handleAssignedDropdownKeydown(event) {
     }
 }
 
+/**
+ * Handles keyboard events for close button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
 function handleCloseKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -183,6 +213,10 @@ function handleAssignedDropdownKeydown(event) {
     }
 }
 
+/**
+ * Handles keyboard events for edit assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
 function handleAssignedDropdownEditKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -195,6 +229,11 @@ function handleAssignedDropdownEditKeydown(event) {
     }
 }
 
+/**
+ * Handles keyboard events for save button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The task ID to save
+ */
 function handleSaveKeydown(event, taskId) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -202,6 +241,10 @@ function handleSaveKeydown(event, taskId) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask cancel button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
 function handleSubtaskCancelKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -209,6 +252,10 @@ function handleSubtaskCancelKeydown(event) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask add button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
 function handleSubtaskAddKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -216,6 +263,11 @@ function handleSubtaskAddKeydown(event) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask edit input
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
 function handleSubtaskEditKeydown(event, index) {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -227,6 +279,11 @@ function handleSubtaskEditKeydown(event, index) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask delete button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
 function handleSubtaskDeleteKeydown(event, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -234,6 +291,11 @@ function handleSubtaskDeleteKeydown(event, index) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask save button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
 function handleSubtaskSaveKeydown(event, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -241,6 +303,11 @@ function handleSubtaskSaveKeydown(event, index) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask row
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
 function handleSubtaskRowKeydown(event, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -248,6 +315,11 @@ function handleSubtaskRowKeydown(event, index) {
     }
 }
 
+/**
+ * Handles keyboard events for subtask edit action
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
 function handleSubtaskEditActionKeydown(event, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -255,7 +327,6 @@ function handleSubtaskEditActionKeydown(event, index) {
     }
 }
 
-////////////////// check here - against my validation function (register/login) //////////////////
 /**
  * Validates the edit task form and shows error messages
  * @returns {boolean} true if form is valid
@@ -375,11 +446,17 @@ function initializeEditTaskAccessibility() {
     }
 }
 
+/**
+ * Renders the add task overlay
+ */
 function renderAddTAskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate();
 }
 
+/**
+ * Renders assigned contact circles in edit overlay
+ */
 function renderAssignedEditCircles() {
     let container = document.getElementById('user-circle-assigned-edit-overlay');
     if (!container) return;
@@ -410,6 +487,10 @@ function renderAssignedEditCircles() {
 }
 
 
+/**
+ * Saves an edited task to the backend
+ * @param {string} taskId - The ID of the task to save
+ */
 async function saveEditedTask(taskId) {
     // Validate form before saving
     if (!validateEditTaskForm()) {
@@ -444,6 +525,10 @@ async function saveEditedTask(taskId) {
     }
 }
 
+/**
+ * Sets the priority for task editing with accessibility features
+ * @param {string} newPrio - The new priority level
+ */
 function setEditPrio(newPrio) {
     editPriority = newPrio;
     
@@ -477,6 +562,10 @@ function setEditPrio(newPrio) {
     }
 }
 
+/**
+ * Toggles assignment of a user to the task being edited
+ * @param {string} userId - The ID of the user to toggle
+ */
 function toggleEditAssign(userId) {
     let index = editAssignedIds.indexOf(userId);
     if (index === -1) {
@@ -487,11 +576,19 @@ function toggleEditAssign(userId) {
     renderAssignedEditCircles();
 }
 
+/**
+ * Enters edit mode for a specific subtask
+ * @param {number} index - The index of the subtask to edit
+ */
 function editSubtask(index) {
     editingSubtaskIndex = index;
     renderSubtasksEditMode();
 }
 
+/**
+ * Saves the edited subtask or deletes it if empty
+ * @param {number} index - The index of the subtask to save
+ */
 function saveEditedSubtask(index) {
     let input = document.getElementById(`edit-subtask-input-${index}`);
     if (input.value.trim().length > 0) {
@@ -502,6 +599,9 @@ function saveEditedSubtask(index) {
         deleteSubtaskEdit(index);
     }
 }
+/**
+ * Adds a new subtask to the edit list
+ */
 function addSubtaskEdit() {
     let input = document.getElementById('subtask-input-edit');
     let title = input.value.trim();
@@ -513,6 +613,9 @@ function addSubtaskEdit() {
     resetMainSubtaskIcons();
 }
 
+/**
+ * Toggles the visibility of the edit contact dropdown
+ */
 function toggleContactDropdownEdit() {
     let dropdown = document.getElementById('assigned-dropdown-edit');
     
@@ -524,6 +627,9 @@ function toggleContactDropdownEdit() {
 }
 //
 
+/**
+ * Sets checkbox states based on currently assigned IDs
+ */
 function setCheckboxesById() {
     let container = document.getElementById('assigned-dropdown-edit');
     if (!container) return;
@@ -538,17 +644,27 @@ function setCheckboxesById() {
     }
 }
 
+/**
+ * Deletes a subtask from the edit list
+ * @param {number} index - The index of the subtask to delete
+ */
 function deleteSubtaskEdit(index) {
     editSubtasks.splice(index, 1);
     editingSubtaskIndex = -1; 
     renderSubtasksEditMode();
 }
 
+/**
+ * Resets the main subtask icons container
+ */
 function resetMainSubtaskIcons() {
    let container = document.getElementById('main-subtask-icons');
     container.innerHTML = '';
 }
 
+/**
+ * Cancels the main subtask input and resets the interface
+ */
 function cancelMainSubtaskInput() {
     let input = document.getElementById('subtask-input-edit');
     input.value = '';      
@@ -556,6 +672,10 @@ function cancelMainSubtaskInput() {
     resetMainSubtaskIcons(); 
 }
 
+/**
+ * Handles keyboard events for subtask input
+ * @param {KeyboardEvent} event - The keyboard event
+ */
 function handleSubtaskKey(event) {
     if (event.key === 'Enter') {
         event.preventDefault(); 

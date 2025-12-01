@@ -56,7 +56,7 @@ body {
 }
 
 .searchbar:focus-within {
-    border: 1px solid var(--primary-hover)
+    border: 2px solid var(--primary-hover);
 }
 
 .searchbar__input {
