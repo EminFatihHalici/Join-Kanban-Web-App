@@ -1,7 +1,6 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
-    
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setupPriorityButtons();
     setupFormElements();
@@ -9,7 +8,6 @@ async function initAddTask() {
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
-    
 }
 
 function setupFormElements() {
@@ -32,38 +30,40 @@ function setupPriorityButtons() {
 }
 
 /** Handle create task */
-async function handleCreateTask(boardCategory) {
- let title = document.getElementById('title').value.trim();
+async function handleCreateTask(boardCategory, event) {
+    if (event) event.preventDefault();
+    let titleValid = validateField('title');
+    let dateValid = validateField('due-date');
+    let categoryValid = validateCategory();
+    if (!titleValid || !dateValid || !categoryValid) {
+        return;
+    }
+    let title = document.getElementById('title').value.trim();
     let description = document.getElementById('description').value.trim();
     let dueDate = document.getElementById('due-date').value;
-    let categoryElement = document.getElementById('category');
-    let category = categoryElement ? categoryElement.value : '';
-
-    if (title && dueDate && category) {
-        let newTask = {
-            title: title,
-            description: description,
-            dueDate: dueDate,
-            category: category,
-            priority: editPriority,     
-            assigned: editAssignedIds,  
-            subtasks: editSubtasks,     
-            board: boardCategory,
-            createdAt: new Date().getTime()
-        };
+    let category = document.getElementById('category').value;
+    let newTask = {
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        category: category,
+        priority: editPriority,
+        assigned: editAssignedIds,
+        subtasks: editSubtasks,
+        board: boardCategory,
+        createdAt: new Date().getTime()
+    };
     try {
         let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
-        clearForm(); 
-        showSuccessImageAnimation()
+        
+        clearForm();
+        showSuccessImageAnimation();
     } catch (error) {
-        console.error("Error creating task:", error);
+        console.error(error);
     }
- }
 }
-
-
 
 /** Clear form */
 function clearForm() {
@@ -323,8 +323,61 @@ function toggleCategoryDropdown() {
     }
 }
 
+
+function validateField(id) {
+    let input = document.getElementById(id);
+    let errorMsg = document.getElementById(id + '-error');
+    if (!input.value.trim()) {
+        input.classList.add('input-error');
+        errorMsg.classList.add('visible');
+        return false;
+    } else {
+        input.classList.remove('input-error');
+        errorMsg.classList.remove('visible');
+        return true;
+    }
+}
+
+function clearError(id) {
+    let input = document.getElementById(id);
+    let errorMsg = document.getElementById(id + '-error');
+    input.classList.remove('input-error');
+    errorMsg.classList.remove('visible');
+}
+
 function selectCategory(category) {
     document.getElementById('category-text').innerHTML = category;
     document.getElementById('category').value = category;
     toggleCategoryDropdown();
+    let container = document.getElementById('category-display');
+    let errorMsg = document.getElementById('category-error');
+    container.classList.remove('input-error');
+    errorMsg.classList.remove('visible');
+}
+
+function validateCategory() {
+    let input = document.getElementById('category');
+    let container = document.getElementById('category-display');
+    let errorMsg = document.getElementById('category-error');
+    if (!input.value) {
+        container.classList.add('input-error');
+        errorMsg.classList.add('visible');
+        return false;
+    } else {
+        container.classList.remove('input-error');
+        errorMsg.classList.remove('visible');
+        return true;
+    }
+}
+
+function checkFormValidity() {
+    let title = document.getElementById('title').value.trim();
+    let date = document.getElementById('due-date').value;
+    let category = document.getElementById('category').value;
+    let btn = document.getElementById('create-btn');
+    if (title && date && category) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
+    }
 }
