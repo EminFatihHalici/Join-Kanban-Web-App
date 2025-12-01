@@ -65,7 +65,7 @@
             </a>
             <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="0" role="button"
                 aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu"
-                onkeydown="if(event.key==='Enter'||event.key===' '){toggleDropDownMenu(); event.preventDefault();}">
+                onkeydown="handleUserMenuKeydown(event)">
             </div>
 
             <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">

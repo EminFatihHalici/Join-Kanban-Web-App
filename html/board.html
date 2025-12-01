@@ -66,9 +66,8 @@
             <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="0" role="button"
-                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu"
-                onkeydown="if(event.key==='Enter'||event.key===' '){toggleDropDownMenu(); event.preventDefault();}">
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)" id="currentUserInitials" tabindex="0" role="button"
+                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu">
             </div>
 
             <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">

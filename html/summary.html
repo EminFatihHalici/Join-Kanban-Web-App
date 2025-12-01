@@ -17,55 +17,64 @@
 </head>
 
 <body onload="init()" onresize="handleResizeOverlay()">
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary active" href="/html/summary.html">
-                        <img class="img_nav" src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary active" href="/html/summary.html" 
+                       aria-current="page" 
+                       aria-label="Summary page - currently selected">
+                        <img class="img_nav" src="/assets/icons/Prop_summary.svg" height="30px" width="30px"
+                            alt="" aria-hidden="true">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html">
-                        <img class="img_nav" src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                    <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
+                        <img class="img_nav" src="/assets/icons/Prop_add_task.svg" height="30px" width="30px"
+                            alt="" aria-hidden="true">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board" href="/html/board.html">
-                        <img class="img_nav" src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                    <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
+                        <img class="img_nav" src="/assets/icons/Prop_board.svg" height="30px" width="30px"
+                            alt="" aria-hidden="true">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
-                        <img class="img_nav" src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                        <img class="img_nav" src="/assets/icons/Prop_contacts.svg" height="30px" width="30px"
+                            alt="" aria-hidden="true">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy Policy</a>
+                    <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
             <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <a class="a_help_summary" href="/html/help.html">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+            <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
+                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="1"></div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                id="currentUserInitials" tabindex="0" role="button"
+                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu">
+            </div>
 
-            <div class="user-menu" id="user-menu">
-                <a class="user-menu-help" href="/html/help.html">Help</a>
-                <a class="user-menu-legal-notice" href="/html/legal_notice.html">Legal Notice</a>
-                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log out</a>
             </div>
         </div>
     </header>
