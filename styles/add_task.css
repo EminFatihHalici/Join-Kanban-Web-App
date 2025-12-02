@@ -57,7 +57,6 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 48px;
-    max-height: 600px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -67,11 +66,11 @@ h1 {
     max-height: 200px;
 }
 
-.padding-bottom-32{
-    padding-bottom:36px;
+.padding-bottom-32 {
+    padding-bottom: 36px;
 }
 
-.padding-bottom-24{
+.padding-bottom-24 {
     padding-bottom: 24px;
 }
 
@@ -115,13 +114,13 @@ select {
     width: 440px;
 }
 
-.add-task-label-box-sizing{
+.add-task-label-box-sizing {
     gap: 8px;
     display: flex;
     flex-direction: column;
 }
 
-.padding-bottom-32{
+.padding-bottom-32 {
     padding-bottom: 32px;
 }
 
@@ -206,7 +205,7 @@ button.clear:hover {
 
 .edit-form-section {
     width: 100%;
-    display:flex;
+    display: flex;
     flex-direction: column;
     gap: 8px;
 }
@@ -594,12 +593,149 @@ select:focus {
 }
 
 .error-text.visible {
-    display: block; 
+    display: block;
 }
 
-@media (max-width: 430px) {
+@media (max-width: 1350px) {
+
+    .main-add-task {
+        width: calc(100% - 232px);
+        margin-left: 232px;
+        padding: 40px;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
+    .task-form {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 24px;
+        height: auto;
+        max-height: unset;
+        overflow: visible;
+    }
+
+    .form-left,
+    .form-right {
+        flex: 1;
+        width: auto;
+        max-width: unset;
+    }
+
+    input,
+    textarea,
+    select,
+    .select-display,
+    .subtask-input-wrapper,
+    .custom-select-container,
+    .add-task-label-box-sizing {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     .priority-buttons {
-    flex-direction: column;
-    gap: 4px;
+        gap: 8px;
+    }
+
+    .priority-btn {
+        flex: 1;
+        width: auto;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    .priority-btn img {
+        width: 14px;
+        margin-left: 4px;
+    }
+
+    .form-footer {
+        margin-top: 40px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 20px;
+    }
 }
+
+@media (max-width: 950px) {
+
+    .main-add-task {
+        width: calc(100% - 232px);
+        margin-left: 232px;
+        padding: 32px;
+    }
+
+    .task-form {
+        flex-direction: column;
+    }
+
+    .form-left,
+    .form-right {
+        width: 100%;
+    }
+
+    .divider {
+        display: none;
+    }
+
+    .form-footer {
+        margin-top: 40px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .main-add-task {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px 16px 120px 16px;
+        margin-top: 80px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .form-actions {
+        justify-content: space-between;
+    }
+
+    .clear,
+    .create {
+        flex: 1;
+        height: 50px;
+    }
+}
+
+@media (max-width: 400px) {
+    .priority-btn {
+        font-size: 12px;
+        padding: 8px 0;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
 }
