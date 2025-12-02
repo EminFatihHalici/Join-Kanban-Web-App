@@ -879,6 +879,15 @@ textarea {
 }
 
 @media (max-width: 768px) {
+    .task-detail-headline {
+        margin: 16px 0;
+        font-size: 36px;
+    }
+
+    .task-detail-overlay {
+        width: 90%;
+    }
+
     .board-header {
         padding: 48px 16px 92px;
     }
@@ -910,6 +919,12 @@ textarea {
 
     .category {
         width: 100%;
+    }
+}
+
+@media (max-width: 350px) {
+    .board-header__top{
+        gap: 0;
     }
 }
 

@@ -689,3 +689,10 @@ body {
     height: 116px;
   }
 }
+
+@media (max-height: 850px) {
+  .main_summary{
+    overflow: scroll;
+    margin-bottom: 16px;
+  }
+}
