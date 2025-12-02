@@ -1,13 +1,12 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
-    await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-    setupPriorityButtons();
-    setupFormElements();
-    setCheckboxesById();
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
+    await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
+    setCheckboxesById();
+    setupFormElements();
 }
 
 function setupFormElements() {
@@ -32,10 +31,10 @@ function setupPriorityButtons() {
 /** Handle create task */
 async function handleCreateTask(boardCategory, event) {
     if (event) event.preventDefault();
-    let titleValid = validateField('title');
-    let dateValid = validateField('due-date');
-    let categoryValid = validateCategory();
-    if (!titleValid || !dateValid || !categoryValid) {
+    let isTitleValid = validateField('title');
+    let isDateValid = validateField('due-date');
+    let isCategoryValid = validateCategory();
+    if (!isTitleValid || !isDateValid || !isCategoryValid) {
         return;
     }
     let title = document.getElementById('title').value.trim();
@@ -43,21 +42,14 @@ async function handleCreateTask(boardCategory, event) {
     let dueDate = document.getElementById('due-date').value;
     let category = document.getElementById('category').value;
     let newTask = {
-        title: title,
-        description: description,
-        dueDate: dueDate,
-        category: category,
-        priority: editPriority,
-        assigned: editAssignedIds,
-        subtasks: editSubtasks,
-        board: boardCategory,
-        createdAt: new Date().getTime()
+        title: title, description: description, dueDate: dueDate, category: category,
+        priority: editPriority, assigned: editAssignedIds, subtasks: editSubtasks,
+        board: boardCategory, createdAt: new Date().getTime()
     };
     try {
         let taskPath = `/${activeUserId}/tasks`;
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
-        
         clearForm();
         showSuccessImageAnimation();
     } catch (error) {
@@ -67,20 +59,23 @@ async function handleCreateTask(boardCategory, event) {
 
 /** Clear form */
 function clearForm() {
-   document.getElementById("task-form").reset();
+    document.getElementById("task-form").reset();
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
-    renderAssignedEditCircles(); 
+    renderAssignedEditCircles();
     renderSubtasksEditMode();
     setCheckboxesById();
     updatePrioUI('medium');
+    document.getElementById('category-text').innerHTML = 'Select task category';
+    document.getElementById('category').value = '';
+    document.querySelectorAll('.error-text').forEach(el => el.classList.remove('visible'));
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
 }
 
 /** Post data to backend */
 async function putData(path = "", data = {}) {
     try {
-
         let response = await fetch(BASE_URL + path + ".json", {
             method: "PUT",
             headers: {
@@ -95,15 +90,12 @@ async function putData(path = "", data = {}) {
         console.error("Error posting data:", error);
         throw error;
     }
-
 }
-
 
 function toggleContactDropdown() {
     let dropdown = document.getElementById('assigned-dropdown');
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
-
 
 function renderAddTAskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
@@ -117,7 +109,7 @@ function renderAssignedEditCircles() {
     if (editAssignedIds.length > 5) {
         for (let i = 0; i < 5; i++) {
             let userId = editAssignedIds[i];
-            let contact = contacts.find(c => c.id == userId); 
+            let contact = contacts.find(c => c.id == userId);
             if (contact) {
                 container.innerHTML += renderContactCircle(contact);
             }
@@ -139,26 +131,25 @@ function renderAssignedEditCircles() {
     }
 }
 
-
 async function saveEditedTask(taskId) {
     let title = document.getElementById('title').value;
     let description = document.getElementById('description').value;
     let dueDate = document.getElementById('due-date').value;
     let oldTask = tasks.find(t => t.id === taskId);
     let updatedTask = {
-        ...oldTask,             
-        title: title,             
-        description: description, 
-        dueDate: dueDate,         
-        priority: editPriority,  
+        ...oldTask,
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        priority: editPriority,
         assigned: editAssignedIds,
-        subtasks: editSubtasks   
+        subtasks: editSubtasks
     };
     try {
         await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
         closeAddTaskOverlay();
-        tasks = await fetchAndAddIdAndRemoveUndefinedContacts(); 
-        await renderTasks(tasks); 
+        tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
+        await renderTasks(tasks);
     } catch (error) {
         console.error("Can't save:", error);
     }
@@ -197,6 +188,7 @@ function saveEditedSubtask(index) {
         deleteSubtaskEdit(index);
     }
 }
+
 function addSubtaskEdit() {
     let input = document.getElementById('subtask-input-edit');
     let title = input.value.trim();
@@ -210,7 +202,7 @@ function addSubtaskEdit() {
 
 function toggleContactDropdownEdit() {
     let dropdown = document.getElementById('assigned-dropdown-edit');
-    let arrow = document.getElementById('arrow-icon-edit'); 
+    let arrow = document.getElementById('arrow-icon-edit');
     if (dropdown.style.display === 'block') {
         dropdown.style.display = 'none';
         if (arrow) {
@@ -231,7 +223,7 @@ function setCheckboxesById() {
     for (let i = 0; i < checkboxes.length; i++) {
         let cb = checkboxes[i];
         cb.checked = editAssignedIds.includes(cb.value);
-        cb.onclick = function(e) {
+        cb.onclick = function (e) {
             e.stopPropagation();
             toggleEditAssign(cb.value);
         };
@@ -240,26 +232,26 @@ function setCheckboxesById() {
 
 function deleteSubtaskEdit(index) {
     editSubtasks.splice(index, 1);
-    editingSubtaskIndex = -1; 
+    editingSubtaskIndex = -1;
     renderSubtasksEditMode();
 }
 
 function resetMainSubtaskIcons() {
-   let container = document.getElementById('main-subtask-icons');
+    let container = document.getElementById('main-subtask-icons');
     container.innerHTML = '';
 }
 
 function cancelMainSubtaskInput() {
     let input = document.getElementById('subtask-input-edit');
-    input.value = '';      
-    input.blur();          
-    resetMainSubtaskIcons(); 
+    input.value = '';
+    input.blur();
+    resetMainSubtaskIcons();
 }
 
 function handleSubtaskKey(event) {
     if (event.key === 'Enter') {
-        event.preventDefault(); 
-        addSubtaskEdit();       
+        event.preventDefault();
+        addSubtaskEdit();
     }
 }
 
@@ -272,11 +264,11 @@ function showSuccessImageAnimation() {
     }
     toastImg.classList.remove('d-none');
     setTimeout(() => {
-        toastImg.classList.add('animate-toast-slide-in'); 
+        toastImg.classList.add('animate-toast-slide-in');
     }, 10);
     setTimeout(() => {
         window.location.href = 'board.html';
-    }, 2000); 
+    }, 2000);
 }
 
 function updatePrioUI(prio) {
@@ -322,15 +314,16 @@ function toggleCategoryDropdown() {
     }
 }
 
-
 function validateField(id) {
     let input = document.getElementById(id);
     let errorMsg = document.getElementById(id + '-error');
     if (!input.value.trim()) {
+        // Fehler
         input.classList.add('input-error');
         errorMsg.classList.add('visible');
         return false;
     } else {
+        // OK
         input.classList.remove('input-error');
         errorMsg.classList.remove('visible');
         return true;
@@ -344,6 +337,27 @@ function clearError(id) {
     errorMsg.classList.remove('visible');
 }
 
+function clearForm() {
+    document.getElementById("task-form").reset();
+    editSubtasks = [];
+    editAssignedIds = [];
+    editPriority = 'medium';
+    renderAssignedEditCircles();
+    renderSubtasksEditMode();
+    setCheckboxesById();
+    updatePrioUI('medium');
+    let categoryText = document.getElementById('category-text');
+    if (categoryText) categoryText.innerHTML = 'Select task category';
+    let categoryInput = document.getElementById('category');
+    if (categoryInput) categoryInput.value = '';
+    let errorInputs = document.querySelectorAll('.input-error');
+    errorInputs.forEach(input => input.classList.remove('input-error'));
+    let errorTexts = document.querySelectorAll('.error-text.visible');
+    errorTexts.forEach(msg => msg.classList.remove('visible'));
+    let btn = document.getElementById('create-btn');
+    if (btn) btn.disabled = true;
+}
+
 function selectCategory(category) {
     document.getElementById('category-text').innerHTML = category;
     document.getElementById('category').value = category;
@@ -353,6 +367,7 @@ function selectCategory(category) {
     container.classList.remove('input-error');
     errorMsg.classList.remove('visible');
 }
+
 
 function validateCategory() {
     let input = document.getElementById('category');
@@ -366,17 +381,5 @@ function validateCategory() {
         container.classList.remove('input-error');
         errorMsg.classList.remove('visible');
         return true;
-    }
-}
-
-function checkFormValidity() {
-    let title = document.getElementById('title').value.trim();
-    let date = document.getElementById('due-date').value;
-    let category = document.getElementById('category').value;
-    let btn = document.getElementById('create-btn');
-    if (title && date && category) {
-        btn.disabled = false;
-    } else {
-        btn.disabled = true;
     }
 }

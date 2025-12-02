@@ -521,5 +521,5 @@ select:focus {
 }
 
 .error-text.visible {
-    display: block;
+    display: block; 
 }
