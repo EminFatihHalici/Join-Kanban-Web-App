@@ -182,8 +182,6 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-}
-
 /**
  * Handles keyboard events for close button
  * @param {KeyboardEvent} event - The keyboard event
