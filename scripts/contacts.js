@@ -12,6 +12,7 @@ const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
  */
 async function init() {
     checkLoggedInPageSecurity();
+    initNavKeyboardSupport();
     await eachPageSetCurrentUserInitials();
     await loadAndRenderContacts('contactList', 'contacts');
 }
@@ -42,14 +43,35 @@ function checkAllCreateContactValidations(id) {
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
     contactsFetch = await fetchData(`/${activeUserId}/contacts`);
-    if (contactsFetch.length == 0) {
+    let contactsArray = convertContactsFetchObjectToArray();
+    if (contactsArray.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
-        let contacts = contactsFetch.filter(i => i && i.name);
+        let contacts = contactsArray.filter(i => i && i.name);
         let sortedContacts = contacts.sort((a, b) => { return a.name.localeCompare(b.name) });
         let groupedContacts = groupContactsByLetter(sortedContacts);
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
     };
+}
+
+/**
+ * Converts the contactsFetch data to an array format
+ * Handles different data structures from Firebase: null/undefined, arrays, or objects
+ * @returns {Array} Array of contact objects with preserved IDs
+ */
+function convertContactsFetchObjectToArray() {
+    let contactsArray;
+    if (!contactsFetch) {
+        contactsArray = [];
+    } else if (Array.isArray(contactsFetch)) {
+        contactsArray = contactsFetch;
+    } else {
+        contactsArray = Object.keys(contactsFetch).map(key => ({
+            id: key,
+            ...contactsFetch[key]
+        }));
+    }
+    return contactsArray;
 }
 
 /**

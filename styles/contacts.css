@@ -115,7 +115,7 @@ a {
     background-color: #2A3647;
     color: #FFFFFF;
     border-radius: 50%;
-    border: none;
+    border: 0px solid transparent;
     transition: all 300ms ease-out;
 }
 
@@ -289,10 +289,6 @@ a {
     box-sizing: border-box;
 }
 
-.contact-large button:focus {
-    outline: var(--primary-active);
-}
-
 .contacts-edit-delete-buttons {
     display: flex;
     flex-direction: row;
@@ -305,12 +301,14 @@ a {
     transition: all 0.2s ease;
 }
 
+.contacts-edit-delete-buttons:focus,
 .contacts-edit-delete-buttons:hover {
     color: var(--primary-hover);
     font-weight: 700;
     cursor: pointer;
 }
 
+.contacts-edit-delete-buttons:focus svg path,
 .contacts-edit-delete-buttons:hover svg path {
     fill: var(--primary-hover);
 }
@@ -438,7 +436,6 @@ a {
 
 .btn_contact_cancel:hover svg path {
     stroke: var(--primary-hover);
-    /* ← HIER gehört stroke hin! */
 }
 
 .btn_contact_create:disabled {
@@ -452,6 +449,10 @@ a {
     box-shadow: none;
 }
 
+.btn_contact_create:focus {
+    outline: 2px solid var(--primary-hover);
+    outline-offset: 2px;
+}
 
 .popup {
     display: none;
@@ -508,7 +509,7 @@ a {
     position: fixed;
     bottom: 110px;
     /* über Bottom Nav */
-    right: 20px;
+    right: 30px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -519,6 +520,7 @@ a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
     z-index: 300;
     cursor: pointer;
+    border:none;
 }
 
 .mobile-actions-btn img {
@@ -544,7 +546,7 @@ a {
 
 
 
-/*************************** NEU (für ScreenReader) ***********************/
+/*************************** WCAG/WAI-ARIA (für ScreenReader) ***********************/
 /* Screen reader only class for accessibility */
 .sr-only {
     position: absolute;
@@ -577,24 +579,28 @@ a {
 }
 
 /* Focus improvements for buttons */
-.contacts-edit-delete-buttons:focus-visible,
-.mobile-actions-btn:focus-visible {
-    outline: 2px solid #29ABE2;
-    outline-offset: 2px;
-}
-
-/* Additional focus styles for better visibility */
 .go_back:focus-visible,
-.go_back:focus {
+.go_back:focus,
+.contact-info-group a:focus,
+.contacts-edit-delete-buttons:focus-visible {
     outline: 2px solid #29ABE2;
     outline-offset: 2px;
     border-radius: 4px;
 }
 
+/* Specific focus style for mobile actions button to maintain circular shape */
+.add-contact-btn-mobile:focus,
+.mobile-actions-btn:focus,
+.mobile-actions-btn:focus-visible {
+    outline: 2px solid #29ABE2;
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
 /* Menu item focus styles */
 .mobile-contact-menu button:focus-visible {
     outline: 2px solid #29ABE2;
-    outline-offset: 1px;
+    outline-offset: 2px;
     background-color: #f0f0f0;
 }
 
@@ -760,6 +766,7 @@ a {
     .add-contact-btn-mobile {
         display: flex;
         margin-right: 30px;
+        border-radius: 50%;
     }
 
     .button_add_contact {
@@ -1000,8 +1007,8 @@ a {
 
     .error-msg {
         width: 100%;
-        margin-right: auto;
         padding-left: 12px;
+        text-align: center;
     }
 }
 

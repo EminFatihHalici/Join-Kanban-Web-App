@@ -42,6 +42,22 @@ let contactCircleColor = [
 ]
 
 /**
+ * Initializes keyboard navigation support for navigation links
+ * Enables Space key activation for nav links, privacy policy, and legal notice links
+ */
+function initNavKeyboardSupport() {
+    const navLinks = document.querySelectorAll('.nav_navigation a, .privacy_policy, .legal_notes');
+    navLinks.forEach(link => {
+        link.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+}
+
+/**
  * Calculates the next available ID for a given path
  * @param {string} path - The database path to check for existing IDs
  * @returns {Promise<number>} The next available ID
@@ -153,20 +169,14 @@ async function eachPageSetCurrentUserInitials() {
 }
 
 /**
- * Handles global window resize events
+ * Handles global window resize events, checks if function exist and calls summary-specific function
  */
 function handleGlobalResize() {
-    if (typeof handleResizeOverlay === 'function') {
-        handleResizeOverlay();
-    }
-}
-
-/**
- * Handles overlay resize events
- */
-function handleResizeOverlay() {
     if (typeof window.handleResizeOverlay === 'function') {
         window.handleResizeOverlay();
+    }
+    else if (typeof handleResizeOverlay === 'function' && handleResizeOverlay !== window.handleResizeOverlay) {
+        handleResizeOverlay();
     }
 }
 

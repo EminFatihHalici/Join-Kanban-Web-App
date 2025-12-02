@@ -17,6 +17,7 @@ let editingSubtaskIndex = -1;
  */
 async function init() {
     checkLoggedInPageSecurity();
+    initNavKeyboardSupport();
     await eachPageSetCurrentUserInitials();
     contacts = await fetchAndSortContacts();
     tasks = await fetchAndAddIdAndRemoveUndefinedContacts();

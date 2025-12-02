@@ -6,6 +6,7 @@ let shownGreeting = loadShownGreeting();
  */
 async function init() {
   checkLoggedInPageSecurity();
+  initNavKeyboardSupport();
   const overlay = document.getElementById("greeting_overlay");
   if (window.innerWidth <= 780 && !loadShownGreeting()) {
     overlay.style.display = "flex";
