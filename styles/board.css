@@ -1063,6 +1063,8 @@ textarea {
     height: 64px;
     margin-top: 75px;
     justify-content: space-between;
+    margin-left: 60px;
+    margin-right: 60px;
 }
 
 @media (max-width: 1150px) {
@@ -1123,6 +1125,7 @@ textarea {
         height: 64px;
         margin-top: 75px;
         margin-bottom: 20px;
+
     }
 
 }
