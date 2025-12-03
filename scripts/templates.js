@@ -139,16 +139,19 @@ function getAddTaskOverlayTemplate(board) {
 
     return /* html */`
         <section class="overlay-add-task" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
+
+        <div class="overlay-scroll">
             <div class="overlay-header">
                 <h1 id="overlay-title" class="overlay-headline">Add Task</h1>
-            </div>
-            
-            <button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
+                <button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
                 <img src="/assets/icons/close.svg" alt="">
             </button>
+            </div>
+            
+            
 
-            <form id="task-form" class="task-form" novalidate>
-                <div class="form-left form-left-overlay">
+            <div id="task-form" class="task-form-overlay">
+                <div class="form-left-overlay">
                     <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
                     <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
                         oninput="clearError('title')" aria-required="true" aria-describedby="title-error" aria-invalid="false">
@@ -171,9 +174,9 @@ function getAddTaskOverlayTemplate(board) {
                     </div>
                 </div>
 
-                <div class="divider" role="presentation" aria-hidden="true"></div>
+                <div class="divider-overlay" role="presentation" aria-hidden="true"></div>
 
-                <div class="form-right form-right-overlay">
+                <div class="form-right-overlay">
                     <fieldset style="border: none; padding: 0; margin: 0;">
                         <legend class="sr-only">Task Priority</legend>
                         <label>Priority</label>
@@ -235,21 +238,25 @@ function getAddTaskOverlayTemplate(board) {
                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
                     <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
                 </div>
-            </form>
 
-            <div class="form-footer">
-                <p class="form-hint form-hint-overlay">
-                    <span class="required-marker">*</span>This field is required
-                </p>
-                <div class="form-actions form-actions-overlay" role="group" aria-label="Form actions">
-                    <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">
-                        Cancel ✖
-                    </button>
-                    <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">
-                        Create Task ✔
-                    </button>
-                </div>
+
+                   
             </div>
+
+             <div class="form-footer-overlay">
+                        <p class="form-hint form-hint-overlay">
+                            <span class="required-marker">*</span>This field is required
+                        </p>
+                        <div class="form-actions form-actions-overlay" role="group" aria-label="Form actions">
+                            <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">
+                                Cancel ✖
+                            </button>
+                            <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">
+                                Create Task ✔
+                            </button>
+                        </div>
+                    </div>
+
         </section>
     `;
 }
