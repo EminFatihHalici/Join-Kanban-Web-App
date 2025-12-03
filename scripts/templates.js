@@ -489,6 +489,35 @@ function editTaskDetailOverlayTemplate(task) {
             </div>
             
             <div class="edit-form-section">
+                <label for="category">Category<span class="required-marker"
+                        aria-label="required">*</span></label>
+
+                <div class="custom-select-container">
+
+                    <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
+                        tabindex="0" role="combobox"
+                        required aria-required="true" aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
+                        onkeydown="handleCategoryDropdownKeydown(event)">
+
+                        <span id="category-text">Select task category</span>
+
+                        <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
+                            class="dropdown-icon">
+                    </div>
+                    <div id="category-options" class="select-dropdown" style="display: none;">
+                        <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task
+                        </div>
+                        <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+                    </div>
+                    <div id="category-error" class="error-text" style="padding-top: 24px;" role="alert"
+                        aria-live="polite">This field is
+                        required</div>
+                    <input type="hidden" id="category" value="">
+
+                </div>
+            </div>
+            
+            <div class="edit-form-section">
                 <label for="subtask-input-edit" class="form-headline-text">Subtasks</label>
                 <div class="subtask-input-wrapper">
                     <input 
@@ -944,6 +973,7 @@ function renderAddNewContactOverlayHtml() {
                                 disabled 
                                 aria-disabled="true"
                                 aria-label="Create new contact"
+                                onclick="createContact()"
                                 onkeydown="handleContactSubmitKeydown(event)">
                             Create contact
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none"
@@ -957,6 +987,10 @@ function renderAddNewContactOverlayHtml() {
                 </form>
             </div>
         </article>
+
+        <div id="popupContactCreated" class="popup btn">
+            <p class="btn_std">Contact succesfully created</p>
+        </div>
         `
 }
 
