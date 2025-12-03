@@ -1018,9 +1018,6 @@ a {
         max-width: 100%;
     }
 
-    .contact-list-email {
-        max-width: 100%;
-    }
 }
 
 @media (max-width: 768px) {
