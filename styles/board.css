@@ -324,14 +324,18 @@ body {
 }
 
 .overlay-add-task {
-    z-index: 20;
-    position: relative;
+    /* Karten-Design */
     width: 1116px;
-    height: 870px; 
+    max-width: 90%; /* Damit es nicht breiter als der Screen wird */
+    height: 870px;
+    max-height: 90vh; /* Damit es nicht höher als der Screen wird */
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
-    overflow: hidden;
+    overflow: hidden; /* Wichtig für runde Ecken */
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -380,7 +384,6 @@ body {
     padding: 0px;
     gap: 16px;
     width: 440px;
-    border: 1px solid green;
 }
 
 .form-left-overlay> input,
@@ -1056,4 +1059,45 @@ textarea {
     width: 0px;
     border: 1px solid #D1D1D1;
     height: 24px;
+}
+
+
+
+@media (max-width: 1150px) {
+    
+    .add-task-overlay {
+        align-items: center; 
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .overlay-add-task {
+        width: 100%;
+        max-width: 500px; 
+        max-height: 90vh; /
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 0 auto;
+    }
+
+    .overlay-header {
+        margin: 32px 24px 16px;
+    }
+
+    .overlay-headline {
+        font-size: 36px;
+    }
+
+    .task-form {
+        flex-direction: column;
+        padding: 0 24px;
+        gap: 16px;
+        overflow-y: auto;
+        flex: 1;
+    }
+
 }
