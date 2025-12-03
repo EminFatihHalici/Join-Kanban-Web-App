@@ -89,6 +89,8 @@ function finalizeTaskCreation() {
  */
 function clearForm() {
     document.getElementById("task-form").reset();
+    document.getElementById('category-text').innerHTML = 'Select task category';
+    document.getElementById('category').value = '';
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
@@ -96,19 +98,11 @@ function clearForm() {
     renderSubtasksEditMode();
     setCheckboxesById();
     updatePrioUI('medium');
-    document.getElementById('category-text').innerHTML = 'Select task category';
-    document.getElementById('category').value = '';
-    document.querySelectorAll('.error-text').forEach(el => el.classList.remove('visible'));
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    document.querySelectorAll('.visible').forEach(el => el.classList.remove('visible'));
+    let btn = document.getElementById('create-btn');
+    if (btn) btn.disabled = false;
 }
-
-/**
- * Toggles the visibility of the contact dropdown
- */
-// function toggleContactDropdown() {
-//     let dropdown = document.getElementById('assigned-dropdown');
-//     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-// }
 
 /**
  * Toggles the contact dropdown with accessibility features
@@ -760,14 +754,6 @@ function clearError(id) {
     let errorMsg = document.getElementById(id + '-error');
     input.classList.remove('input-error');
     errorMsg.classList.remove('visible');
-}
-
-function clearForm() {
-    document.getElementById("task-form").reset();
-    resetGlobalVariables();
-    resetCustomUIComponents();
-    resetCategoryInput();
-    resetValidationVisuals();
 }
 
 function resetGlobalVariables() {
