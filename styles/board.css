@@ -1066,7 +1066,7 @@ textarea {
     .overlay-add-task {
         width: 100%;
         max-width: 500px; 
-        max-height: 90vh; /
+        max-height: 90vh;
         border-radius: 30px;
         display: flex;
         flex-direction: column;
