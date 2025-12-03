@@ -1113,7 +1113,7 @@ function contactRowHTML(contact, index) {
     let cssClass = isSelected ? 'contact-item selected' : 'contact-item';
     let icon = isSelected ? getCheckboxCheckedSvg() : getCheckboxEmptySvg();
     return `
-    <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}')">
+    <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}', event)">
         <div class="contact-item-left">
             ${renderContactCircle(contact)}
             <span class="contact-name">${contact.name}</span>

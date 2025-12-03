@@ -711,7 +711,8 @@ function updatePrioUI(prio) {
     }
 }
 
-function toggleContactSelection(contactId) {
+function toggleContactSelection(contactId, event) {
+    event.stopPropagation();
     toggleEditAssign(contactId);
     updateContactRowVisuals(contactId);
 }
