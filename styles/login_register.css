@@ -19,7 +19,6 @@
 
 body {
     background-color: var(--bg-color);
-    border: solid 1px red;
 }
 
 .header_h2 {
