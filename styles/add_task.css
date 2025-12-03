@@ -131,6 +131,7 @@ select {
     justify-content: space-between;
     align-items: end;
     height: 64px;
+    margin-bottom: 20px;
     margin-top: 75px;
 }
 

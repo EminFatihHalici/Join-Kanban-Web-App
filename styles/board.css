@@ -367,6 +367,7 @@ body {
     height: 32px;
     right: 40px;
     top: 64px;
+    border: none;
     border-radius: 56px;
 }
 
@@ -1128,6 +1129,7 @@ textarea {
     .overlay-scroll {
         overflow-y: scroll;
         overflow-x: hidden;
+        scrollbar-width: thin;
     }
 
     .form-footer-overlay {
