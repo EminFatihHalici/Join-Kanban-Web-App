@@ -148,7 +148,7 @@ async function updateContact(currContactId, option, event = null) {
             event.stopPropagation();
         }
         await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 10)));
-        let contactData = await setContactDataForBackendUpload();
+        let contactData = await setContactDataForBackendUpload('contactEditDeleteModal');
         if (option === 'Edit') {
             await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
         } else {
@@ -172,7 +172,7 @@ async function updateContact(currContactId, option, event = null) {
 async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
-        let contactData = await setContactDataForBackendUpload();
+        let contactData = await setContactDataForBackendUpload('contactAddModal');
         let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
         await loadAndRenderContacts('contactList', 'contacts');
     } catch (error) {
@@ -209,12 +209,13 @@ function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, 
 
 /**
  * Collects contact data from form inputs and formats it for backend upload
+ * @param {string} [dialogId] - The dialog container ID
  * @returns {Object} Contact data object with name, email, and phone
  */
-async function setContactDataForBackendUpload() {
-    let nameContact = document.getElementById('nameContact');
-    let emailContact = document.getElementById('emailContact');
-    let phoneContact = document.getElementById('phoneContact');
+async function setContactDataForBackendUpload(dialogId) {
+    let nameContact = document.getElementById(dialogId).querySelector('#nameContact');
+    let emailContact = document.getElementById(dialogId).querySelector('#emailContact');
+    let phoneContact = document.getElementById(dialogId).querySelector('#phoneContact');
     let data = {
         name: nameContact.value.trim(),
         email: emailContact.value.trim().toLowerCase(),
