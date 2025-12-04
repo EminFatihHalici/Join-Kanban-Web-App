@@ -168,7 +168,7 @@ function getAddTaskOverlayTemplate(board) {
                     <div class="add-task-label-box-sizing">
                         <label for="due-date">Due date<span class="required-marker"
                                 aria-label="required">*</span></label>
-                        <input id="due-date" type="date" required onblur="validateField('due-date')"
+                        <input min="${todayStr}" id="due-date" type="date" required onblur="validateField('due-date')"
                             oninput="clearError('due-date')" tabindex="0" aria-required="true"
                             aria-describedby="date-error" aria-invalid="false">
                         <div id="due-date-error" class="error-text" role="alert" aria-live="polite">This field
@@ -230,19 +230,17 @@ function getAddTaskOverlayTemplate(board) {
                     </div>
                     <div id="category-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
 
-                    <label for="subtask">Subtasks</label>
+                    <label for="subtask-input-overlay">Subtasks</label>
                     <div class="subtask-input-wrapper">
-                        <input type="text" id="subtask-input-edit" class="subtask-input-field"
+                        <input type="text" id="subtask-input-overlay" class="subtask-input-field"
                             placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
                             onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
                         <div id="main-subtask-icons" class="input-action-icons"></div>
                     </div>
                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
-                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
+                    <ul id="subtask-list-overlay" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
                 </div>
 
-
-                   
             </div>
 
              <div class="form-footer-overlay">
@@ -408,7 +406,9 @@ function editTaskDetailOverlayTemplate(task) {
                     min="${todayStr}" 
                     type="date" 
                     aria-required="true"
-                    aria-describedby="edit-due-date-error date-hint">
+                    aria-describedby="edit-due-date-error date-hint"
+                    onblur="validateField('edit-due-date')"
+                    oninput="clearError('edit-due-date')">
                 <div id="date-hint" class="sr-only">Select the deadline for this task</div>
                 <div id="edit-due-date-error" class="error-message" aria-live="polite"></div>
             </div>
@@ -511,7 +511,7 @@ function editTaskDetailOverlayTemplate(task) {
                         </div>
                         <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
                     </div>
-                    <div id="category-error" class="error-text" style="padding-top: 24px;" role="alert"
+                    <div id="category-error" class="error-text" style="padding-top: 8px;" role="alert"
                         aria-live="polite">This field is
                         required</div>
                     <input type="hidden" id="category" value="">
@@ -566,7 +566,7 @@ function getContactsInTaskOverlayHtml(color, initials, contact) {
 }
 
 function showMainSubtaskIcons() {
-    let container = document.getElementById('main-subtask-icons');
+    let container = document.getElementById('subtask-icons-overlay') || document.getElementById('main-subtask-icons');
     container.innerHTML = `
     <button 
             type="button"
@@ -597,99 +597,58 @@ function showMainSubtaskIcons() {
 }
 
 function renderSubtasksEditMode() {
-    let list = document.getElementById('subtask-list-edit-ul');
+    let list = document.getElementById('subtask-list-overlay');
+    if (!list) {
+        list = document.getElementById('subtask-list-edit-ul');
+    }
+    if (!list) return;
     list.innerHTML = '';
-
     editSubtasks.forEach((st, i) => {
         if (i === editingSubtaskIndex) {
-            list.innerHTML += `
-            <li class="subtask-edit-row-editing">
-                <input 
-                    id="edit-subtask-input-${i}" 
-                    class="subtask-row-input" 
-                    type="text" 
-                    value="${st.title}"
-                    aria-label="Edit subtask: ${st.title}"
-                    onkeydown="handleSubtaskEditKeydown(event, ${i})">
-                
-                <div class="subtask-icons-container" style="display: flex;">
-                    <button 
-                        type="button"
-                        class="subtask-icon" 
-                        onclick="deleteSubtaskEdit(${i})"
-                        onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
-                        aria-label="Delete subtask: ${st.title}"
-                        tabindex="0"
-                        style="border: none; background: none; cursor: pointer; padding: 2px;">
-                        <img src="/assets/icons/delete.svg" alt="" aria-hidden="true">
-                    </button>
-                    
-                    <div class="separator-vertical" aria-hidden="true"></div>
-                    
-                    <button 
-                        type="button"
-                        class="subtask-icon" 
-                        onclick="saveEditedSubtask(${i})"
-                        onkeydown="handleSubtaskSaveKeydown(event, ${i})"
-                        aria-label="Save changes to subtask"
-                        tabindex="0"
-                        style="border: none; background: none; cursor: pointer; padding: 2px;">
-                        <img src="/assets/icons/check_black.svg" alt="" aria-hidden="true">
-                    </button>
-                </div>
-            </li>`;
-
+            list.innerHTML += generateEditSubtaskHTML(st, i);
         } else {
-            list.innerHTML += `
-            <li class="subtask-edit-row">
-                <button 
-                    type="button"
-                    aria-label="Subtask: ${st.title}. Press to edit this subtask"
-                    onclick="editSubtask(${i})"
-                    onkeydown="handleSubtaskRowKeydown(event, ${i})"
-                    class="subtask-edit-element-one">
-                    
-                    <span style="flex-grow:1; text-align: left;">• ${st.title}</span>
-                    
-                    <div class="subtask-icons-container" style="display: flex;">
-                        <button 
-                            type="button"
-                            class="subtask-icon" 
-                            onclick="editSubtask(${i}); event.stopPropagation();"
-                            onkeydown="handleSubtaskEditActionKeydown(event, ${i})"
-                            aria-label="Edit subtask: ${st.title}"
-                            tabindex="0"
-                            style="border: none; background: none; cursor: pointer; padding: 2px;">
-                            <img src="/assets/icons/edit.svg" alt="" aria-hidden="true">
-                        </button>
-                        
-                        <div class="separator-vertical" aria-hidden="true"></div>
-                        
-                        <button 
-                            type="button"
-                            class="subtask-icon" 
-                            onclick="deleteSubtaskEdit(${i}); event.stopPropagation();"
-                            onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
-                            aria-label="Delete subtask: ${st.title}"
-                            tabindex="0"
-                            style="border: none; background: none; cursor: pointer; padding: 2px;">
-                            <img src="/assets/icons/delete.svg" alt="" aria-hidden="true">
-                        </button>
-                    </div>
-                </button>
-            </li>`;
+            list.innerHTML += generateViewSubtaskHTML(st, i);
         }
     });
+}
 
-    if (editingSubtaskIndex >= 0) {
-        setTimeout(() => {
-            const editInput = document.getElementById(`edit-subtask-input-${editingSubtaskIndex}`);
-            if (editInput) {
-                editInput.focus();
-                editInput.setSelectionRange(editInput.value.length, editInput.value.length);
-            }
-        }, 10);
-    }
+/**
+ * Generates HTML for a subtask in VIEW mode (Text + Edit Icons).
+ */
+function generateViewSubtaskHTML(st, i) {
+    return /*html*/`
+    <li class="subtask-edit-row" ondblclick="editSubtask(${i})">
+        <span onclick="editSubtask(${i})" style="flex-grow:1; cursor:pointer; padding-left: 16px;">• ${st.title}</span>
+        <div class="subtask-icons-container">
+            <div onclick="editSubtask(${i})" class="subtask-icon">
+                <img src="/assets/icons/edit.svg" alt="Edit">
+            </div>
+            <div class="separator-vertical"></div>
+            <div onclick="deleteSubtaskEdit(${i})" class="subtask-icon">
+                <img src="/assets/icons/delete.svg" alt="Delete">
+            </div>
+        </div>
+    </li>`;
+}
+
+/**
+ * Generates HTML for a subtask in EDIT mode (Text + Edit Icons).
+ */
+function generateEditSubtaskHTML(st, i) {
+    return /*html*/`
+    <li class="subtask-edit-row-editing">
+        <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}" 
+               onkeydown="handleEditSubtaskKey(event, ${i})">
+        <div class="subtask-icons-container" style="display: flex;">
+            <div onmousedown="deleteSubtaskEdit(${i})" class="subtask-icon">
+                <img src="/assets/icons/delete.svg" alt="Delete">
+            </div>
+            <div class="separator-vertical"></div>
+            <div onmousedown="saveEditedSubtask(${i})" class="subtask-icon">
+                <img src="/assets/icons/check_black.svg" alt="Save">
+            </div>
+        </div>
+    </li>`;
 }
 
 function renderContactLargeHtml(contact, color) {
