@@ -406,7 +406,9 @@ function editTaskDetailOverlayTemplate(task) {
                     min="${todayStr}" 
                     type="date" 
                     aria-required="true"
-                    aria-describedby="edit-due-date-error date-hint">
+                    aria-describedby="edit-due-date-error date-hint"
+                    onblur="validateField('edit-due-date')"
+                    oninput="clearError('edit-due-date')">
                 <div id="date-hint" class="sr-only">Select the deadline for this task</div>
                 <div id="edit-due-date-error" class="error-message" aria-live="polite"></div>
             </div>

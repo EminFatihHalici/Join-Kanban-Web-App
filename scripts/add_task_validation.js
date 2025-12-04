@@ -60,7 +60,6 @@ function validateTaskFormIfDateSmallerToday(dateInput, dateError, isValid) {
     const selectedDate = new Date(dateInput.value);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     if (selectedDate < today) {
         dateError.textContent = 'Due date cannot be in the past';
         dateInput.setAttribute('aria-invalid', 'true');
@@ -109,7 +108,6 @@ function setupEditFormValidation() {
             }
         });
     }
-    
     const dateInput = document.getElementById('edit-due-date');
     if (dateInput) {
         dateInput.addEventListener('blur', () => validateEditTaskForm());
@@ -123,16 +121,24 @@ function setupEditFormValidation() {
  * @returns {boolean} True if field is valid, false otherwise
  */
 function validateField(id) {
-    let input = document.getElementById(id);
-    let errorMsg = document.getElementById(id + '-error');
-    if (!input.value.trim()) {
-        input.classList.add('input-error');
-        errorMsg.classList.add('visible');
-        return false;
-    } else {
-        input.classList.remove('input-error');
-        errorMsg.classList.remove('visible');
-        return true;
+    const input = document.getElementById(id), error = document.getElementById(`${id}-error`);
+    if (!input || !error) return;
+    if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
+    const isInvalid = !input.value;
+    error.textContent = isInvalid ? 'This field is required' : '';
+    error.classList.toggle('visible', isInvalid);
+    input.classList.toggle('input-error', isInvalid);
+    return !isInvalid;
+}
+
+function clearError(elementId) {
+    const errorContainer = document.getElementById(elementId + '-error');
+    const inputField = document.getElementById(elementId);
+    if (errorContainer) {
+        errorContainer.classList.remove('visible');
+    }
+    if (inputField) {
+        inputField.classList.remove('input-error');
     }
 }
 

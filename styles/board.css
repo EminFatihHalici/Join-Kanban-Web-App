@@ -571,10 +571,6 @@ body {
     outline-offset: 2px;
 }
 
-textarea {
-    resize: none;
-}
-
 .subtask-text {
     word-wrap: break-word;
     max-width: 100%;
