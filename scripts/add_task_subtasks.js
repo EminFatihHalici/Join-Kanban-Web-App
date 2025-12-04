@@ -33,7 +33,11 @@ function saveEditedSubtask(index) {
  * Adds a new subtask to the edit list
  */
 function addSubtaskEdit() {
-    let input = document.getElementById('subtask-input-edit');
+    let input = document.getElementById('subtask-input-overlay');
+    if (!input) {
+        input = document.getElementById('subtask-input-edit');
+    }
+    if (!input) return;
     let title = input.value.trim();
     if (title) {
         editSubtasks.push({ title: title, done: false });
@@ -57,17 +61,27 @@ function deleteSubtaskEdit(index) {
  * Resets the main subtask icons container
  */
 function resetMainSubtaskIcons() {
-    let container = document.getElementById('main-subtask-icons');
-    container.innerHTML = '';
+    let container = document.getElementById('subtask-icons-overlay');
+    if (!container) {
+        container = document.getElementById('main-subtask-icons');
+    }
+    if (container) {
+        container.innerHTML = '';
+    }
 }
 
 /**
  * Cancels the main subtask input and resets the interface
  */
 function cancelMainSubtaskInput() {
-    let input = document.getElementById('subtask-input-edit');
-    input.value = '';
-    input.blur();
+    let input = document.getElementById('subtask-input-overlay');
+    if (!input) {
+        input = document.getElementById('subtask-input-edit');
+    }
+    if (input) {
+        input.value = '';
+        input.blur();
+    }
     resetMainSubtaskIcons();
 }
 
