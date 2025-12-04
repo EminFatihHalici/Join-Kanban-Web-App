@@ -85,7 +85,6 @@ a {
 .button_add_contact {
     display: flex;
     justify-content: flex-start;
-    width: 100%;
 }
 
 .add-contact-btn {
