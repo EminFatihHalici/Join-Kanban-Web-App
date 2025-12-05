@@ -641,7 +641,7 @@ function generateEditSubtaskHTML(st, i) {
     return /*html*/`
     <li class="subtask-edit-row-editing">
         <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}" 
-               onkeydown="handleEditSubtaskKey(event, ${i})">
+               onkeydown="handleSubtaskEditKeydown(event, ${i})">
         <div class="subtask-icons-container" style="display: flex;">
             <div onmousedown="deleteSubtaskEdit(${i})" class="subtask-icon">
                 <img src="/assets/icons/delete.svg" alt="Delete">

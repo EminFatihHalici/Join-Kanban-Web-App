@@ -94,19 +94,66 @@ function finalizeTaskCreation() {
  * Clears all form inputs and resets form state
  */
 function clearForm() {
-    document.getElementById("task-form");
+    resetBaseInputs();
+    resetCategory();
+    resetAssigned();
+    resetSubtasks();
+    resetPriority();
+    resetValidation();
+    enableCreateBtn();
+}
+function resetBaseInputs() {
+    ['title', 'description', 'due-date'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
+    const sub = document.getElementById('subtask-input-edit');
+    if (sub) sub.value = '';
+}
+
+function resetCategory() {
     document.getElementById('category-text').innerHTML = 'Select task category';
     document.getElementById('category').value = '';
-    editSubtasks = [];
+}
+
+function resetAssigned() {
     editAssignedIds = [];
-    editPriority = 'medium';
+    const disp = document.getElementById('assigned-display-edit');
+
+    if (disp) disp.innerHTML = `
+        <p>Select contacts to assign</p>
+        <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
+    `;
+
+    const dd = document.getElementById('assigned-dropdown-edit');
+    if (dd) {
+        dd.innerHTML = '';
+        loadAndRenderContacts('assigned-dropdown-edit', 'addTask')
+            .then(() => setCheckboxesById());
+    }
+
     renderAssignedEditCircles();
+}
+
+function resetSubtasks() {
+    editSubtasks = [];
     renderSubtasksEditMode();
-    setCheckboxesById();
+    resetMainSubtaskIcons();
+}
+
+function resetPriority() {
+    editPriority = 'medium';
     updatePrioUI('medium');
+}
+
+function resetValidation() {
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
     document.querySelectorAll('.visible').forEach(el => el.classList.remove('visible'));
-    let btn = document.getElementById('create-btn');
+}
+
+function enableCreateBtn() {
+    const btn = document.getElementById('create-btn');
     if (btn) btn.disabled = false;
 }
 
@@ -123,7 +170,7 @@ function toggleContactDropdown(dropdownId, displayId, arrowId) {
     let arrow = document.getElementById(idArrow);
     if (!dropdown) {
         console.warn(`FEHLER: Das Element mit der ID '${idDropdown}' existiert nicht im DOM!`);
-        return; 
+        return;
     }
     dropdown.style.display === 'none' || dropdown.style.display === '' ? toggleIfDropdownExist(dropdown, display, arrow) : toggleNotAsDropdownDoesNotExist(dropdown, display, arrow);
 }
@@ -201,7 +248,7 @@ async function refreshBoardAfterEdit() {
  */
 function setEditPrio(newPrio) {
     editPriority = newPrio;
-    
+
     // Update visual classes and ARIA attributes
     ['urgent', 'medium', 'low'].forEach(p => {
         const button = document.getElementById('prio-' + p);
@@ -210,7 +257,7 @@ function setEditPrio(newPrio) {
             button.setAttribute('aria-checked', 'false');
         }
     });
-    
+
     const activeButton = document.getElementById('prio-' + newPrio);
     if (activeButton) {
         setEditPrioSetActivePriorityButton(activeButton, newPrio);
