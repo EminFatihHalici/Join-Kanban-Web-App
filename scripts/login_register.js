@@ -191,7 +191,10 @@ async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
     let response = await fetchData();
-    let activeUser = response.findIndex(user => user.email === email.value && user.password === password.value);
+    let activeUser = response.findIndex(user => 
+        user && user.email && user.password && 
+        user.email === email.value && user.password === password.value
+    );
     if (activeUser !== -1) {
         saveToLocalStorage(activeUser);
         window.location.href = `../html/summary.html`;
