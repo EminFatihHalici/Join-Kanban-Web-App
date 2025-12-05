@@ -695,7 +695,7 @@ function renderContactLargeHtml(contact, color) {
                 <h2 id="contact-name-display" class="contact-list-name contact-name-large">
                     ${contact.name}
                 </h2>
-                <div class="flex gap-13" role="toolbar" aria-label="Contact actions">
+                <div class="flex gap-13 edit-delete-contact-btn-section" role="toolbar" aria-label="Contact actions">
                     <button 
                         id="edit-contact-btn"
                         type="button"
@@ -777,6 +777,7 @@ function renderContactLargeHtml(contact, color) {
         </section>
 
         <button 
+            id="mobileActionsBtn"
             type="button"
             class="mobile-actions-btn" 
             onclick="toggleMobileContactMenu()"
@@ -801,7 +802,7 @@ function renderContactLargeHtml(contact, color) {
                 onclick="openEditContact('${contactJson}', '${color}')"
                 onkeydown="handleMobileEditKeydown(event, '${contactJson}', '${color}')"
                 aria-label="Edit contact information for ${contact.name}"
-                tabindex="-1">
+                tabindex="0">
                 <img src="../assets/icons/edit.svg" alt="" aria-hidden="true"> 
                 <span>Edit</span>
             </button>
@@ -812,7 +813,7 @@ function renderContactLargeHtml(contact, color) {
                 onclick="openDeleteContact('${contactJson}', '${color}')"
                 onkeydown="handleMobileDeleteKeydown(event, '${contactJson}', '${color}')"
                 aria-label="Delete contact ${contact.name}"
-                tabindex="-1">
+                tabindex="0">
                 <img src="../assets/icons/delete.svg" alt="" aria-hidden="true"> 
                 <span>Delete</span>
             </button>
@@ -884,7 +885,7 @@ function renderAddNewContactOverlayHtml() {
                             <img src="../assets/icons/person.png" alt="Person icon" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgName" class="error-msg" style="display: none;" aria-live="polite"></div>
+                    <div id="errMsgName" class="error-msg" aria-live="polite"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact"
@@ -899,7 +900,7 @@ function renderAddNewContactOverlayHtml() {
                             <img src="../assets/icons/mail.png" alt="Email icon" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" style="display: none;" aria-live="polite"></div>
+                    <div id="errMsgEmail" class="error-msg" aria-live="polite"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" 
@@ -913,7 +914,7 @@ function renderAddNewContactOverlayHtml() {
                             <img src="../assets/icons/call.png" alt="Phone icon" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgPhone" class="error-msg" style="display: none;" aria-live="polite"></div>
+                    <div id="errMsgPhone" class="error-msg"aria-live="polite"></div>
 
                     <div class="two-buttons">
                         <button class="btn_contact_cancel flex align gap-13"
@@ -1016,7 +1017,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             <img src="../assets/icons/person.png" alt="" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgName" class="error-msg" role="alert" aria-live="polite" style="display: none;"></div>
+                    <div id="errMsgName" class="error-msg" role="alert" aria-live="polite"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact" value="${contact.email}"
@@ -1031,7 +1032,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             <img src="../assets/icons/mail.png" alt="" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none"></div>
+                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite"></div>
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
@@ -1045,7 +1046,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             <img src="../assets/icons/call.png" alt="" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgPhone" class="error-msg" role="alert" aria-live="polite" style="display: none;"></div>
+                    <div id="errMsgPhone" class="error-msg" role="alert" aria-live="polite"></div>
 
                     <div class="two-buttons" role="group" aria-label="Dialog actions">
                         <button 

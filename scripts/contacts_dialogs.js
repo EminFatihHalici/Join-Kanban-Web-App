@@ -36,8 +36,10 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
     setTimeout(() => {
         contactLargeRef.style.display = 'block';
         contactLargeRef.setAttribute('aria-hidden', 'false');
-        const editButton = contactLargeRef.querySelector('#edit-contact-btn');
+        const editButton = contactLargeRef.querySelector('#mobileActionsBtn');
         if (editButton) {
+            console.log('Button #mobileActionsBtn existiert');
+            
             editButton.focus();
         }
         const handleEscapeKey = (event) => {

@@ -226,9 +226,8 @@ a {
 }
 
 .error-msg {
-    min-height: 0px;
-    line-height: 0px;
-    font-size: 12px;
+    height: 20px;
+    font-size: 16px;
     color: var(--red);
     padding-left: 2px;
     display: flex;
@@ -326,9 +325,6 @@ a {
     padding: 0;
     z-index: 99;
     position: fixed;
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
     border: none;
     outline: none;
     height: 600px;
@@ -379,7 +375,7 @@ a {
 }
 
 .contact-dialog-h3 {
-    font-size: 27px;
+    font-size: 21px;
     font-weight: 400;
 }
 
@@ -631,12 +627,6 @@ a {
     border-color: #D1D1D1;
 }
 
-/* Focus improvements for dialog */
-.add_contact_overlay input:focus {
-    outline: 2px solid #29ABE2;
-    outline-offset: 1px;
-}
-
 .add_contact_overlay button:focus-visible {
     outline: 2px solid #29ABE2;
     outline-offset: 2px;
@@ -769,7 +759,6 @@ a {
 
     .add-contact-btn-mobile {
         display: flex;
-        margin-right: 30px;
         border-radius: 50%;
     }
 
@@ -947,6 +936,7 @@ a {
         flex-direction: column;
         align-items: center;
         overflow-y: auto;
+        border-radius: unset;
     }
 
     .contact-dialog-add {
@@ -1010,7 +1000,6 @@ a {
     }
 
     .error-msg {
-        padding-left: 12px;
         text-align: center;
     }
 
@@ -1040,6 +1029,10 @@ a {
         height: auto;
     }
 
+    .contact-dialog-h2 {
+        font-size: 35px;
+    }
+
     .popup {
         left: 50%;
     }
@@ -1058,12 +1051,33 @@ a {
         margin-bottom: 80px;
     }
 
+    .overlay_title {
+        min-height: 160px;
+    }
 
-
+    .edit-delete-contact-btn-section {
+        display: none;
+    }
 
 }
 
 @media (max-width: 480px) {
+    .contact-dialog-desktop {
+        position: fixed;
+        border: none;
+        outline: none;
+        min-height: 100vh;
+        min-width: 100%;
+        border-radius: unset;
+    }
+
+    #contactEditDeleteModal {
+        border-radius: unset;
+    }
+    
+    .contact-dialog-add {
+        border-radius: unset;
+    }
 
     .contact-list-sidebar-outer {
         margin: 0;
@@ -1074,11 +1088,6 @@ a {
         height: 80px;
         width: 80px;
         transform: translateY(-40px);
-    }
-
-    .user-circle-large {
-        min-height: 80px;
-        min-width: 80px;
     }
 
     .user_idle_add_task {
@@ -1093,7 +1102,6 @@ a {
     .contact-list-card {
         justify-content: flex-start;
         padding: 15px 0;
-
     }
 
     .contact-list-name {
@@ -1112,6 +1120,7 @@ a {
     .contact-form {
         width: 100%;
         align-items: center;
+        gap: 2px;
     }
 
     .mobile_input {

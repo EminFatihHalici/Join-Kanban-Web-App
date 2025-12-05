@@ -201,13 +201,11 @@ async function createNextIdPutDataAndRender() {
 function validateFieldContact(dialogId, inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
     let input = document.getElementById(dialogId).querySelector(`#${inputId}`);
     let errMsgElem = document.getElementById(dialogId).querySelector(`#${errMsgId}`);
-    // let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
+        errMsgElem.innerText = '';
         input.setAttribute('aria-invalid', 'false');
         bool[boolIndex] = 1;
     } else {
-        errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
         input.setAttribute('aria-invalid', 'true');
         bool[boolIndex] = 0;
