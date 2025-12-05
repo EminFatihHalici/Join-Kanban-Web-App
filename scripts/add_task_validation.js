@@ -124,7 +124,7 @@ function validateField(id) {
     const input = document.getElementById(id), error = document.getElementById(`${id}-error`);
     if (!input || !error) return;
     if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
-    const isInvalid = !input.value;
+    const isInvalid = !input.value.trim();
     error.textContent = isInvalid ? 'This field is required' : '';
     error.classList.toggle('visible', isInvalid);
     input.classList.toggle('input-error', isInvalid);
@@ -170,4 +170,11 @@ function clearError(id) {
     let errorMsg = document.getElementById(id + '-error');
     input.classList.remove('input-error');
     errorMsg.classList.remove('visible');
+}
+
+function cleanInput(id) {
+    const input = document.getElementById(id);
+    if (input && !input.value.trim()) {
+        input.value = '';
+    }
 }
