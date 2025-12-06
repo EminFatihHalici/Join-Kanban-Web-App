@@ -204,15 +204,37 @@ function toggleIfDropdownExist(dropdown, display, arrow) {
  * @param {string} taskId - The ID of the task to save
  */
 async function saveEditedTask(taskId) {
+    if (!validateEditInputs()) return;
     const oldTask = tasks.find(t => t.id === taskId);
-    const updatedTask = getMergedTaskData(oldTask);
+    if (!oldTask) return;
     try {
-        await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
+        await putData(`/${activeUserId}/tasks/${taskId}`, getMergedTaskData(oldTask));
         await refreshBoardAfterEdit();
     } catch (error) {
         console.error("Save failed:", error);
     }
 }
+
+/**
+ * Validates a single input field and updates its visual error state.
+ * @param {string} inputId - The DOM ID of the input field.
+ * @param {string} errorId - The DOM ID of the error message container.
+ * @param {string} msg - The error message text to display.
+ * @returns {boolean} True if the input is valid, false if empty/invalid.
+ */
+function checkInput(inputId, errorId, msg) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    const isInvalid = !input || input.value.trim() === "";
+    if (input) input.classList.toggle('input-error', isInvalid);
+    if (error) {
+        error.textContent = isInvalid ? msg : "";
+        error.classList.toggle('visible', isInvalid);
+    }
+    return !isInvalid;
+}
+
+
 
 /**
  * Merges old task data with edited form values
@@ -230,6 +252,17 @@ function getMergedTaskData(oldTask) {
         assigned: editAssignedIds,
         subtasks: editSubtasks
     };
+}
+
+/**
+ * Triggers validation for all required fields in the edit task form.
+ * Ensures all error messages are displayed if fields are missing.
+ * @returns {boolean} True only if ALL required fields are valid.
+ */
+function validateEditInputs() {
+    const titleValid = checkInput('edit-title', 'edit-title-error', 'Title is required');
+    const dateValid = checkInput('edit-due-date', 'edit-due-date-error', 'Date is required');
+    return titleValid && dateValid;
 }
 
 /**
