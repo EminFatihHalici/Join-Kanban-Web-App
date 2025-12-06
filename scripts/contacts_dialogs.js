@@ -33,8 +33,6 @@ function contactsLargeSlideIn(ev, contactJson, color) {
  * @param {HTMLElement} contactLargeRef - The contact display large element
  */
 function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
-    console.log('komme ich hier rein?');
-    
     setTimeout(() => {
         contactLargeRef.style.display = 'block';
         contactLargeRef.setAttribute('aria-hidden', 'false');
@@ -70,7 +68,7 @@ async function showDialogCreateContact(dialogId, ev) {
     }, 10);
 
     updateContactButtonState(dialogId);
-    await loadAndRenderContacts('contactList', 'contacts');;
+    await loadAndRenderContacts('contactList', 'contacts');
 }
 
 /**

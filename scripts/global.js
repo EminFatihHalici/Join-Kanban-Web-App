@@ -70,7 +70,7 @@ async function calcNextId(path = "") {
         let userId = Object.keys(resJson);
         userId.length === 0 ? nextId = 0 : nextId = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
     } catch (error) {
-        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
+        console.error(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
     }
     return nextId;
 }

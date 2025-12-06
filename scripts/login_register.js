@@ -40,30 +40,11 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
 }
 
 /**
- * Validates the privacy policy checkbox separately
- * @returns {number} The validation result (0 or 1)
- */
-// function validateCheckboxSeperately() {
-//     let checkbox = document.getElementById('checkbox');
-//     let errMsgCheckbox = document.getElementById('errMsgCheckbox');
-//     if (!checkbox.checked) {
-//         errMsgCheckbox.style.display = 'block';
-//         errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
-//         bool[4] = 0;
-//     } else {
-//         errMsgCheckbox.style.display = 'none';
-//         bool[4] = 1;
-//     }
-//     return bool[4]
-// }
-
-/**
  * Checks all validations and enables/disables the sign up button
  */
 function checkAllValidations() {
     let signUpBtn = document.getElementById('signUp');
     let allBoolEqualOne = bool.every(el => el === 1);
-    
     if (allBoolEqualOne) {
         signUpBtn.disabled = false;
         signUpBtn.setAttribute('aria-disabled', 'false');
@@ -173,7 +154,6 @@ function clearAllSignUpInputFields() {
     let passwordRegister = document.getElementById('passwordRegister');
     let passwordRegisterConfirm = document.getElementById('passwordRegisterConfirm');
     let signUpBtn = document.getElementById('signUp');
-
     nameRegister.value = emailRegister.value = passwordRegister.value = passwordRegisterConfirm.value = '';
     signUpBtn.checked = false;
 }

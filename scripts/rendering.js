@@ -7,7 +7,7 @@
 /**
  * Renders the add task overlay
  */
-function renderAddTAskOverlay() {
+function renderAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate();
 }

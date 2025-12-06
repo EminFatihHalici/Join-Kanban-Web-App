@@ -100,7 +100,6 @@ function setupEditFormValidation() {
     if (titleInput) {
         titleInput.addEventListener('blur', () => validateEditTaskForm());
         titleInput.addEventListener('input', () => {
-            // Clear error on input
             const titleError = document.getElementById('edit-title-error');
             if (titleError && titleInput.value.trim()) {
                 titleError.textContent = '';
@@ -131,17 +130,6 @@ function validateField(id) {
     return !isInvalid;
 }
 
-function clearError(elementId) {
-    const errorContainer = document.getElementById(elementId + '-error');
-    const inputField = document.getElementById(elementId);
-    if (errorContainer) {
-        errorContainer.classList.remove('visible');
-    }
-    if (inputField) {
-        inputField.classList.remove('input-error');
-    }
-}
-
 /**
  * Validates the category selection and shows/hides error messages
  * @returns {boolean} True if category is selected, false otherwise
@@ -162,16 +150,26 @@ function validateCategory() {
 }
 
 /**
- * Clears error styling and messages for a form field
+ * Clears error styling and messages for a form field.
+ * Safely checks if elements exist before updating UI to prevent errors.
  * @param {string} id - The ID of the form field to clear errors for
  */
 function clearError(id) {
-    let input = document.getElementById(id);
-    let errorMsg = document.getElementById(id + '-error');
-    input.classList.remove('input-error');
-    errorMsg.classList.remove('visible');
+    const input = document.getElementById(id);
+    const errorMsg = document.getElementById(id + '-error');
+    if (input) {
+        input.classList.remove('input-error');
+    }
+    if (errorMsg) {
+        errorMsg.classList.remove('visible');
+    }
 }
 
+/**
+ * Trims whitespace from an input field. 
+ * If the field contains only whitespace, it clears the value completely.
+ * @param {string} id - The ID of the input field to clean
+ */
 function cleanInput(id) {
     const input = document.getElementById(id);
     if (input && !input.value.trim()) {

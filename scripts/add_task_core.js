@@ -102,56 +102,74 @@ function clearForm() {
     resetValidation();
     enableCreateBtn();
 }
+
+/**
+ * Resets the basic text inputs (title, description, due date) and subtask input.
+ */
 function resetBaseInputs() {
     ['title', 'description', 'due-date'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
-
     const sub = document.getElementById('subtask-input-edit');
     if (sub) sub.value = '';
 }
 
+/**
+ * Resets the category selection to the default placeholder state.
+ */
 function resetCategory() {
     document.getElementById('category-text').innerHTML = 'Select task category';
     document.getElementById('category').value = '';
 }
 
+/**
+ * Clears the assigned contacts list, resets the dropdown, and updates the UI.
+ */
 function resetAssigned() {
     editAssignedIds = [];
     const disp = document.getElementById('assigned-display-edit');
-
     if (disp) disp.innerHTML = `
         <p>Select contacts to assign</p>
         <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
     `;
-
     const dd = document.getElementById('assigned-dropdown-edit');
     if (dd) {
         dd.innerHTML = '';
         loadAndRenderContacts('assigned-dropdown-edit', 'addTask')
             .then(() => setCheckboxesById());
     }
-
     renderAssignedEditCircles();
 }
 
+/**
+ * Clears the temporary subtask array and resets the subtask UI elements.
+ */
 function resetSubtasks() {
     editSubtasks = [];
     renderSubtasksEditMode();
     resetMainSubtaskIcons();
 }
 
+/**
+ * Resets the priority selection to the default value ('medium') and updates the UI.
+ */
 function resetPriority() {
     editPriority = 'medium';
     updatePrioUI('medium');
 }
 
+/**
+ * Removes all visual error indicators and validation messages from the form.
+ */
 function resetValidation() {
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
     document.querySelectorAll('.visible').forEach(el => el.classList.remove('visible'));
 }
 
+/**
+ * Re-enables the create task button.
+ */
 function enableCreateBtn() {
     const btn = document.getElementById('create-btn');
     if (btn) btn.disabled = false;
@@ -281,8 +299,6 @@ async function refreshBoardAfterEdit() {
  */
 function setEditPrio(newPrio) {
     editPriority = newPrio;
-
-    // Update visual classes and ARIA attributes
     ['urgent', 'medium', 'low'].forEach(p => {
         const button = document.getElementById('prio-' + p);
         if (button) {
@@ -290,7 +306,6 @@ function setEditPrio(newPrio) {
             button.setAttribute('aria-checked', 'false');
         }
     });
-
     const activeButton = document.getElementById('prio-' + newPrio);
     if (activeButton) {
         setEditPrioSetActivePriorityButton(activeButton, newPrio);
@@ -305,13 +320,11 @@ function setEditPrio(newPrio) {
 function setEditPrioSetActivePriorityButton(activeButton, newPrio) {
     activeButton.classList.add('active');
     activeButton.setAttribute('aria-checked', 'true');
-
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', 'polite');
     announcement.className = 'sr-only';
     announcement.textContent = `Priority changed to ${newPrio}`;
     document.body.appendChild(announcement);
-
     setTimeout(() => {
         if (announcement.parentNode) {
             announcement.parentNode.removeChild(announcement);
