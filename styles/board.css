@@ -900,6 +900,15 @@ body {
     }
 }
 
+@media (max-width: 480px) {
+    .task-detail-overlay {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0;
+        border-radius: unset;
+    }
+}
+
 @media (max-width: 350px) {
     .board-header__top {
         gap: 0;

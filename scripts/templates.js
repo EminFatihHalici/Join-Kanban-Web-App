@@ -421,7 +421,7 @@ function editTaskDetailOverlayTemplate(task) {
                 <div class="priority-buttons">
                     <button 
                         type="button" 
-                        class="priority-btn urgent" 
+                        class="priority-btn urgent ${task.priority === 'urgent' ? 'active' : ''}" 
                         id="prio-urgent" 
                         role="radio" 
                         aria-checked="false"
@@ -433,7 +433,7 @@ function editTaskDetailOverlayTemplate(task) {
                     </button>
                     <button 
                         type="button" 
-                        class="priority-btn medium active" 
+                        class="priority-btn medium ${task.priority === 'medium' ? 'active' : ''}" 
                         id="prio-medium" 
                         role="radio" 
                         aria-checked="true"
@@ -445,7 +445,7 @@ function editTaskDetailOverlayTemplate(task) {
                     </button>
                     <button 
                         type="button" 
-                        class="priority-btn low" 
+                        class="priority-btn low ${task.priority === 'low' ? 'active' : ''}" 
                         id="prio-low" 
                         role="radio" 
                         aria-checked="false"
@@ -704,8 +704,7 @@ function renderContactLargeHtml(contact, color) {
                         class="contacts-edit-delete-buttons" 
                         aria-label="Edit contact information for ${contact.name}"
                         aria-describedby="edit-contact-hint"
-                        tabindex="0"
-                        autofocus>
+                        tabindex="0">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <mask id="mask0_75592_9969" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"

@@ -300,14 +300,13 @@ a {
     transition: all 0.2s ease;
 }
 
-.contacts-edit-delete-buttons:focus,
+
 .contacts-edit-delete-buttons:hover {
     color: var(--primary-hover);
     font-weight: 700;
     cursor: pointer;
 }
 
-.contacts-edit-delete-buttons:focus svg path,
 .contacts-edit-delete-buttons:hover svg path {
     fill: var(--primary-hover);
 }
@@ -367,6 +366,7 @@ a {
     background-color: var(--primary);
     width: max(467px);
     padding: 0 45px;
+    min-height: 180px;
 }
 
 .contact-dialog-h2 {
@@ -393,8 +393,8 @@ a {
 }
 
 .user-circle-large_edit {
-    height: 120px;
-    width: 120px;
+    min-height: 120px;
+    min-width: 120px;
     margin: 0 30px;
 }
 
@@ -581,7 +581,7 @@ a {
 .go_back:focus,
 .contact-info-group a:focus,
 .contacts-edit-delete-buttons:focus-visible {
-    outline: 2px solid #29ABE2;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
     border-radius: 4px;
 }
@@ -602,19 +602,6 @@ a {
     outline: 2px solid #29ABE2;
     outline-offset: 2px;
     background-color: #f0f0f0;
-}
-
-/* Focus styles for edit/delete buttons */
-.contacts-edit-delete-buttons:focus-visible {
-    outline: 2px solid #29ABE2;
-    outline-offset: 2px;
-    background-color: rgba(42, 54, 71, 0.1);
-}
-
-.contacts-edit-delete-buttons:focus {
-    outline: 2px solid #29ABE2;
-    outline-offset: 2px;
-    background-color: rgba(42, 54, 71, 0.1);
 }
 
 /* Form validation improvements */
@@ -922,9 +909,7 @@ a {
     }
 
     .user-circle-large_edit {
-        height: 120px;
-        width: 120px;
-        transform: translateY(-60px);
+        transform: translateY(-30px);
     }
 
     .user_icon_edit {
@@ -935,7 +920,6 @@ a {
         flex-direction: column;
         align-items: center;
         overflow-y: auto;
-        border-radius: unset;
     }
 
     .contact-dialog-add {
@@ -955,6 +939,7 @@ a {
         gap: 8px;
         height: auto;
         align-items: center;
+        transform: translateY(30px);
     }
 
     .two-buttons {
@@ -1006,6 +991,10 @@ a {
         max-width: 100%;
     }
 
+    .edit-delete-contact-btn-section {
+        display: none;
+    }
+
 }
 
 @media (max-width: 768px) {
@@ -1054,10 +1043,6 @@ a {
         min-height: 160px;
     }
 
-    .edit-delete-contact-btn-section {
-        display: none;
-    }
-
 }
 
 @media (max-width: 480px) {
@@ -1073,7 +1058,7 @@ a {
     #contactEditDeleteModal {
         border-radius: unset;
     }
-    
+
     .contact-dialog-add {
         border-radius: unset;
     }
@@ -1120,6 +1105,7 @@ a {
         width: 100%;
         align-items: center;
         gap: 2px;
+    transform: unset;
     }
 
     .mobile_input {

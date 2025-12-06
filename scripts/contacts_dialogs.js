@@ -33,15 +33,16 @@ function contactsLargeSlideIn(ev, contactJson, color) {
  * @param {HTMLElement} contactLargeRef - The contact display large element
  */
 function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
+    console.log('komme ich hier rein?');
+    
     setTimeout(() => {
         contactLargeRef.style.display = 'block';
         contactLargeRef.setAttribute('aria-hidden', 'false');
-        const editButton = contactLargeRef.querySelector('#mobileActionsBtn');
-        if (editButton) {
-            console.log('Button #mobileActionsBtn existiert');
-            
-            editButton.focus();
-        }
+        const editDeleteDiv = document.querySelector('.edit-delete-contact-btn-section');
+        const editButtonDesktop = document.getElementById('edit-contact-btn');
+        const editButtonMobile = contactLargeRef.querySelector('#mobileActionsBtn');
+        const isHidden = editDeleteDiv && window.getComputedStyle(editDeleteDiv).display === 'none';
+        isHidden ? editButtonMobile.focus() : editButtonDesktop.focus();
         const handleEscapeKey = (event) => {
             if (event.key === 'Escape') {
                 event.preventDefault();
@@ -84,7 +85,7 @@ async function showDialogContact(id, contactJson, color, ev, option) {
     ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    if (option === 'Delete') {
+    if (option === 'Delete' || option === 'Edit') {
         bool = [1, 1, 1];
     } else {
         bool = [0, 0, 0];

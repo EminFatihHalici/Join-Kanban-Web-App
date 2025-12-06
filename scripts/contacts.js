@@ -12,7 +12,7 @@ function isPhoneValid(value) {
     if (!value || value.trim() === '') {
         return true;
     }
-    return /^[0-9+()\/\-\s]{1,20}$/.test(value.trim());
+    return /^(?!.*\s{2,})[0-9+()\/\-\s]{1,25}$/.test(value.trim());
 }
 
 /**
