@@ -826,6 +826,7 @@ function renderContactLargeHtml(contact, color) {
 function renderAddNewContactOverlayHtml() {
     return /*html*/`
         <article class="flex h-100 add_contact_overlay" 
+                onclick="event.stopPropagation()"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="contact-dialog-h2"
@@ -965,6 +966,7 @@ function renderAddNewContactOverlayHtml() {
 function renderEditContactOverlayHtml(contact, color, option) {
     return /*html*/`
         <article class="flex h-100 overlay_edit_delete" 
+                onclick="event.stopPropagation()"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="edit-contact-dialog-h2"

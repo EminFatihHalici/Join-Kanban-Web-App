@@ -60,6 +60,7 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
 async function showDialogCreateContact(dialogId, ev) {
     ev.stopPropagation();
     const modal = document.getElementById(dialogId);
+    modal.onclick = (e) => contactCancel(e);
     bool = [0, 0];
     modal.innerHTML = renderAddNewContactOverlayHtml();
     modal.showModal();
@@ -89,6 +90,7 @@ async function showDialogContact(id, contactJson, color, ev, option) {
         bool = [0, 0, 0];
     }
     contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
+    contactEditDeleteModal.onclick = (e) => contactCancel(e);
     contactEditDeleteModal.showModal();
     setTimeout(() => {
         contactEditDeleteModal.classList.add("open");
