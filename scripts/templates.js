@@ -138,7 +138,7 @@ function getAddTaskOverlayTemplate(board) {
     const todayStr = new Date().toISOString().split('T')[0];
 
     return /* html */`
-        <section class="overlay-add-task" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
+        <section class="overlay-add-task" onclick="event.stopPropagation()" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
 
         <div class="overlay-scroll">
             <div class="overlay-header">
@@ -267,7 +267,8 @@ function getAddTaskOverlayTemplate(board) {
 
 function getTaskDetailOverlayTemplate(task) {
     return /* html */`
-    <div class="task-detail-overlay" 
+    <div class="task-detail-overlay"
+            onclick="event.stopPropagation()"
             role="dialog" 
             aria-modal="true"
             aria-labelledby="task-detail-title"
@@ -352,6 +353,7 @@ function editTaskDetailOverlayTemplate(task) {
     const todayStr = new Date().toISOString().split('T')[0];
     return /* html */`
     <section class="task-detail-overlay"
+            onclick="event.stopPropagation()"
             role="dialog" 
             aria-modal="true" 
             aria-labelledby="edit-task-title"

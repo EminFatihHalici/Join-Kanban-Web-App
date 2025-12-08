@@ -82,6 +82,7 @@ async function checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId) {
  */
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
@@ -135,6 +136,7 @@ function slideInOverlay() {
 async function renderTaskDetail(taskJson) {
     let task = JSON.parse(atob(taskJson));
     let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
     overlay.setAttribute('aria-hidden', 'false');
@@ -171,6 +173,8 @@ async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
     loadTaskVariableGlobally(task);
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     loadEditTaskDetailOverlay(task);
     loadFillInputFields(task);
     renderSubtasksEditMode();
