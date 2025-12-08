@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Inter', sans-serif;
 }
@@ -145,7 +149,7 @@ body {
 .board_categories {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch /* flex-start */;
     flex-wrap: wrap;
     margin-top: 48px;
     gap: 20px;
@@ -191,8 +195,8 @@ body {
 }
 
 .draggable {
-    width: 240px;
-    min-height: 240px;
+    width: 244px;
+    min-height: calc(100% - 36px);
     border-radius: 24px;
     border: 1px solid transparent;
     gap: 16px;
@@ -203,7 +207,6 @@ body {
 
 .highlight {
     border: 1px dashed black;
-
 }
 
 .drag-item {
@@ -878,6 +881,7 @@ body {
     .draggable {
         margin-top: 12px;
         width: 100%;
+        min-height: 240px;
         flex-direction: row;
         overflow-x: auto;
         scrollbar-width: thin;
