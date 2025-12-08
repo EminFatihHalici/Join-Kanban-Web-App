@@ -87,7 +87,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
-        let section = overlay.querySelector('.add-task-section');
+        let section = overlay.querySelector('.overlay-add-task'); 
         if (section) {
             section.classList.add('slide-in');
         }

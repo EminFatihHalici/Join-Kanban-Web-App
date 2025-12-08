@@ -5,14 +5,6 @@
 // #region rendering in ADD_TASK
 
 /**
- * Renders the add task overlay
- */
-function renderAddTaskOverlay() {
-    let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = getAddTaskOverlayTemplate();
-}
-
-/**
  * Renders assigned contact circles in edit overlay
  */
 function renderAssignedEditCircles() {
