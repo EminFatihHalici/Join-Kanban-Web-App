@@ -1133,11 +1133,13 @@ function renderDeleteContactOverlayHtml(contact, color, option) {
             </div>
 
                     <div class="two-buttons" role="group" aria-label="Dialog actions">
-                        <div style="border: 1px solid red; color: var(--primary);">
-                            Are you sure, you want to delete:<br>
-                            ${contact.name}<br>
-                            ${contact.email}
-                        </div>
+                        <div class="test">
+                                <div class="contact-delete">
+                                    Are you sure, you want to delete:<br>
+                                    ${contact.name}<br>
+                                    ${contact.email}
+                                </div>
+                            
 
                         <button 
                             id="contactCreateBtn" 
