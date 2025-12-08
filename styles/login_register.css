@@ -790,12 +790,5 @@ footer a:hover {
 }
 
 .animated_logo {
-    position: fixed;
-    top: 0;     
-    width: 100%;
     max-width: 1920px;   
-    left: 50%;  
-    transform: translateX(-50%);
-    height: 100vh;
-    z-index: 9999; 
 }
