@@ -619,7 +619,27 @@ a {
     outline-offset: 2px;
 }
 
+/*Neu*/
+.test {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    font-size: 24px;
+    font-weight: 600;
+    border: 1px solid red;
+}
+
+.contact-delete {
+    color: var(--primary);
+    padding-top: 98px;
+}
+
+
+
+
 /* Enhanced focus for high contrast accessibility */
+
 @media (prefers-contrast: high) {
 
     .contacts-edit-delete-buttons:focus-visible,
@@ -1105,7 +1125,7 @@ a {
         width: 100%;
         align-items: center;
         gap: 2px;
-    transform: unset;
+        transform: unset;
     }
 
     .mobile_input {
