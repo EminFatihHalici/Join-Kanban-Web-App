@@ -1147,7 +1147,7 @@ function renderDeleteContactOverlayHtml(contact, color, option) {
                             ${option === 'Edit' ? 'disabled' : ''}
                             aria-disabled="${option === 'Edit' ? 'true' : 'false'}"
                             aria-label="${option === 'Edit' ? 'Save changes to contact' : 'Delete this contact'}"
-                            onclick="updateContact('${contact.id}','${option}')"
+                            onclick="deleteContact('${contact.id}','${option}')"
                             onkeydown="handleContactSubmitKeydown(event)">
                             ${option === 'Edit' ? 'Save' : 'Delete'}
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

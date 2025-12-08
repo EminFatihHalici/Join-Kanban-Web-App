@@ -174,6 +174,21 @@ async function updateContact(currContactId, option, event = null) {
     }
 }
 
+async function deleteContact(currContactId, option) {
+    try {
+        await deletePath('/' + activeUserId + '/contacts/' + currContactId);
+        await loadAndRenderContacts('contactList', 'contacts');
+        const big = document.getElementById('contactDisplayLarge');
+        big.innerHTML = '';
+        big.style.display = 'none';
+        const modal = document.getElementById('contactEditDeleteModal');
+        modal.close();
+    }  catch (error) {
+        console.error('Error edit/delete contact at putData():', error);
+    }
+}
+
+
 /**
  * Creates the next contact ID, saves the contact data and re-renders the contact list
  */
