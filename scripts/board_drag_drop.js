@@ -4,8 +4,6 @@
  * Handles task dragging, drop zones, visual feedback, and smooth scrolling during drag operations
  */
 
-// #region Drag & Drop Functions
-
 /**
  * Handles the drag start event for task cards
  * @param {DragEvent} event - The drag event
@@ -178,5 +176,3 @@ function handleScrollUp(main) {
         }, 16);
     }
 }
-
-// #endregion

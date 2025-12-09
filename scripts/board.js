@@ -89,13 +89,9 @@ async function renderAddTaskOverlay(board = "toDo") {
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
         let section = overlay.querySelector('.overlay-add-task'); 
-        if (section) {
-            section.classList.add('slide-in');
-        }
+        if (section) {section.classList.add('slide-in');}
         let titleInput = document.getElementById('title');
-        if (titleInput) {
-            setTimeout(() => titleInput.focus(), 150);
-        }
+        if (titleInput) {setTimeout(() => titleInput.focus(), 150);}
     }, 20);
 }
 
@@ -128,7 +124,6 @@ function slideInOverlay() {
     overlay.classList.add("slide-in");
 }
 
-
 /**
  * Renders the task detail overlay for viewing task information
  * @param {string} taskJson - Base64 encoded JSON string of the task object
@@ -143,9 +138,7 @@ async function renderTaskDetail(taskJson) {
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
-        if (section) {
-            section.classList.add('slide-in');
-        }
+        if (section) {section.classList.add('slide-in');}
     }, 50);
     renderContactsInOverlay(task);
 }
@@ -179,7 +172,6 @@ async function renderEditTaskDetail(taskId) {
     loadFillInputFields(task);
     renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-
     renderAssignedEditCircles();
     setCheckboxesById()
 }
@@ -310,8 +302,6 @@ function updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus) {
     }
 }
 
-// #region search
-
 /**
  * Searches tasks based on title and description content
  */
@@ -399,5 +389,3 @@ function searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searc
         }
     }
 }
-
-// #endregion
