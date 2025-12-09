@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: board_keyboard.js</title>
+    <title>JSDoc: Source: global_keyboard.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: board_keyboard.js</h1>
+    <h1 class="page-title">Source: global_keyboard.js</h1>
 
     
 
@@ -27,92 +27,117 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Board Keyboard Event Handlers and Accessibility Features
- * Contains all keyboard navigation and accessibility functions for the board module
+ * Global Keyboard Event Handlers and Accessibility Features
+ * Contains all shared keyboard navigation and accessibility functions across the application
  */
 
 /**
- * Keyboard event handler for task card navigation
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskJson - Base64 encoded task JSON
+ * Initializes keyboard navigation support for navigation links
+ * Enables Space key activation for nav links, privacy policy, and legal notice links
  */
-function handleTaskCardKeydown(event, taskJson) {
+function initNavKeyboardSupport() {
+    const navLinks = document.querySelectorAll('.nav_navigation a, .privacy_policy, .legal_notes');
+    navLinks.forEach(link => {
+        link.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+}
+
+/**
+ * Keyboard event handler for menu escape key
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleMenuEscapeKey(event) {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (userMenu &amp;&amp; userMenu.classList.contains('show')) {
+            closeDropDownAndResetFocus(userMenu, userCircle);
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for user menu toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleUserMenuKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        renderTaskDetail(taskJson);
+        toggleDropDownMenu();
     }
 }
 
 /**
- * Keyboard event handler for delete task button
+ * Keyboard event handler for assigned dropdown
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskId - The ID of the task to delete
  */
-function handleDeleteTaskKeydown(event, taskId) {
+function handleAssignedDropdownKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        deleteTaskfromBoard(taskId);
+        toggleAssignedDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
     }
 }
 
 /**
- * Keyboard event handler for edit task button  
+ * Keyboard event handler for category dropdown
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskId - The ID of the task to edit
  */
-function handleEditTaskKeydown(event, taskId) {
+function handleCategoryDropdownKeydown(event) {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        renderEditTaskDetail(taskId);
+        toggleCategoryDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
     }
 }
 
 /**
- * Keyboard event handler for subtask toggle
+ * Keyboard event handler for edit assigned dropdown
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskId - The task ID
- * @param {number} index - The subtask index
  */
-function handleSubtaskToggleKeydown(event, taskId, index) {
+function handleAssignedDropdownEditKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown-edit');
+    const displayElement = document.getElementById('assigned-display-edit');
+    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleSubtask(taskId, index);
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
     }
-}
-
-/**
- * Keyboard event handler for search input
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleSearchKeydown(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        searchTasks();
-    }
-}
-
-/**
- * Keyboard event handler for search button
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleSearchButtonKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        searchAndClearSearchField();
-    }
-}
-
-/**
- * Keyboard event handler for close dialog buttons
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleCloseKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        closeAddTaskOverlay();
-    }
-}
-</code></pre>
+}</code></pre>
         </article>
     </section>
 
