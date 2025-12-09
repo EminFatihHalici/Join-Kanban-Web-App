@@ -4,57 +4,6 @@
  */
 
 /**
- * Handles keyboard navigation for priority buttons
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} priority - The current priority level
- */
-function handlePriorityKeydown(event, priority) {
-    const priorities = ['urgent', 'medium', 'low'];
-    const currentIndex = priorities.indexOf(priority);
-    switch(event.key) {
-        case 'ArrowLeft':
-        case 'ArrowUp':
-            handlePriorityPrevious(event, currentIndex, priorities);
-            break;
-        case 'ArrowRight':
-        case 'ArrowDown':
-            handlePriorityNext(event, currentIndex, priorities);
-            break;
-        case 'Enter':
-        case ' ':
-            event.preventDefault();
-            setPriority(priority);
-            break;
-    }
-}
-
-/**
- * Handles navigation to the previous priority button
- * Cycles to the last priority if already at the first one
- * @param {KeyboardEvent} event - The keyboard event to prevent default behavior
- * @param {number} currentIndex - The current priority index in the priorities array
- * @param {string[]} priorities - Array of priority names ['urgent', 'medium', 'low']
- */
-function handlePriorityPrevious(event, currentIndex, priorities) {
-    event.preventDefault();
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : priorities.length - 1;
-    document.getElementById(`prio-${priorities[prevIndex]}`).focus();
-}
-
-/**
- * Handles navigation to the next priority button
- * Cycles to the first priority if already at the last one
- * @param {KeyboardEvent} event - The keyboard event to prevent default behavior
- * @param {number} currentIndex - The current priority index in the priorities array
- * @param {string[]} priorities - Array of priority names ['urgent', 'medium', 'low']
- */
-function handlePriorityNext(event, currentIndex, priorities) {
-    event.preventDefault();
-    const nextIndex = currentIndex < priorities.length - 1 ? currentIndex + 1 : 0;
-    document.getElementById(`prio-${priorities[nextIndex]}`).focus();
-}
-
-/**
  * Handles keyboard events for assigned dropdown interactions
  * @param {KeyboardEvent} event - The keyboard event
  */

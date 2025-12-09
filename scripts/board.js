@@ -86,9 +86,10 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
+    clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
-        let section = overlay.querySelector('.overlay-add-task'); 
+        let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
         if (section) {section.classList.add('slide-in');}
         let titleInput = document.getElementById('title');
         if (titleInput) {setTimeout(() => titleInput.focus(), 150);}
