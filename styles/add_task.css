@@ -685,13 +685,6 @@ select:focus {
         display: none;
     }
 
-    #subtask-list-edit-ul{
-        /* display: flex;
-        flex-direction: column;
-        align-items: flex-start; */
-    }
-
-
 }
 
 @media (max-width: 768px) {
