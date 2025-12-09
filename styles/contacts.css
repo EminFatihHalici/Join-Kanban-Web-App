@@ -85,7 +85,6 @@ a {
 .button_add_contact {
     display: flex;
     justify-content: flex-start;
-    width: 100%;
 }
 
 .add-contact-btn {
@@ -227,9 +226,8 @@ a {
 }
 
 .error-msg {
-    min-height: 0px;
-    line-height: 0px;
-    font-size: 12px;
+    height: 20px;
+    font-size: 16px;
     color: var(--red);
     padding-left: 2px;
     display: flex;
@@ -238,7 +236,7 @@ a {
 
 .two-buttons {
     height: 48px;
-    margin-top: 35px;
+    margin-top: 8px;
     text-align: left;
     display: flex;
     gap: 35px;
@@ -302,14 +300,13 @@ a {
     transition: all 0.2s ease;
 }
 
-.contacts-edit-delete-buttons:focus,
+
 .contacts-edit-delete-buttons:hover {
     color: var(--primary-hover);
     font-weight: 700;
     cursor: pointer;
 }
 
-.contacts-edit-delete-buttons:focus svg path,
 .contacts-edit-delete-buttons:hover svg path {
     fill: var(--primary-hover);
 }
@@ -327,9 +324,6 @@ a {
     padding: 0;
     z-index: 99;
     position: fixed;
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
     border: none;
     outline: none;
     height: 600px;
@@ -372,6 +366,7 @@ a {
     background-color: var(--primary);
     width: max(467px);
     padding: 0 45px;
+    min-height: 180px;
 }
 
 .contact-dialog-h2 {
@@ -380,7 +375,7 @@ a {
 }
 
 .contact-dialog-h3 {
-    font-size: 27px;
+    font-size: 21px;
     font-weight: 400;
 }
 
@@ -394,12 +389,12 @@ a {
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2px;
 }
 
 .user-circle-large_edit {
-    height: 120px;
-    width: 120px;
+    min-height: 120px;
+    min-width: 120px;
     margin: 0 30px;
 }
 
@@ -440,9 +435,10 @@ a {
 }
 
 .btn_contact_create:disabled {
-    cursor: inherit;
+    cursor: not-allowed;
     color: var(--primary);
     background-color: var(--bg-color);
+    border: 1px solid var(--primary)
 }
 
 .btn_contact_create:disabled:hover {
@@ -585,7 +581,7 @@ a {
 .go_back:focus,
 .contact-info-group a:focus,
 .contacts-edit-delete-buttons:focus-visible {
-    outline: 2px solid #29ABE2;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
     border-radius: 4px;
 }
@@ -608,19 +604,6 @@ a {
     background-color: #f0f0f0;
 }
 
-/* Focus styles for edit/delete buttons */
-.contacts-edit-delete-buttons:focus-visible {
-    outline: 2px solid #29ABE2;
-    outline-offset: 2px;
-    background-color: rgba(42, 54, 71, 0.1);
-}
-
-.contacts-edit-delete-buttons:focus {
-    outline: 2px solid #29ABE2;
-    outline-offset: 2px;
-    background-color: rgba(42, 54, 71, 0.1);
-}
-
 /* Form validation improvements */
 .input-field input[aria-invalid="true"] {
     border-color: #ff4444;
@@ -631,18 +614,36 @@ a {
     border-color: #D1D1D1;
 }
 
-/* Focus improvements for dialog */
-.add_contact_overlay input:focus {
-    outline: 2px solid #29ABE2;
-    outline-offset: 1px;
-}
-
 .add_contact_overlay button:focus-visible {
     outline: 2px solid #29ABE2;
     outline-offset: 2px;
 }
 
+
+.contact-delete-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 20px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.contact-delete {
+    color: var(--primary);
+    text-align: center;
+    text-wrap: balance;
+    word-wrap: break-word;
+    word-break:break-all
+}
+
+
+
+
 /* Enhanced focus for high contrast accessibility */
+
 @media (prefers-contrast: high) {
 
     .contacts-edit-delete-buttons:focus-visible,
@@ -748,7 +749,6 @@ a {
         margin-top: 0;
         padding: 24px 16px;
         background: #FFFFFF;
-        z-index: 200;
         display: none;
         flex-direction: column;
         gap: 16px;
@@ -769,7 +769,6 @@ a {
 
     .add-contact-btn-mobile {
         display: flex;
-        margin-right: 30px;
         border-radius: 50%;
     }
 
@@ -934,9 +933,7 @@ a {
     }
 
     .user-circle-large_edit {
-        height: 120px;
-        width: 120px;
-        transform: translateY(-60px);
+        transform: translateY(-30px);
     }
 
     .user_icon_edit {
@@ -963,9 +960,9 @@ a {
     .overlay_form,
     .contact-form {
         width: 100%;
-        gap: 8px;
         height: auto;
         align-items: center;
+        transform: translateY(30px);
     }
 
     .two-buttons {
@@ -1010,12 +1007,15 @@ a {
     }
 
     .error-msg {
-        padding-left: 12px;
         text-align: center;
     }
 
     .contact-list-name {
         max-width: 100%;
+    }
+
+    .edit-delete-contact-btn-section {
+        display: none;
     }
 
 }
@@ -1034,24 +1034,18 @@ a {
         top: 80px;
         left: 0;
         right: 0;
-        margin-bottom: 80px;
-        margin-top: 0;
-        padding: 24px 16px;
-        background: #FFFFFF;
-        z-index: 200;
-        display: none;
-        flex-direction: column;
-        gap: 16px;
+        bottom: 0;
         overflow-y: auto;
-        animation: none;
+        margin-bottom: 80px;
+        height: auto;
+    }
+
+    .contact-dialog-h2 {
+        font-size: 35px;
     }
 
     .popup {
         left: 50%;
-    }
-
-    .contact-form {
-        gap: 8px;
     }
 
     .contacts-wrapper {
@@ -1064,12 +1058,29 @@ a {
         margin-bottom: 80px;
     }
 
-
-
+    .overlay_title {
+        min-height: 160px;
+    }
 
 }
 
 @media (max-width: 480px) {
+    .contact-dialog-desktop {
+        position: fixed;
+        border: none;
+        outline: none;
+        min-height: 100vh;
+        min-width: 100%;
+        border-radius: unset;
+    }
+
+    #contactEditDeleteModal {
+        border-radius: unset;
+    }
+
+    .contact-dialog-add {
+        border-radius: unset;
+    }
 
     .contact-list-sidebar-outer {
         margin: 0;
@@ -1080,11 +1091,6 @@ a {
         height: 80px;
         width: 80px;
         transform: translateY(-40px);
-    }
-
-    .user-circle-large {
-        min-height: 80px;
-        min-width: 80px;
     }
 
     .user_idle_add_task {
@@ -1099,7 +1105,6 @@ a {
     .contact-list-card {
         justify-content: flex-start;
         padding: 15px 0;
-
     }
 
     .contact-list-name {
@@ -1118,6 +1123,7 @@ a {
     .contact-form {
         width: 100%;
         align-items: center;
+        transform: unset;
     }
 
     .mobile_input {

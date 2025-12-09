@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Inter', sans-serif;
 }
@@ -145,7 +149,7 @@ body {
 .board_categories {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch /* flex-start */;
     flex-wrap: wrap;
     margin-top: 48px;
     gap: 20px;
@@ -191,8 +195,8 @@ body {
 }
 
 .draggable {
-    width: 240px;
-    min-height: 240px;
+    width: 244px;
+    min-height: calc(100% - 36px);
     border-radius: 24px;
     border: 1px solid transparent;
     gap: 16px;
@@ -203,7 +207,6 @@ body {
 
 .highlight {
     border: 1px dashed black;
-
 }
 
 .drag-item {
@@ -514,7 +517,6 @@ body {
     padding: 0px;
     gap: 24px;
     width: 440px;
-    height: 400px;
     top: 174px;
 }
 
@@ -571,10 +573,12 @@ body {
     outline-offset: 2px;
 }
 
-textarea {
-    resize: none;
+.subtask-text {
+    word-wrap: break-word;
+    max-width: 100%;
+    min-width: 0;
+    text-overflow: ellipsis;
 }
-
 
 .slide-in {
     animation: slideInFromRight 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
@@ -877,6 +881,7 @@ textarea {
     .draggable {
         margin-top: 12px;
         width: 100%;
+        min-height: 240px;
         flex-direction: row;
         overflow-x: auto;
         scrollbar-width: thin;
@@ -899,6 +904,15 @@ textarea {
     }
 }
 
+@media (max-width: 480px) {
+    .task-detail-overlay {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0;
+        border-radius: unset;
+    }
+}
+
 @media (max-width: 350px) {
     .board-header__top {
         gap: 0;
@@ -908,7 +922,7 @@ textarea {
 
 
 
-.subtask-input-wrapper:hover {
+.subtask-input-wrapper  {
     border-color: #4fb9e7;
 }
 
@@ -916,7 +930,6 @@ textarea {
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 2px 4px;
     margin-bottom: 8px;
     border: 1px solid #D1D1D1;
     width: 100%;
@@ -1064,11 +1077,24 @@ textarea {
     display: flex;
     align-items: end;
     height: 64px;
-    margin-top: 75px;
     justify-content: space-between;
     margin-left: 60px;
     margin-right: 60px;
     margin-bottom: 20px;
+}
+
+.add-task-subtasks-container ul { 
+    max-height: 100px; 
+    overflow-y: auto; 
+}
+
+.scrollable-list {
+    max-height: 100px;       
+    overflow-y: auto;        
+    overflow-x: hidden;      
+    list-style-type: none; 
+    padding-left: 0;
+    margin-top: 10px;
 }
 
 @media (max-width: 1150px) {
@@ -1136,7 +1162,7 @@ textarea {
         display: flex;
         align-items: end;
         height: 64px;
-        margin-top: 75px;
+        margin-top: 16px;
         margin-bottom: 20px;
 
     }
@@ -1171,8 +1197,12 @@ textarea {
         flex-direction: column;
         align-items: center;
     }
+}
 
-
+@media (max-width: 480px) {
+    .add-task-overlay {
+        padding: 0;
+    }
 }
 
 @media (max-width: 470px) {

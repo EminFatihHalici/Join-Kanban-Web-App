@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/global_keyboard.js" defer></script>
     <script src="/scripts/templates.js" defer></script>
     <script src="/scripts/board.js" defer></script>
     <script src="/scripts/add_task_core.js" defer></script>
@@ -170,8 +171,8 @@
                         <div class="custom-select-container">
 
                             <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
-                                tabindex="0" role="combobox"
-                                required aria-required="true" aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
+                                tabindex="0" role="combobox" required aria-required="true"
+                                aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
                                 onkeydown="handleCategoryDropdownKeydown(event)">
 
                                 <span id="category-text">Select task category</span>
@@ -184,7 +185,7 @@
                                 </div>
                                 <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
                             </div>
-                            <div id="category-error" class="error-text" style="padding-top: 24px;" role="alert"
+                            <div id="category-error" class="error-text" style="padding-top: 8px;" role="alert"
                                 aria-live="polite">This field is
                                 required</div>
                             <input type="hidden" id="category" value="">
@@ -198,7 +199,8 @@
                         <div class="subtask-input-wrapper">
                             <input type="text" id="subtask-input-edit" class="subtask-input-field"
                                 placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
-                                onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
+                                onkeydown="handleSubtaskKey(event)" onblur="cleanInput('subtask-input-edit')"
+                                tabindex="0" aria-describedby="subtask-hint">
                             <div id="main-subtask-icons" class="input-action-icons"></div>
                         </div>
                         <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the

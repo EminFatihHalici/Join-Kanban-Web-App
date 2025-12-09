@@ -36,10 +36,11 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
     setTimeout(() => {
         contactLargeRef.style.display = 'block';
         contactLargeRef.setAttribute('aria-hidden', 'false');
-        const editButton = contactLargeRef.querySelector('#edit-contact-btn');
-        if (editButton) {
-            editButton.focus();
-        }
+        const editDeleteDiv = document.querySelector('.edit-delete-contact-btn-section');
+        const editButtonDesktop = document.getElementById('edit-contact-btn');
+        const editButtonMobile = contactLargeRef.querySelector('#mobileActionsBtn');
+        const isHidden = editDeleteDiv && window.getComputedStyle(editDeleteDiv).display === 'none';
+        isHidden ? editButtonMobile.focus() : editButtonDesktop.focus();
         const handleEscapeKey = (event) => {
             if (event.key === 'Escape') {
                 event.preventDefault();
@@ -56,18 +57,18 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
  * @param {string} id - The ID of the modal dialog
  * @param {Event} ev - The triggering event
  */
-async function showDialogCreateContact(id, ev) {
+async function showDialogCreateContact(dialogId, ev) {
     ev.stopPropagation();
-    const modal = document.getElementById(id);
-    bool = [0, 0];
+    const modal = document.getElementById(dialogId);
+    modal.onclick = (e) => contactCancel(e);
+    bool = [0, 0, 1];
     modal.innerHTML = renderAddNewContactOverlayHtml();
     modal.showModal();
     setTimeout(() => {
         modal.classList.add("open");
     }, 10);
-
-    checkAllCreateContactValidations('contactCreateBtn');
-    await loadAndRenderContacts('contactList', 'contacts');;
+    updateContactButtonState(dialogId);
+    await loadAndRenderContacts('contactList', 'contacts');
 }
 
 /**
@@ -82,11 +83,13 @@ async function showDialogContact(id, contactJson, color, ev, option) {
     ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
+    option === 'Delete' || option === 'Edit' ? bool = [1, 1, 1] : bool = [0, 0, 0];
+    option === 'Delete' ? contactEditDeleteModal.innerHTML = renderDeleteContactOverlayHtml(contact, color, option) : contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
+    contactEditDeleteModal.onclick = (e) => contactCancel(e);
     contactEditDeleteModal.showModal();
     setTimeout(() => {
         contactEditDeleteModal.classList.add("open");
+        updateContactButtonState(id);
     }, 10);
     await renderContacts();
 }
@@ -98,10 +101,8 @@ async function showDialogContact(id, contactJson, color, ev, option) {
 function contactCancel(ev) {
     ev.preventDefault();
     ev.stopPropagation();
-
     const modal = ev.target.closest("dialog");
     if (!modal) return;
-
     modal.classList.remove("open");
     modal.close();
 }
@@ -111,13 +112,10 @@ function contactCancel(ev) {
  */
 function closeContactOverlay() {
     const overlay = document.getElementById('contactDisplayLarge');
-    
     overlay.classList.remove('open');
     overlay.style.display = 'none';
     overlay.setAttribute('aria-hidden', 'true');
-    
     document.body.classList.remove('no-scroll');
-
     if (lastFocusedContact) {
         lastFocusedContact.focus();
         lastFocusedContact = null;

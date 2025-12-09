@@ -9,6 +9,7 @@ body {
   right: 0;
   bottom: 0;
   overflow: overlay;
+  max-width: 1920px;
 }
 
 .container_information {
@@ -692,8 +693,7 @@ body {
 
 @media (max-height: 850px) {
   .main_summary{
-    height: 100vh;
-    overflow: scroll;
+    overflow-y: auto;
     margin-bottom: 16px;
   }
 

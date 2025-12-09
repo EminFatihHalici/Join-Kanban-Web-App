@@ -94,19 +94,84 @@ function finalizeTaskCreation() {
  * Clears all form inputs and resets form state
  */
 function clearForm() {
-    document.getElementById("task-form");
+    resetBaseInputs();
+    resetCategory();
+    resetAssigned();
+    resetSubtasks();
+    resetPriority();
+    resetValidation();
+    enableCreateBtn();
+}
+
+/**
+ * Resets the basic text inputs (title, description, due date) and subtask input.
+ */
+function resetBaseInputs() {
+    ['title', 'description', 'due-date'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    const sub = document.getElementById('subtask-input-edit');
+    if (sub) sub.value = '';
+}
+
+/**
+ * Resets the category selection to the default placeholder state.
+ */
+function resetCategory() {
     document.getElementById('category-text').innerHTML = 'Select task category';
     document.getElementById('category').value = '';
-    editSubtasks = [];
+}
+
+/**
+ * Clears the assigned contacts list, resets the dropdown, and updates the UI.
+ */
+function resetAssigned() {
     editAssignedIds = [];
-    editPriority = 'medium';
+    const disp = document.getElementById('assigned-display-edit');
+    if (disp) disp.innerHTML = `
+        <p>Select contacts to assign</p>
+        <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
+    `;
+    const dd = document.getElementById('assigned-dropdown-edit');
+    if (dd) {
+        dd.innerHTML = '';
+        loadAndRenderContacts('assigned-dropdown-edit', 'addTask')
+            .then(() => setCheckboxesById());
+    }
     renderAssignedEditCircles();
+}
+
+/**
+ * Clears the temporary subtask array and resets the subtask UI elements.
+ */
+function resetSubtasks() {
+    editSubtasks = [];
     renderSubtasksEditMode();
-    setCheckboxesById();
+    resetMainSubtaskIcons();
+}
+
+/**
+ * Resets the priority selection to the default value ('medium') and updates the UI.
+ */
+function resetPriority() {
+    editPriority = 'medium';
     updatePrioUI('medium');
+}
+
+/**
+ * Removes all visual error indicators and validation messages from the form.
+ */
+function resetValidation() {
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
     document.querySelectorAll('.visible').forEach(el => el.classList.remove('visible'));
-    let btn = document.getElementById('create-btn');
+}
+
+/**
+ * Re-enables the create task button.
+ */
+function enableCreateBtn() {
+    const btn = document.getElementById('create-btn');
     if (btn) btn.disabled = false;
 }
 
@@ -123,7 +188,7 @@ function toggleContactDropdown(dropdownId, displayId, arrowId) {
     let arrow = document.getElementById(idArrow);
     if (!dropdown) {
         console.warn(`FEHLER: Das Element mit der ID '${idDropdown}' existiert nicht im DOM!`);
-        return; 
+        return;
     }
     dropdown.style.display === 'none' || dropdown.style.display === '' ? toggleIfDropdownExist(dropdown, display, arrow) : toggleNotAsDropdownDoesNotExist(dropdown, display, arrow);
 }
@@ -157,15 +222,37 @@ function toggleIfDropdownExist(dropdown, display, arrow) {
  * @param {string} taskId - The ID of the task to save
  */
 async function saveEditedTask(taskId) {
+    if (!validateEditInputs()) return;
     const oldTask = tasks.find(t => t.id === taskId);
-    const updatedTask = getMergedTaskData(oldTask);
+    if (!oldTask) return;
     try {
-        await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
+        await putData(`/${activeUserId}/tasks/${taskId}`, getMergedTaskData(oldTask));
         await refreshBoardAfterEdit();
     } catch (error) {
         console.error("Save failed:", error);
     }
 }
+
+/**
+ * Validates a single input field and updates its visual error state.
+ * @param {string} inputId - The DOM ID of the input field.
+ * @param {string} errorId - The DOM ID of the error message container.
+ * @param {string} msg - The error message text to display.
+ * @returns {boolean} True if the input is valid, false if empty/invalid.
+ */
+function checkInput(inputId, errorId, msg) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    const isInvalid = !input || input.value.trim() === "";
+    if (input) input.classList.toggle('input-error', isInvalid);
+    if (error) {
+        error.textContent = isInvalid ? msg : "";
+        error.classList.toggle('visible', isInvalid);
+    }
+    return !isInvalid;
+}
+
+
 
 /**
  * Merges old task data with edited form values
@@ -186,6 +273,17 @@ function getMergedTaskData(oldTask) {
 }
 
 /**
+ * Triggers validation for all required fields in the edit task form.
+ * Ensures all error messages are displayed if fields are missing.
+ * @returns {boolean} True only if ALL required fields are valid.
+ */
+function validateEditInputs() {
+    const titleValid = checkInput('edit-title', 'edit-title-error', 'Title is required');
+    const dateValid = checkInput('edit-due-date', 'edit-due-date-error', 'Date is required');
+    return titleValid && dateValid;
+}
+
+/**
  * Refreshes the board view after editing a task
  * @async
  */
@@ -201,8 +299,6 @@ async function refreshBoardAfterEdit() {
  */
 function setEditPrio(newPrio) {
     editPriority = newPrio;
-    
-    // Update visual classes and ARIA attributes
     ['urgent', 'medium', 'low'].forEach(p => {
         const button = document.getElementById('prio-' + p);
         if (button) {
@@ -210,7 +306,6 @@ function setEditPrio(newPrio) {
             button.setAttribute('aria-checked', 'false');
         }
     });
-    
     const activeButton = document.getElementById('prio-' + newPrio);
     if (activeButton) {
         setEditPrioSetActivePriorityButton(activeButton, newPrio);
@@ -225,13 +320,11 @@ function setEditPrio(newPrio) {
 function setEditPrioSetActivePriorityButton(activeButton, newPrio) {
     activeButton.classList.add('active');
     activeButton.setAttribute('aria-checked', 'true');
-
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', 'polite');
     announcement.className = 'sr-only';
     announcement.textContent = `Priority changed to ${newPrio}`;
     document.body.appendChild(announcement);
-
     setTimeout(() => {
         if (announcement.parentNode) {
             announcement.parentNode.removeChild(announcement);
@@ -251,123 +344,4 @@ function toggleEditAssign(userId) {
         editAssignedIds.splice(index, 1);
     }
     renderAssignedEditCircles();
-}
-
-/**
- * Toggles the visibility of the edit contact dropdown
- */
-function toggleContactDropdownEdit() {
-    let dropdown = document.getElementById('assigned-dropdown-edit');
-    let arrow = document.getElementById('arrow-icon-edit');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        if (arrow) {
-            arrow.classList.remove('rotate-180');
-        }
-    } else {
-        dropdown.style.display = 'block';
-        if (arrow) {
-            arrow.classList.add('rotate-180');
-        }
-    }
-}
-
-/**
- * Sets checkbox states based on currently assigned IDs
- */
-function setCheckboxesById() {
-    let container = document.getElementById('assigned-dropdown-edit');
-    if (!container) return;
-    let checkboxes = container.getElementsByTagName('input');
-    for (let i = 0; i < checkboxes.length; i++) {
-        let cb = checkboxes[i];
-        cb.checked = editAssignedIds.includes(cb.value);
-        cb.onclick = function (e) {
-            e.stopPropagation();
-            toggleEditAssign(cb.value);
-        };
-    }
-}
-
-/**
- * Toggles the selection state of a contact and updates visuals
- * @param {string} contactId - The ID of the contact to toggle
- * @param {Event} event - The triggering event
- */
-function toggleContactSelection(contactId, event) {
-    event.stopPropagation();
-    toggleEditAssign(contactId);
-    updateContactRowVisuals(contactId);
-}
-
-/**
- * Toggles the visibility of the category dropdown menu
- */
-function toggleCategoryDropdown() {
-    let dropdown = document.getElementById('category-options');
-    let arrow = document.getElementById('category-arrow');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        arrow.classList.remove('rotate-180');
-    } else {
-        dropdown.style.display = 'block';
-        arrow.classList.add('rotate-180');
-    }
-}
-
-/**
- * Resets global edit variables to their default values
- */
-function resetGlobalVariables() {
-    editSubtasks = [];
-    editAssignedIds = [];
-    editPriority = 'medium';
-}
-
-/**
- * Resets all custom UI components to their default state
- */
-function resetCustomUIComponents() {
-    renderAssignedEditCircles();
-    renderSubtasksEditMode();
-    setCheckboxesById();
-    updatePrioUI('medium');
-    resetMainSubtaskIcons();
-}
-
-/**
- * Resets the category input and display to default state
- */
-function resetCategoryInput() {
-    const categoryText = document.getElementById('category-text');
-    const categoryInput = document.getElementById('category');
-
-    if (categoryText) categoryText.innerHTML = 'Select task category';
-    if (categoryInput) categoryInput.value = '';
-}
-
-/**
- * Resets all validation visual indicators and enables create button
- */
-function resetValidationVisuals() {
-    document.querySelectorAll('.input-error')
-        .forEach(el => el.classList.remove('input-error'));
-    document.querySelectorAll('.visible')
-        .forEach(el => el.classList.remove('visible'));
-    const btn = document.getElementById('create-btn');
-    if (btn) btn.disabled = false;
-}
-
-/**
- * Selects a category and updates the UI accordingly
- * @param {string} category - The category to select
- */
-function selectCategory(category) {
-    document.getElementById('category-text').innerHTML = category;
-    document.getElementById('category').value = category;
-    toggleCategoryDropdown();
-    let container = document.getElementById('category-display');
-    let errorMsg = document.getElementById('category-error');
-    container.classList.remove('input-error');
-    errorMsg.classList.remove('visible');
 }

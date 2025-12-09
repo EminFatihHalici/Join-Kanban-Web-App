@@ -1,19 +1,15 @@
-let firebase = [];
-
 /** Validates full name format (first name space last name with Unicode support) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\p{M}]+$/.test(val);
 /** Validates email address format with length constraints */
-const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,254}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val);
-/** Validates password strength (uppercase, lowercase, number, special char, min 12 chars) */
-const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 12;
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
+/** Validates password strength (uppercase, lowercase, no number, special char, min 8 chars) */
+const isPassValid = val => /[A-Za-z0-9]/.test(val) /* && /[a-z]/.test(val) && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
 /** Validates password confirmation matches original password */
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
 /** Validates checkbox is checked */
 const isCheckboxValid = () => document.getElementById('checkbox').checked;
 
 let bool = [0, 0, 0, 0, 0]
-
-// #region registration validation
 
 /**
  * Validates an input field using a provided validation function
@@ -29,10 +25,9 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
     let input = document.getElementById(inputId);
     let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
+        errMsgElem.innerText = '';
         bool[boolIndex] = 1;
     } else {
-        errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
         bool[boolIndex] = 0;
     }
@@ -41,39 +36,17 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
 }
 
 /**
- * Validates the privacy policy checkbox separately
- * @returns {number} The validation result (0 or 1)
- */
-function validateCheckboxSeperately() {
-    let checkbox = document.getElementById('checkbox');
-    let errMsgCheckbox = document.getElementById('errMsgCheckbox');
-    if (!checkbox.checked) {
-        errMsgCheckbox.style.display = 'block';
-        errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
-        bool[4] = 0;
-    } else {
-        errMsgCheckbox.style.display = 'none';
-        bool[4] = 1;
-    }
-    return bool[4]
-}
-
-/**
  * Checks all validations and enables/disables the sign up button
  */
 function checkAllValidations() {
-    let fourOutOfFive = bool[0] === 1 && bool[1] === 1 && bool[2] === 1 && bool[3] === 1;
-    if (fourOutOfFive) { validateCheckboxSeperately() };
     let signUpBtn = document.getElementById('signUp');
     let allBoolEqualOne = bool.every(el => el === 1);
     if (allBoolEqualOne) {
         signUpBtn.disabled = false;
-        signUpBtn.ariaDisabled = false;
-        signUpBtn.tabIndex = '1';
-        signUpBtn.focus();
+        signUpBtn.setAttribute('aria-disabled', 'false');
     } else {
         signUpBtn.disabled = true;
-        signUpBtn.ariaDisabled = true;
+        signUpBtn.setAttribute('aria-disabled', 'true');
     }
 }
 
@@ -128,10 +101,6 @@ function checkIconPathAndSetNewIconAndInputType(icon, input) {
     }
 }
 
-// #endregion
-
-// #region registration -> add New User to firebase DB
-
 /**
  * Adds a new user to the Firebase database and handles success flow
  */
@@ -177,12 +146,9 @@ function clearAllSignUpInputFields() {
     let passwordRegister = document.getElementById('passwordRegister');
     let passwordRegisterConfirm = document.getElementById('passwordRegisterConfirm');
     let signUpBtn = document.getElementById('signUp');
-
     nameRegister.value = emailRegister.value = passwordRegister.value = passwordRegisterConfirm.value = '';
     signUpBtn.checked = false;
 }
-
-// #endregion
 
 /**
  * Handles user login by validating credentials against Firebase database
@@ -192,7 +158,10 @@ async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
     let response = await fetchData();
-    let activeUser = response.findIndex(user => user.email === email.value && user.password === password.value);
+    let activeUser = response.findIndex(user => 
+        user && user.email && user.password && 
+        user.email === email.value && user.password === password.value
+    );
     if (activeUser !== -1) {
         saveToLocalStorage(activeUser);
         window.location.href = `../html/summary.html`;
@@ -231,7 +200,7 @@ function animateLogoFirstVisit() {
         logoOverlay.classList.add('animate-out');
     }
     setTimeout(() => {
-        logoOverlay.style.display = 'none';
+        logoOverlay.style.display ='none';
         logo.style.opacity = 1;
     }, 800);
 }

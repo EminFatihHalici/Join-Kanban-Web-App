@@ -82,19 +82,16 @@ async function checkTaskAssignedAgainstNullOrInvalidContacts(tasksWithId) {
  */
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
-        let section = overlay.querySelector('.add-task-section');
-        if (section) {
-            section.classList.add('slide-in');
-        }
+        let section = overlay.querySelector('.overlay-add-task'); 
+        if (section) {section.classList.add('slide-in');}
         let titleInput = document.getElementById('title');
-        if (titleInput) {
-            setTimeout(() => titleInput.focus(), 150);
-        }
+        if (titleInput) {setTimeout(() => titleInput.focus(), 150);}
     }, 20);
 }
 
@@ -127,7 +124,6 @@ function slideInOverlay() {
     overlay.classList.add("slide-in");
 }
 
-
 /**
  * Renders the task detail overlay for viewing task information
  * @param {string} taskJson - Base64 encoded JSON string of the task object
@@ -135,15 +131,14 @@ function slideInOverlay() {
 async function renderTaskDetail(taskJson) {
     let task = JSON.parse(atob(taskJson));
     let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
     overlay.setAttribute('aria-hidden', 'false');
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
-        if (section) {
-            section.classList.add('slide-in');
-        }
+        if (section) {section.classList.add('slide-in');}
     }, 50);
     renderContactsInOverlay(task);
 }
@@ -171,11 +166,12 @@ async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
     loadTaskVariableGlobally(task);
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.onclick = closeAddTaskOverlay;
     loadEditTaskDetailOverlay(task);
     loadFillInputFields(task);
     renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-
     renderAssignedEditCircles();
     setCheckboxesById()
 }
@@ -306,8 +302,6 @@ function updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus) {
     }
 }
 
-// #region search
-
 /**
  * Searches tasks based on title and description content
  */
@@ -395,5 +389,3 @@ function searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searc
         }
     }
 }
-
-// #endregion

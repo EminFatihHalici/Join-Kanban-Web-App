@@ -60,7 +60,6 @@ function validateTaskFormIfDateSmallerToday(dateInput, dateError, isValid) {
     const selectedDate = new Date(dateInput.value);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     if (selectedDate < today) {
         dateError.textContent = 'Due date cannot be in the past';
         dateInput.setAttribute('aria-invalid', 'true');
@@ -101,7 +100,6 @@ function setupEditFormValidation() {
     if (titleInput) {
         titleInput.addEventListener('blur', () => validateEditTaskForm());
         titleInput.addEventListener('input', () => {
-            // Clear error on input
             const titleError = document.getElementById('edit-title-error');
             if (titleError && titleInput.value.trim()) {
                 titleError.textContent = '';
@@ -109,7 +107,6 @@ function setupEditFormValidation() {
             }
         });
     }
-    
     const dateInput = document.getElementById('edit-due-date');
     if (dateInput) {
         dateInput.addEventListener('blur', () => validateEditTaskForm());
@@ -123,17 +120,14 @@ function setupEditFormValidation() {
  * @returns {boolean} True if field is valid, false otherwise
  */
 function validateField(id) {
-    let input = document.getElementById(id);
-    let errorMsg = document.getElementById(id + '-error');
-    if (!input.value.trim()) {
-        input.classList.add('input-error');
-        errorMsg.classList.add('visible');
-        return false;
-    } else {
-        input.classList.remove('input-error');
-        errorMsg.classList.remove('visible');
-        return true;
-    }
+    const input = document.getElementById(id), error = document.getElementById(`${id}-error`);
+    if (!input || !error) return;
+    if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
+    const isInvalid = !input.value.trim();
+    error.textContent = isInvalid ? 'This field is required' : '';
+    error.classList.toggle('visible', isInvalid);
+    input.classList.toggle('input-error', isInvalid);
+    return !isInvalid;
 }
 
 /**
@@ -156,12 +150,29 @@ function validateCategory() {
 }
 
 /**
- * Clears error styling and messages for a form field
+ * Clears error styling and messages for a form field.
+ * Safely checks if elements exist before updating UI to prevent errors.
  * @param {string} id - The ID of the form field to clear errors for
  */
 function clearError(id) {
-    let input = document.getElementById(id);
-    let errorMsg = document.getElementById(id + '-error');
-    input.classList.remove('input-error');
-    errorMsg.classList.remove('visible');
+    const input = document.getElementById(id);
+    const errorMsg = document.getElementById(id + '-error');
+    if (input) {
+        input.classList.remove('input-error');
+    }
+    if (errorMsg) {
+        errorMsg.classList.remove('visible');
+    }
+}
+
+/**
+ * Trims whitespace from an input field. 
+ * If the field contains only whitespace, it clears the value completely.
+ * @param {string} id - The ID of the input field to clean
+ */
+function cleanInput(id) {
+    const input = document.getElementById(id);
+    if (input && !input.value.trim()) {
+        input.value = '';
+    }
 }

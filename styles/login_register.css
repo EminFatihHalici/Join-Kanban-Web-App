@@ -8,7 +8,7 @@
 :root {
     --black: #000000;
     --white: #ffffff;
-    --red: #ff0000;
+    --red: #E60026;
     --primary: #2A3647;
     --primary-hover: #29ABE2;
     --primary-active: #091931;
@@ -19,6 +19,8 @@
 
 body {
     background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
 }
 
 .header_h2 {
@@ -60,6 +62,8 @@ header {
     padding: 0 77px 0;
     display: flex;
     justify-content: space-between;
+    width: 100vw;
+    max-width: 1920px;
 }
 
 .logo {
@@ -67,6 +71,18 @@ header {
     height: 122px;
     margin-top: 80px;
 }
+ 
+.animated_logo {
+    position: fixed;
+    top:0;
+    width: 100%;
+    max-width: 1920px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100vh;
+    z-index: 9999;
+    height: 0px;
+} 
 
 .logo-overlay {
     position: fixed;
@@ -93,6 +109,14 @@ header {
     height: 334px;
     backdrop-filter: blur(2px);
     transition: all 0.8s ease-in-out;
+}
+
+#passwordIcon {
+    cursor: pointer;
+}
+
+#passwordConfirmIcon {
+    cursor: pointer;
 }
 
 #animatedImgMobile {
@@ -202,7 +226,7 @@ header {
     flex-direction: column;
     align-items: center;
     width: 652px;
-    height: 449px;
+    height: 500px;
     border-radius: 30px;
     background-color: var(--white);
     box-shadow: var(--shadow-box);
@@ -224,14 +248,19 @@ header {
     margin-bottom: 30px;
 }
 
+.spacer {
+    height: 20px;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 6px;
     align-items: center;
 }
 
 .input-field {
+    position: relative;
     display: flex;
     justify-content: space-between;
     width: 352px;
@@ -258,18 +287,17 @@ header {
     display: flex;
     align-items: center;
     padding-right: 12px;
-    cursor: pointer;
 }
 
+
 .error-msg {
-    min-height: 0px;
-    line-height: 0px;
-    font-size: 12px;
     color: var(--red);
-    padding-left: 2px;
-    display: flex;
-    align-items: center;
+    min-height: 20px;
+    font-size: 16px;
+    white-space: normal;
+    word-break: break-word;
 }
+
 
 .two-buttons {
     width: 322px;
@@ -297,7 +325,6 @@ footer a {
 }
 
 footer a:hover {
-    font-weight: 700;
     color: var(--primary-hover);
 }
 
@@ -307,7 +334,7 @@ footer a:hover {
 .register-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 6px;
 }
 
 .register-login {
@@ -315,7 +342,7 @@ footer a:hover {
     flex-direction: column;
     align-items: center;
     width: 598px;
-    height: 630px;
+    height: 661px;
     border-radius: 30px;
     background-color: var(--white);
     box-shadow: var(--shadow-box);
@@ -367,6 +394,7 @@ footer a:hover {
 .ta_center {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .register_checkbox {
@@ -451,7 +479,12 @@ footer a:hover {
 /* WCAG / WAI-ARIA */
 
 .legal_pages_index {
-    color: var(--primary)
+    color: var(--primary);
+}
+
+.legal_pages_index:hover {
+    transform: scale(1.05);
+    font-variation-settings: "wght" 700;
 }
 
 
@@ -562,7 +595,7 @@ footer a:hover {
         max-width: 396px;
         height: auto;
         justify-content: center;
-        padding: 32px 24px;
+        padding: 0px 24px 32px;
     }
 
     .login-form {
@@ -572,9 +605,7 @@ footer a:hover {
     .error-msg {
         white-space: normal;
         word-break: break-word;
-        line-height: 1.2em;
         text-align: left;
-        width: 100%;
     }
 
     .two-buttons {
@@ -596,6 +627,12 @@ footer a:hover {
         border: none;
     }
 
+    .btn_log_in,
+    .btn_guest_log_in {
+        width: 180px;
+        box-sizing: border-box;
+    }
+
     .btn_guest_log_in:active {
         background-color: var(--white);
         color: var(--primary-active);
@@ -612,9 +649,8 @@ footer a:hover {
     /*--------------------register.html--------------------*/
     .register-login {
         width: 396px;
-        height: 595px;
+        height: 660px;
         max-width: 396px;
-        height: auto;
         justify-content: center;
         padding: 32px 24px;
     }
@@ -639,6 +675,7 @@ footer a:hover {
     .icon-div {
         height: 24px;
         width: 24px;
+        padding-right: 34px;
     }
 
     /*----------End Region----------*/
@@ -647,8 +684,16 @@ footer a:hover {
         max-width: 100%;
         width: 90%;
         padding: 24px 16px;
-        height: auto;
+        height: 89%;
         box-sizing: border-box;
+    }
+
+    .register-form {
+        width: 90%;
+    }
+
+    .chk{
+        margin: 0;
     }
 
     .register_top {

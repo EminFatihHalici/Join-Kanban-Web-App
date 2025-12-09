@@ -1,12 +1,19 @@
-let bool = [0, 0];
+let bool = [0, 0, 0];
 let lastFocusedContact = null;
 
 /** Validates full name format (first name space last name) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
 /** Validates email address format */
-const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
 /** Validates phone number format (6-20 characters, numbers and common symbols) */
-const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
+/** was: const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val); */
+/** now is: accept empty value */
+function isPhoneValid(value) {
+    if (!value || value.trim() === '') {
+        return true;
+    }
+    return /^(?!.*\s{2,})[0-9+()\/\-\s]{1,25}$/.test(value.trim());
+}
 
 /**
  * Initializes the contacts page by checking security, loading user initials and rendering contacts
@@ -19,26 +26,25 @@ async function init() {
 }
 
 /**
- * Checks all contact creation validations and enables/disables the create button
- * @param {string} id - The ID of the create button element
+ * Updates the contact button state based on validation results
+ * @param {string} dialogId - The ID of the dialog containing the button
+ * @param {string} buttonId - The ID of the button to update (default: 'contactCreateBtn')
  */
-function checkAllCreateContactValidations(id) {
-    let contactCreateBtn = document.getElementById(id);
-    let errMsgPhone = document.getElementById('errMsgPhone');
-    let allBoolEqualOne = bool.every(el => el === 1);
-    if (allBoolEqualOne) {
-        errMsgPhone.style.display = 'none';
-        contactCreateBtn.disabled = false;
-        contactCreateBtn.ariaDisabled = false;
-    } else {
-        errMsgPhone.style.display = 'block';
-        errMsgPhone.innerHTML = "Please enter at least full name and email"
-        contactCreateBtn.disabled = true;
-        contactCreateBtn.ariaDisabled = true;
+function updateContactButtonState(dialogId, buttonId = 'contactCreateBtn') {
+    const isValid = bool[0] === 1 && bool[1] === 1 && bool[2] === 1;
+    const dialog = document.getElementById(dialogId);
+    const button = dialog ? dialog.querySelector(`#${buttonId}`) : null;
+    
+    if (button) {
+        if (isValid) {
+            button.disabled = false;
+            button.setAttribute('aria-disabled', 'false');
+        } else {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        }
     }
 }
-
-// renderContacts function moved to rendering.js
 
 /**
  * Converts the contactsFetch data to an array format
@@ -59,10 +65,6 @@ function convertContactsFetchObjectToArray() {
     }
     return contactsArray;
 }
-
-// renderGroupedContacts function moved to rendering.js
-
-// renderContactLarge function moved to rendering.js
 
 /**
  * Handles keyboard events for contact card interactions
@@ -99,7 +101,6 @@ function handleContactCancelKeydown(event) {
 function handleContactSubmitKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        // Trigger the form submission
         const form = event.target.closest('form');
         if (form) {
             form.dispatchEvent(new Event('submit'));
@@ -148,7 +149,7 @@ async function updateContact(currContactId, option, event = null) {
             event.stopPropagation();
         }
         await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 10)));
-        let contactData = await setContactDataForBackendUpload();
+        let contactData = await setContactDataForBackendUpload('contactEditDeleteModal');
         if (option === 'Edit') {
             await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
         } else {
@@ -167,12 +168,35 @@ async function updateContact(currContactId, option, event = null) {
 }
 
 /**
+ * Deletes a contact from the database and updates the UI
+ * Removes the contact from Firebase, refreshes the contact list, and closes any open dialogs
+ * @param {string} currContactId - The ID of the contact to delete
+ * @param {string} option - The operation type (unused parameter, kept for consistency)
+ * @returns {Promise<void>} Promise that resolves when the contact is successfully deleted
+ * @throws {Error} Throws an error if the deletion operation fails
+ */
+async function deleteContact(currContactId, option) {
+    try {
+        await deletePath('/' + activeUserId + '/contacts/' + currContactId);
+        await loadAndRenderContacts('contactList', 'contacts');
+        const big = document.getElementById('contactDisplayLarge');
+        big.innerHTML = '';
+        big.style.display = 'none';
+        const modal = document.getElementById('contactEditDeleteModal');
+        modal.close();
+    }  catch (error) {
+        console.error('Error edit/delete contact at putData():', error);
+    }
+}
+
+
+/**
  * Creates the next contact ID, saves the contact data and re-renders the contact list
  */
 async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
-        let contactData = await setContactDataForBackendUpload();
+        let contactData = await setContactDataForBackendUpload('contactAddModal');
         let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
         await loadAndRenderContacts('contactList', 'contacts');
     } catch (error) {
@@ -190,31 +214,31 @@ async function createNextIdPutDataAndRender() {
  * @param {boolean} shouldCheckAll - Whether to check all validations after this one
  * @returns {number} The validation result (0 or 1)
  */
-function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
-    let input = document.getElementById(inputId);
-    let errMsgElem = document.getElementById(errMsgId);
+function validateFieldContact(dialogId, inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
+    let input = document.getElementById(dialogId).querySelector(`#${inputId}`);
+    let errMsgElem = document.getElementById(dialogId).querySelector(`#${errMsgId}`);
     if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
+        errMsgElem.innerText = '';
         input.setAttribute('aria-invalid', 'false');
         bool[boolIndex] = 1;
     } else {
-        errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
         input.setAttribute('aria-invalid', 'true');
         bool[boolIndex] = 0;
     }
-    if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
+    updateContactButtonState(dialogId);
     return bool[boolIndex];
 }
 
 /**
  * Collects contact data from form inputs and formats it for backend upload
+ * @param {string} [dialogId] - The dialog container ID
  * @returns {Object} Contact data object with name, email, and phone
  */
-async function setContactDataForBackendUpload() {
-    let nameContact = document.getElementById('nameContact');
-    let emailContact = document.getElementById('emailContact');
-    let phoneContact = document.getElementById('phoneContact');
+async function setContactDataForBackendUpload(dialogId) {
+    let nameContact = document.getElementById(dialogId).querySelector('#nameContact');
+    let emailContact = document.getElementById(dialogId).querySelector('#emailContact');
+    let phoneContact = document.getElementById(dialogId).querySelector('#phoneContact');
     let data = {
         name: nameContact.value.trim(),
         email: emailContact.value.trim().toLowerCase(),
@@ -318,27 +342,3 @@ function handleMobileDeleteKeydown(event, contactJson, color) {
         openDeleteContact(contactJson, color);
     }
 }
-
-// checkContactForPhoneHtml function moved to rendering.js
-
-// checkContactForPhone function moved to rendering.js
-
-// groupContactsByLetter function moved to rendering.js
-
-// contactsLargeSlideIn function moved to contacts_dialogs.js
-
-// showDialogCreateContact function moved to contacts_dialogs.js
-
-// showDialogContact function moved to contacts_dialogs.js
-
-// contactCancel function moved to contacts_dialogs.js
-
-// closeContactOverlay function moved to contacts_dialogs.js
-
-// openEditContact function moved to contacts_dialogs.js
-
-// openDeleteContact function moved to contacts_dialogs.js
-
-// toggleMobileContactMenu function moved to contacts_dialogs.js
-
-// toggleMobileContactMenuTimeoutAriaAndFocus function moved to contacts_dialogs.js
